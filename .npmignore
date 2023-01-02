@@ -1,0 +1,12 @@
+# Node modules
+node_modules
+
+# Logs
+*.log
+
+# Cache and config dirs and files
+.github
+.vscode
+.dccache
+.DS_Store
+.prettierrc
