@@ -34,11 +34,17 @@
     "js/*"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "grunt",
+    "postversion": "grunt",
+    "prepublishOnly": "grunt"
   },
   "dependencies": {
     "bootstrap": "^5.3.0-alpha",
-    "bootstrap5-toggle": "^5.0.0-alpha"
+    "bootstrap5-toggle": "^5.0.0-alpha",
+    "dompurify": "^2.4.1",
+    "grunt": "^1.5.3",
+    "grunt-banner": "^0.6.0",
+    "grunt-contrib-uglify": "^5.2.2"
   },
   "optionalDependencies": {
     "jquery": "^3.6.0"
