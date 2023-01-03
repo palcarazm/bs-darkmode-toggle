@@ -15,18 +15,13 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     container: cypress/browsers:node16.16.0-chrome107-ff107-edge
+        strategy:
+          matrix:
+            browsers: [firefox, chrome, edge]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Cypress run Firefox
+      - name: Cypress run ${{ matrix.browser }}
         uses: cypress-io/github-action@v5
         with:
-          browser: firefox
-      - name: Cypress run Chrome
-        uses: cypress-io/github-action@v5
-        with:
-          browser: chrome
-      - name: Cypress run edge
-        uses: cypress-io/github-action@v5
-        with:
-          browser: edge
+          browser: ${{ matrix.browser }}
