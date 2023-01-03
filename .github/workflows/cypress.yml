@@ -14,10 +14,19 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+    container: cypress/browsers:node16.16.0-chrome107-ff107-edge
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Cypress run
-        uses: cypress-io/github-action@v4
+        uses: actions/checkout@v3
+      - name: Cypress run Firefox
+        uses: cypress-io/github-action@v5
         with:
-          build: npm run build
+          browser: firefox
+      - name: Cypress run Chrome
+        uses: cypress-io/github-action@v5
+        with:
+          browser: chrome
+      - name: Cypress run edge
+        uses: cypress-io/github-action@v5
+        with:
+          browser: edge

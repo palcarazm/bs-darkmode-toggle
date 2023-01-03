@@ -36,7 +36,8 @@
   "scripts": {
     "build": "grunt",
     "postversion": "grunt",
-    "prepublishOnly": "grunt"
+    "prepublishOnly": "grunt",
+    "test": "cypress run --browser=chrome"
   },
   "dependencies": {
     "bootstrap": "^5.3.0-alpha",
