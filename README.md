@@ -4,8 +4,8 @@
 [![BS Toggle](https://img.shields.io/static/v1?label=bs-toggle&message=%5E5.0.0-alpha&color=informational)](https://palcarazm.github.io/bootstrap5-toggle/)
 [![JSDelivr Badge](https://img.shields.io/jsdelivr/npm/hm/bs-darkmode-toggle?label=hits&logo=jsdelivr&logoColor=white)](https://www.jsdelivr.com/package/npm/bs-darkmode-toggle)
 [![NPM Badge](https://img.shields.io/npm/dm/bs-darkmode-toggle?logo=npm)](https://www.npmjs.com/package/bs-darkmode-toggle)
-<!--[![Build](https://img.shields.io/github/actions/workflow/status/palcarazm/bs-darkmode-toggle/build.yml?branch=v1&logo=npm)](https://github.com/palcarazm/bs-darkmode-toggle/actions?query=workflow%3A%22Build+Check%22)
-[![Test](https://img.shields.io/github/actions/workflow/status/palcarazm/bs-darkmode-toggle/cypress.yml?branch=v1&label=tests&logo=cypress)](https://github.com/palcarazm/bs-darkmode-toggle/actions?query=workflow%3A%22Cypress+Tests%22)-->
+[![Build](https://img.shields.io/github/actions/workflow/status/palcarazm/bs-darkmode-toggle/build.yml?branch=v1&logo=npm)](https://github.com/palcarazm/bs-darkmode-toggle/actions?query=workflow%3A%22Build+Check%22)
+[![Test](https://img.shields.io/github/actions/workflow/status/palcarazm/bs-darkmode-toggle/cypress.yml?branch=v1&label=tests&logo=cypress)](https://github.com/palcarazm/bs-darkmode-toggle/actions?query=workflow%3A%22Cypress+Tests%22)
 [![Security](https://img.shields.io/snyk/vulnerabilities/npm/bs-darkmode-toggle@0.0.0-beta?logo=snyk)](https://snyk.io/advisor/npm-package/bs-darkmode-toggle)
 [![EOL](https://img.shields.io/endpoint?url=https%3A%2F%2Fpalcarazm.github.io%2Fbs-darkmode-toggle%2Fapi%2Feol%2Fv1)](https://github.com/palcarazm/bs-darkmode-toggle/security/policy)
 [![Funding](https://img.shields.io/badge/sponsor-30363D?style=flat&logo=GitHub-Sponsors&logoColor=#white)](https://github.com/sponsors/palcarazm)
