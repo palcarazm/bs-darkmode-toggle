@@ -8,6 +8,7 @@
  * @see https://github.com/palcarazm/bs-darkmode-toggle/blob/master/LICENSE
  */
 
+
 "use strict";
 
 /**
@@ -42,7 +43,6 @@
       this.element = element;
 
       // B: Set options
-      let parser = new DOMParser();
       let state = null;
       if (this.element.getAttribute("data-state")) {
         if (this.element.getAttribute("data-state") === "dark") state = false;
@@ -51,45 +51,35 @@
       }
       this.options = {
         state: state ?? options.state ?? DEFAULTS.state,
-        root:
-          parser.parseFromString(
-            this.element.getAttribute("data-root"),
-            "text/html"
-          ) ||
-          options.root ||
-          DEFAULTS.root,
+        root: this.#sanitize(
+          this.element.getAttribute("data-root") ||
+            options.root ||
+            DEFAULTS.root
+        ),
         allowsCookie:
           this.element.hasAttribute("data-allowsCookie") ||
           options.allowsCookie ||
           DEFAULTS.allowsCookie,
-        lightLabel:
-          parser.parseFromString(
-            this.element.getAttribute("data-lightLabel"),
-            "text/html"
-          ) ||
-          options.lightLabel ||
-          DEFAULTS.lightLabel,
-        darkLabel:
-          parser.parseFromString(
-            this.element.getAttribute("data-darkLabel"),
-            "text/html"
-          ) ||
-          options.darkLabel ||
-          DEFAULTS.darkLabel,
-        lightColorMode:
-          parser.parseFromString(
-            this.element.getAttribute("data-lightColorMode"),
-            "text/html"
-          ) ||
-          options.lightColorMode ||
-          DEFAULTS.lightColorMode,
-        darkColorMode:
-          parser.parseFromString(
-            this.element.getAttribute("data-darkColorMode"),
-            "text/html"
-          ) ||
-          options.darkColorMode ||
-          DEFAULTS.darkColorMode,
+        lightLabel: this.#sanitize(
+          this.element.getAttribute("data-lightLabel") ||
+            options.lightLabel ||
+            DEFAULTS.lightLabel
+        ),
+        darkLabel: this.#sanitize(
+          this.element.getAttribute("data-darkLabel") ||
+            options.darkLabel ||
+            DEFAULTS.darkLabel
+        ),
+        lightColorMode: this.#sanitize(
+          this.element.getAttribute("data-lightColorMode") ||
+            options.lightColorMode ||
+            DEFAULTS.lightColorMode
+        ),
+        darkColorMode: this.#sanitize(
+          this.element.getAttribute("data-darkColorMode") ||
+            options.darkColorMode ||
+            DEFAULTS.darkColorMode
+        ),
         style: DEFAULTS.style,
       };
       this.#setPreferedColorScheme();
@@ -315,6 +305,16 @@
     #deleteCookie(name) {
       document.cookie =
         name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+    }
+
+    /**
+     * Sanitize a string
+     * @param {String} str
+     * @returns {String}
+     */
+    #sanitize(str) {
+      let parser = new DOMParser();
+      return parser.parseFromString(str, "text/html").body.innerHTML;
     }
   }
 

@@ -10,3 +10,6 @@ node_modules
 .dccache
 .DS_Store
 .prettierrc
+
+# Cypress
+cypress/screenshots
