@@ -10,6 +10,9 @@
 
 "use strict";
 
+/**
+ * @SuppressWarnings("javascript:S3776")
+ */
 (function () {
   class DarkmodeToggle {
     COOKIE_NAME = "bs-darkmode-toggle-color-scheme";
