@@ -1,0 +1,12 @@
+[data-bs-theme="blue"] {
+  --bs-body-color: #adb5bd;
+  --bs-body-color-rgb: 173, 181, 189;
+  --bs-body-bg: rgb(166, 199, 247);
+  --bs-body-bg-rgb: 166, 199, 247;
+}
+[data-bs-theme="red"] {
+  --bs-body-color: #adb5bd;
+  --bs-body-color-rgb: 173, 181, 189;
+  --bs-body-bg: rgb(226, 154, 161);
+  --bs-body-bg-rgb: 226, 154, 161;
+}
