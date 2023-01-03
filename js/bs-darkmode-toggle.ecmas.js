@@ -42,6 +42,7 @@
       this.element = element;
 
       // B: Set options
+      let parser = new DOMParser();
       let state = null;
       if (this.element.getAttribute("data-state")) {
         if (this.element.getAttribute("data-state") === "dark") state = false;
@@ -51,7 +52,10 @@
       this.options = {
         state: state ?? options.state ?? DEFAULTS.state,
         root:
-          this.element.getAttribute("data-root") ||
+          parser.parseFromString(
+            this.element.getAttribute("data-root"),
+            "text/html"
+          ) ||
           options.root ||
           DEFAULTS.root,
         allowsCookie:
@@ -59,19 +63,31 @@
           options.allowsCookie ||
           DEFAULTS.allowsCookie,
         lightLabel:
-          this.element.getAttribute("data-lightLabel") ||
+          parser.parseFromString(
+            this.element.getAttribute("data-lightLabel"),
+            "text/html"
+          ) ||
           options.lightLabel ||
           DEFAULTS.lightLabel,
         darkLabel:
-          this.element.getAttribute("data-darkLabel") ||
+          parser.parseFromString(
+            this.element.getAttribute("data-darkLabel"),
+            "text/html"
+          ) ||
           options.darkLabel ||
           DEFAULTS.darkLabel,
         lightColorMode:
-          this.element.getAttribute("data-lightColorMode") ||
+          parser.parseFromString(
+            this.element.getAttribute("data-lightColorMode"),
+            "text/html"
+          ) ||
           options.lightColorMode ||
           DEFAULTS.lightColorMode,
         darkColorMode:
-          this.element.getAttribute("data-darkColorMode") ||
+          parser.parseFromString(
+            this.element.getAttribute("data-darkColorMode"),
+            "text/html"
+          ) ||
           options.darkColorMode ||
           DEFAULTS.darkColorMode,
         style: DEFAULTS.style,

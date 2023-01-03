@@ -1,4 +1,6 @@
 import { BsDarkmodeToggleModel } from "../../cypress/support/BsDarkmodeToggleModel.js";
+import * as purify from "../../node_modules/dompurify/dist/purify.es.js";
+const DOMPurify = purify.default;
 
 class PluginModel extends BsDarkmodeToggleModel {
   /**
@@ -25,7 +27,9 @@ class PluginModel extends BsDarkmodeToggleModel {
    * @override
    */
   static checkRoot($element, options = {}) {
-    let $root = $(BsDarkmodeToggleModel.getRoot($element, options));
+    let $root = $(
+      DOMPurify.sanitize(BsDarkmodeToggleModel.getRoot($element, options))
+    );
 
     if (!$root.is("[" + BsDarkmodeToggleModel.BS_ATTRIBUTE + "]")) {
       return false;

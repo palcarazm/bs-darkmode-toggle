@@ -42,6 +42,7 @@
         this.$element = $(element);
 
         // B: Set options
+        let parser = new DOMParser();
         let state = null;
         if (this.$element.attr("data-state")) {
           if (this.$element.attr("data-state") === "dark") state = false;
@@ -50,25 +51,42 @@
         this.options = {
           state: state ?? options.lightlabel ?? DEFAULTS.state,
           root:
-            this.$element.attr("data-root") || options.root || DEFAULTS.root,
+            parser.parseFromString(
+              this.$element.attr("data-root"),
+              "text/html"
+            ) ||
+            options.root ||
+            DEFAULTS.root,
           allowsCookie:
             this.$element.is("[data-allowsCookie]") ||
             options.allowsCookie ||
             DEFAULTS.allowsCookie,
           lightLabel:
-            this.$element.attr("data-lightLabel") ||
+            parser.parseFromString(
+              this.$element.attr("data-lightLabel"),
+              "text/html"
+            ) ||
             options.lightLabel ||
             DEFAULTS.lightLabel,
           darkLabel:
-            this.$element.attr("data-darkLabel") ||
+            parser.parseFromString(
+              this.$element.attr("data-darkLabel"),
+              "text/html"
+            ) ||
             options.darkLabel ||
             DEFAULTS.darkLabel,
           lightColorMode:
-            this.$element.attr("data-lightColorMode") ||
+            parser.parseFromString(
+              this.$element.attr("data-lightColorMode"),
+              "text/html"
+            ) ||
             options.lightColorMode ||
             DEFAULTS.lightColorMode,
           darkColorMode:
-            this.$element.attr("data-darkColorMode") ||
+            parser.parseFromString(
+              this.$element.attr("data-darkColorMode"),
+              "text/html"
+            ) ||
             options.darkColorMode ||
             DEFAULTS.darkColorMode,
           style: DEFAULTS.style,
