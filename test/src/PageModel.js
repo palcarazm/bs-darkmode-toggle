@@ -1,7 +1,9 @@
 import * as purify from "../../node_modules/dompurify/dist/purify.es.js";
 const DOMPurify = purify.default;
 
-class PageModel {
+import { TestAppModel } from "../../cypress/support/TestAppModel.js";
+
+class PageModel extends TestAppModel {
   static #ENV = $("#env-data"); // Enviroment data container
   static #package = "../../package-lock.json"; // Path to package lock
   static MAIN = $("main"); // Main container
@@ -9,12 +11,13 @@ class PageModel {
   static TEST_BUTTON_CONTAINER = $("#test-selector"); // Test button container
   static COL = $('<div class="col text-center">'); // Column element
   static TEST_CONTAINER = $(
-    '<div class="border p-3 mb-4 test rounded bg-body text-body">'
-  ); // Test container
-  static TEST_SELECTOR = ".test"; // Common test selector
+    '<div class="border p-3 mb-4 rounded bg-body text-body">'
+  ).addClass(this.TEST_CLASS); // Test container
   static TEST_TITLE = $('<h4 class="fw-light text-capitalize">'); // Test title container
-  static TEST_ELEMENT = $('<div data-toggle="bs-darkmode-toggle-test"></div>'); // Test element
-  static TEST_ELEMENT_SELECTOR = '[data-toggle="bs-darkmode-toggle-test"]'; // Test element selector
+  static TEST_ELEMENT = $("<div></div>").attr(
+    this.TEST_ELEMENT_ATTR,
+    this.TEST_ELEMENT_VAL
+  ); // Test element
   static BADGE = $("<div></div>").addClass(
     "d-inline-flex flex-column badge text-monospace text-bg-success"
   ); // Test Badge
@@ -24,6 +27,7 @@ class PageModel {
   static BADGE_CONTAINER_SELECTOR = ".result"; // Badge container selector
 
   constructor(INTERFACE) {
+    super();
     switch (INTERFACE) {
       case "ECMAS":
       case "JQUERY":

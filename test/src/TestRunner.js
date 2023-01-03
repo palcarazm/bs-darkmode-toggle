@@ -1,8 +1,8 @@
-import PageModel, * as pagemodel from "./PageModel.js";
+import * as pagemodel from "./PageModel.js";
 const PAGEMODEL = pagemodel.default;
 
-import BsDarkmodeToggleModel, * as bsDarkmodeToggle from "./BsDarkmodeToggleModel.js";
-const PLUGIN = bsDarkmodeToggle.default;
+import * as pluginmodel from "./PluginModel.js";
+const PLUGIN = pluginmodel.default;
 
 class TestRunner {
   /**
@@ -16,28 +16,24 @@ class TestRunner {
       TestRunner.#addToResultBadge(
         $badge,
         "State",
-        BsDarkmodeToggleModel.checkState($element)
+        PLUGIN.checkState($element)
       );
 
-      TestRunner.#addToResultBadge(
-        $badge,
-        "Root",
-        BsDarkmodeToggleModel.checkRoot($element)
-      );
+      TestRunner.#addToResultBadge($badge, "Root", PLUGIN.checkRoot($element));
 
       TestRunner.#addToResultBadge(
         $badge,
         "Light Label",
-        BsDarkmodeToggleModel.checkLightLabel($element)
+        PLUGIN.checkLightLabel($element)
       );
 
       TestRunner.#addToResultBadge(
         $badge,
         "Dark Label",
-        BsDarkmodeToggleModel.checkDarkLabel($element)
+        PLUGIN.checkDarkLabel($element)
       );
 
-      $(this).find(PageModel.BADGE_CONTAINER_SELECTOR).append($badge);
+      $(this).find(PAGEMODEL.BADGE_CONTAINER_SELECTOR).append($badge);
     });
   }
 
