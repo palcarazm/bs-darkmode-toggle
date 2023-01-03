@@ -214,7 +214,6 @@
         window.matchMedia("(prefers-color-scheme: dark)").matches
       ) {
         this.options.state = false;
-        return;
       }
     }
 

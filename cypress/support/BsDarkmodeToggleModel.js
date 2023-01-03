@@ -126,7 +126,7 @@ export class BsDarkmodeToggleModel {
    */
   static checkState($element, options = {}) {
     let $toggle = cy.wrap($element).find(this.TOGGLE_SELECTOR);
-    if (this.getInitialState($element, options)) {
+    if (BsDarkmodeToggleModel.getInitialState($element, options)) {
       $toggle.should("not.have.class", "off");
     } else {
       $toggle.should("have.class", "off");
@@ -140,14 +140,14 @@ export class BsDarkmodeToggleModel {
    * @returns {Boolean} Check PASS or FAIL
    */
   static checkRoot($element, options = {}) {
-    let $root = cy.get(this.getRoot($element, options));
+    let $root = cy.get(BsDarkmodeToggleModel.getRoot($element, options));
     $root
       .should("have.attr", this.BS_ATTRIBUTE)
       .and(
         "eq",
-        this.getState($element)
-          ? this.getLightColorMode($element, options)
-          : this.getDarkColorMode($element, options)
+        BsDarkmodeToggleModel.getState($element)
+          ? BsDarkmodeToggleModel.getLightColorMode($element, options)
+          : BsDarkmodeToggleModel.getDarkColorMode($element, options)
       );
   }
 
@@ -160,7 +160,10 @@ export class BsDarkmodeToggleModel {
   static checkLightLabel($element, options = {}) {
     cy.wrap($element)
       .find(this.TOGGLE_ON_SELECTOR)
-      .should("have.html", this.getLightLabel($element, options));
+      .should(
+        "have.html",
+        BsDarkmodeToggleModel.getLightLabel($element, options)
+      );
   }
 
   /**
@@ -172,6 +175,9 @@ export class BsDarkmodeToggleModel {
   static checkDarkLabel($element, options = {}) {
     cy.wrap($element)
       .find(this.TOGGLE_OFF_SELECTOR)
-      .should("have.html", this.getDarkLabel($element, options));
+      .should(
+        "have.html",
+        BsDarkmodeToggleModel.getDarkLabel($element, options)
+      );
   }
 }

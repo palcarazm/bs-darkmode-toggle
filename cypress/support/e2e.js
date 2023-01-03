@@ -16,9 +16,5 @@
 // Import commands.js using ES2015 syntax:
 import "./commands";
 
-import { TestAppModel } from "./TestAppModel.js";
-
-import { BsDarkmodeToggleModel } from "./BsDarkmodeToggleModel.js";
-
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
