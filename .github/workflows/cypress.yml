@@ -15,9 +15,9 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     container: cypress/browsers:node16.16.0-chrome107-ff107-edge
-        strategy:
-          matrix:
-            browsers: [firefox, chrome, edge]
+    strategy:
+      matrix:
+        browsers: [firefox, chrome, edge]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
