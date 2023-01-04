@@ -42,7 +42,7 @@ class TestCases {
     this.TESTCASES.forEach((testcase, testcaseKey) => {
       PAGEMODEL.TEST_BUTTON_CONTAINER.append(
         $('<button type="button">')
-          .addClass("btn btn-secondary text-capitalize")
+          .addClass("btn btn-outline-secondary text-capitalize")
           .attr("id", testcaseKey)
           .html(testcase.label)
           .on(
