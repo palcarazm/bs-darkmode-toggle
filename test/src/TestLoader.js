@@ -64,8 +64,10 @@ const OPTIONS = [
 class TestLoader {
   /**
    * Create the layout for testing data attributes
+   * @param {string} _pluginInterface Plugin Interface
+   * @static
    */
-  static dataAttributesTest() {
+  static dataAttributesTest(_pluginInterface) {
     let elementDiv, testDiv;
     OPTIONS.forEach((testcase) => {
       elementDiv = PAGEMODEL.TEST_ELEMENT.clone().attr(
@@ -86,6 +88,61 @@ class TestLoader {
         PAGEMODEL.TEST_TITLE.clone().html("Case " + testcase.name),
         testDiv
       );
+    });
+  }
+
+  /**
+   * Create the layout for testing options
+   * @param {string} pluginInterface Plugin Interface
+   * @static
+   */
+  static dataOptionsTest(pluginInterface) {
+    OPTIONS.forEach((testcase) => {
+      let elementDiv = PAGEMODEL.TEST_ELEMENT.clone().attr(
+        "data-root",
+        "#" + testcase.code
+      );
+
+      let options = {};
+      testcase.options.forEach((option) => {
+        if (option.key === "state") {
+          options[option.key] =
+            option.value === "dark" ? false : option.value === "light" || null;
+        } else {
+          options[option.key] = option.value;
+        }
+      });
+
+      let testDiv = PAGEMODEL.TEST_CONTAINER.clone().attr("id", testcase.code);
+      testDiv.append(
+        $('<div class="row mb-3">').append(
+          PAGEMODEL.COL.clone().append(elementDiv),
+          PAGEMODEL.COL.clone()
+            .addClass(PAGEMODEL.TEST_OPTIONS_CLASS + " font-monospace")
+            .text(JSON.stringify(options, null, 2)),
+          PAGEMODEL.COL.clone().addClass(PAGEMODEL.BADGE_CONTAINER_CLASS)
+        )
+      );
+
+      PAGEMODEL.MAIN.append(
+        PAGEMODEL.TEST_TITLE.clone().html("Case " + testcase.name),
+        testDiv
+      );
+
+      switch (pluginInterface) {
+        case "ECMAS":
+          elementDiv[0].bsDarkmodeToggle(options);
+          break;
+        case "JQUERY":
+          elementDiv.bsDarkmodeToggle(options);
+          break;
+
+        default:
+          throw new DOMException(
+            "Unknown interface: " + pluginInterface,
+            "NotSupportedError"
+          );
+      }
     });
   }
 }

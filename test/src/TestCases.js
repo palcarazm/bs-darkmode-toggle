@@ -33,6 +33,16 @@ class TestCases {
         TESTRUNNER.dataAttributesTest
       )
     );
+
+    this.TESTCASES.set(
+      "options",
+      new TestCase(
+        "options",
+        "Check <code>bs-darkmode-toggle</code> options",
+        TESTLOADER.dataOptionsTest,
+        TESTRUNNER.dataOptionsTest
+      )
+    );
   }
 
   /**
@@ -99,7 +109,7 @@ class TestCases {
     if (this.TESTCASES.has(testcase)) {
       PAGEMODEL.DESCRIPTION.html(this.TESTCASES.get(testcase).description);
       PAGEMODEL.MAIN.html("");
-      this.TESTCASES.get(testcase).loader();
+      this.TESTCASES.get(testcase).loader(this.INTERFACE);
     } else {
       throw new DOMException(
         "Unknown test case: " + testcase,
