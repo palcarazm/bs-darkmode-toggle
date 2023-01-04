@@ -49,7 +49,7 @@
           else if (this.$element.attr("data-state") === "light") state = true;
         }
         this.options = {
-          state: state ?? options.lightlabel ?? DEFAULTS.state,
+          state: state ?? options.state ?? DEFAULTS.state,
           root: this.#sanitize(
             this.$element.attr("data-root") || options.root || DEFAULTS.root
           ),
