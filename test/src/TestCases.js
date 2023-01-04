@@ -24,12 +24,15 @@ class TestCases {
         );
     }
 
-    this.TESTCASES.set("attributes", {
-      label: "attributes",
-      loader: TESTLOADER.dataAttributesTest,
-      description: "Check <code>bs-darkmode-toggle</code> data attributes",
-      runner: TESTRUNNER.dataAttributesTest,
-    });
+    this.TESTCASES.set(
+      "attributes",
+      new TestCase(
+        "attributes",
+        "Check <code>bs-darkmode-toggle</code> data attributes",
+        TESTLOADER.dataAttributesTest,
+        TESTRUNNER.dataAttributesTest
+      )
+    );
   }
 
   /**
@@ -119,6 +122,22 @@ class TestCases {
         "NotSupportedError"
       );
     }
+  }
+}
+
+class TestCase {
+  constructor(
+    label,
+    description,
+    loader,
+    runner = () => {
+      return null;
+    }
+  ) {
+    this.label = label;
+    this.description = description;
+    this.loader = loader;
+    this.runner = runner;
   }
 }
 
