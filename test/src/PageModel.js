@@ -19,7 +19,7 @@ class PageModel extends TestAppModel {
     this.TEST_ELEMENT_VAL
   ); // Test element
   static BADGE = $("<div></div>").addClass(
-    "d-inline-flex flex-column badge text-monospace text-bg-success"
+    "d-inline-flex flex-column badge font-monospace text-bg-success"
   ); // Test Badge
   static BADGE_FAIL_CLASS = "text-bg-danger"; // Class for failed test badge
   static BADGE_PASS_CLASS = "text-bg-success"; // Class for passed test badge
