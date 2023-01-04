@@ -131,12 +131,14 @@
         this.$bsToggle.bootstrapToggle(this.options.state ? "on" : "off", true);
 
         // 2: Set Color scheme
-        $(this.options.root).attr(
-          this.BS_ATTRIBUTE,
-          this.options.state
-            ? this.options.lightColorMode
-            : this.options.darkColorMode
-        );
+        $(document)
+          .find(this.options.root)
+          .attr(
+            this.BS_ATTRIBUTE,
+            this.options.state
+              ? this.options.lightColorMode
+              : this.options.darkColorMode
+          );
       }
 
       /**
