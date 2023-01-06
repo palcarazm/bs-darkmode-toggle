@@ -1,0 +1,29 @@
+name: Feature request
+description: Suggest new or updated features.
+title: "Provide a general summary of the feature"
+labels: [feature]
+assignees: []
+body:
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation and context
+      description: Tell us why this change is needed or helpful, and what problems it may help solve.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Provide detailed information for what we should add, possible solution or even alternatives if you have identified.
+    validations:
+      required: true
+  - type: textarea
+    id: others
+    attributes:
+      label: Something more you want to say?
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to fill out this feature request.
