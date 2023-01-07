@@ -34,21 +34,24 @@
     "js/*"
   ],
   "scripts": {
-    "build": "grunt",
-    "postversion": "grunt",
-    "prepublishOnly": "grunt",
+    "build": "grunt build",
+    "postversion": "grunt build && grunt readme && doctoc README.md --github",
     "test": "cypress run --browser=chrome"
   },
   "dependencies": {
     "bootstrap": "^5.3.0-alpha",
-    "bootstrap5-toggle": "^5.0.0-alpha",
+    "bootstrap5-toggle": "^5.0.0-alpha"
+  },
+  "optionalDependencies": {
+    "jquery": "^3.6.0"
+  },
+  "devDependencies": {
+    "doctoc": "^2.2.1",
+    "grunt-contrib-copy": "^1.0.0",
     "cypress": "^12.2.0",
     "dompurify": "^2.4.1",
     "grunt": "^1.5.3",
     "grunt-banner": "^0.6.0",
     "grunt-contrib-uglify": "^5.2.2"
-  },
-  "optionalDependencies": {
-    "jquery": "^3.6.0"
   }
 }

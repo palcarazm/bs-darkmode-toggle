@@ -6,7 +6,7 @@
 [![NPM Badge](https://img.shields.io/npm/dm/bs-darkmode-toggle?logo=npm)](https://www.npmjs.com/package/bs-darkmode-toggle)
 [![Build](https://img.shields.io/github/actions/workflow/status/palcarazm/bs-darkmode-toggle/build.yml?branch=v1&logo=npm)](https://github.com/palcarazm/bs-darkmode-toggle/actions?query=workflow%3A%22Build+Check%22)
 [![Test](https://img.shields.io/github/actions/workflow/status/palcarazm/bs-darkmode-toggle/cypress.yml?branch=v1&label=tests&logo=cypress)](https://github.com/palcarazm/bs-darkmode-toggle/actions?query=workflow%3A%22Cypress+Tests%22)
-[![Security](https://img.shields.io/snyk/vulnerabilities/npm/bs-darkmode-toggle@0.0.0-beta?logo=snyk)](https://snyk.io/advisor/npm-package/bs-darkmode-toggle)
+[![Security](https://img.shields.io/snyk/vulnerabilities/npm/bs-darkmode-toggle@#version#?logo=snyk)](https://snyk.io/advisor/npm-package/bs-darkmode-toggle)
 [![EOL](https://img.shields.io/endpoint?url=https%3A%2F%2Fpalcarazm.github.io%2Fbs-darkmode-toggle%2Fapi%2Feol%2Fv1)](https://github.com/palcarazm/bs-darkmode-toggle/security/policy)
 [![Funding](https://img.shields.io/badge/sponsor-30363D?style=flat&logo=GitHub-Sponsors&logoColor=#white)](https://github.com/sponsors/palcarazm)
 <!--[![Rate this package](https://badges.openbase.com/js/rating/bs-darkmode-toggle.svg?token=rNvznTVToo+EmX5g+KTvfYqI9+YTWJeUWTxPj7tLA6o=)](https://openbase.com/js/bs-darkmode-toggle?utm_source=embedded&utm_medium=badge&utm_campaign=rating-badge&utm_term=js/bs-darkmode-toggle)-->
@@ -41,23 +41,6 @@ See EOL for each version in [Security Policy Page](https://github.com/palcarazm/
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Installation](#installation)
-  - [CDN](#cdn)
-    - [ECMAS Interface](#ecmas-interface)
-    - [jQuery Interface](#jquery-interface)
-  - [Download](#download)
-  - [NPM](#npm)
-  - [Yarn](#yarn)
-- [Usage](#usage)
-  - [Initialize with HTML](#initialize-with-html)
-  - [Initialize with JS](#initialize-with-js)
-- [API](#api)
-  - [Options](#options)
-  - [Methods](#methods)
-- [Events](#events)
-  - [Event Propagation](#event-propagation)
-  - [Stopping Event Propagation](#stopping-event-propagation)
-- [Collaborators welcom!](#collaborators-welcom)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -73,14 +56,14 @@ See EOL for each version in [Security Policy Page](https://github.com/palcarazm/
 
 ```html
 <!-- Consider loading Bootstrap and Bootstrap 5 toggle dependencies -->
-<script src="https://cdn.jsdelivr.net/npm/bs-darkmode-toggle@0.0.0-beta/js/bs-darkmode-toggle.ecmas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-darkmode-toggle@#version#/js/bs-darkmode-toggle.ecmas.min.js"></script>
 ```
 
 ### jQuery Interface
 
 ```html
 <!-- Consider loading Bootstrap, jQuery and Bootstrap 5 toggle dependencies -->
-<script src="https://cdn.jsdelivr.net/npm/bs-darkmode-toggle@0.0.0-beta/js/bs-darkmode-toggle.jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-darkmode-toggle@#version#/js/bs-darkmode-toggle.jquery.min.js"></script>
 ```
 
 ## Download
@@ -92,13 +75,13 @@ See EOL for each version in [Security Policy Page](https://github.com/palcarazm/
 [![NPM Badge](https://img.shields.io/npm/dm/bs-darkmode-toggle?logo=npm)](https://www.npmjs.com/package/bs-darkmode-toggle)
 
 ```ksh
-npm install bs-darkmode-toggle@0.0.0-beta
+npm install bs-darkmode-toggle@#version#
 ```
 
 ## Yarn
 
 ```ksh
-yarn add bs-darkmode-toggle@0.0.0-beta
+yarn add bs-darkmode-toggle@#version#
 ```
 
 # Usage

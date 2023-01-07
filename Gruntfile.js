@@ -50,8 +50,22 @@ module.exports = function (grunt) {
         },
       },
     },
+    copy: {
+      main: {
+        src: "README.template.md",
+        dest: "README.md",
+        options: {
+          process: function (content, _srcpath) {
+            let pkg = grunt.file.readJSON("package.json");
+            return content.replace(/#version#/g, pkg.version);
+          },
+        },
+      },
+    },
   });
   grunt.loadNpmTasks("grunt-contrib-uglify");
   grunt.loadNpmTasks("grunt-banner");
-  grunt.registerTask("default", ["uglify", "usebanner"]);
+  grunt.loadNpmTasks("grunt-contrib-copy");
+  grunt.registerTask("build", ["uglify", "usebanner"]);
+  grunt.registerTask("readme", ["copy"]);
 };
