@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
-import { BsDarkmodeToggleModel } from "../support/BsDarkmodeToggleModel.js";
-import { TestAppModel } from "../support/TestAppModel.js";
+import { BsDarkmodeToggleModel } from "../../support/BsDarkmodeToggleModel.js";
+import { TestAppModel } from "../../support/TestAppModel.js";
 
 describe("API Constructor Feature", () => {
   context("Given ECMAS plugin interface", () => {

@@ -14,6 +14,9 @@ export class TestAppModel {
   static TEST_OPTIONS_CLASS = "options"; // Common test options class
   static TEST_OPTIONS_SELECTOR = "." + TestAppModel.TEST_OPTIONS_CLASS; // Common test options selector
 
+  static TEST_CONSOLE_CLASS = "console"; // Common test console class
+  static TEST_CONSOLE_SELECTOR = "." + TestAppModel.TEST_CONSOLE_CLASS; // Common test console selector
+  static TEST_CONSOLE_FIRED_TEXT = "Change event fired!"; // Test console text for a fired change event
   /**
    * Load Test App and go to the selected testcase with logs
    * @param {String} pluginInterface Plugin interface (jquery or ecmas)

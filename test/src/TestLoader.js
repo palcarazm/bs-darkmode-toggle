@@ -145,6 +145,107 @@ class TestLoader {
       }
     });
   }
+
+  /**
+   * Create the layout for testing API Methods
+   * @param {string} pluginInterface Plugin Interface
+   * @static
+   */
+  static apiMethodsTest(pluginInterface) {
+    PAGEMODEL.MAIN.append(
+      PAGEMODEL.TEST_TITLE.clone().html("Case Methods"),
+      PAGEMODEL.TEST_CONTAINER.clone().append(
+        $('<div class="row mb-3">').append(
+          PAGEMODEL.COL.clone().append(
+            PAGEMODEL.TEST_ELEMENT.clone().attr("id", "testMethods"),
+            $("<div></div>").addClass(
+              PAGEMODEL.TEST_CONSOLE_CLASS + " font-monospace"
+            )
+          ),
+          PAGEMODEL.COL.clone().append(
+            PAGEMODEL.BUTTON_GROUP.clone().append(
+              PAGEMODEL.BUTTON.clone().attr("id", "light").text("Light"),
+              PAGEMODEL.BUTTON.clone()
+                .attr("id", "lightSilent")
+                .text("Light Silent"),
+              PAGEMODEL.BUTTON.clone().attr("id", "dark").text("Dark"),
+              PAGEMODEL.BUTTON.clone()
+                .attr("id", "darkSilent")
+                .text("Dark Silent"),
+              PAGEMODEL.BUTTON.clone().attr("id", "toggle").text("Toggle"),
+              PAGEMODEL.BUTTON.clone()
+                .attr("id", "toggleSilent")
+                .text("Toggle Silent"),
+              PAGEMODEL.BUTTON.clone()
+                .attr("id", "unsetCookieAutorization")
+                .text("Unset Cookie Autorization"),
+              PAGEMODEL.BUTTON.clone()
+                .attr("id", "setCookieAutorization")
+                .text("Set Cookie Autorization")
+            )
+          )
+        )
+      )
+    );
+
+    $("#testMethods").on("change", (_e) => {
+      $(PAGEMODEL.TEST_CONSOLE_SELECTOR).text(
+        PAGEMODEL.TEST_CONSOLE_FIRED_TEXT
+      );
+    });
+    const clean = () => {
+      $(PAGEMODEL.TEST_CONSOLE_SELECTOR).text("");
+    };
+    let elementDiv;
+
+    switch (pluginInterface) {
+      case "ECMAS":
+        elementDiv = document.getElementById("testMethods");
+        break;
+      case "JQUERY":
+        elementDiv = $("#testMethods");
+        break;
+
+      default:
+        throw new DOMException(
+          "Unknown interface: " + pluginInterface,
+          "NotSupportedError"
+        );
+    }
+
+    $("#light").on("click", (_e) => {
+      clean();
+      elementDiv.bsDarkmodeToggle("light", false);
+    });
+    $("#lightSilent").on("click", (_e) => {
+      clean();
+      elementDiv.bsDarkmodeToggle("light", true);
+    });
+    $("#dark").on("click", (_e) => {
+      clean();
+      elementDiv.bsDarkmodeToggle("dark", false);
+    });
+    $("#darkSilent").on("click", (_e) => {
+      clean();
+      elementDiv.bsDarkmodeToggle("dark", true);
+    });
+    $("#toggle").on("click", (_e) => {
+      clean();
+      elementDiv.bsDarkmodeToggle("toggle", false);
+    });
+    $("#toggleSilent").on("click", (_e) => {
+      clean();
+      elementDiv.bsDarkmodeToggle("toggle", true);
+    });
+    $("#unsetCookieAutorization").on("click", (_e) => {
+      clean();
+      elementDiv.bsDarkmodeToggle("setCookieAutorization", false);
+    });
+    $("#setCookieAutorization").on("click", (_e) => {
+      clean();
+      elementDiv.bsDarkmodeToggle("setCookieAutorization", true);
+    });
+  }
 }
 
 export { TestLoader as default };

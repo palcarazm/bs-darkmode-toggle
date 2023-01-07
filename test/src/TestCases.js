@@ -43,6 +43,15 @@ class TestCases {
         TESTRUNNER.dataOptionsTest
       )
     );
+
+    this.TESTCASES.set(
+      "methods",
+      new TestCase(
+        "methods",
+        "Check <code>bs-darkmode-toggle</code> API Methods",
+        TESTLOADER.apiMethodsTest
+      )
+    );
   }
 
   /**

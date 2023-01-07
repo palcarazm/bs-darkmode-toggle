@@ -9,6 +9,10 @@ class PageModel extends TestAppModel {
   static MAIN = $("main"); // Main container
   static DESCRIPTION = $("#description"); // Description container
   static TEST_BUTTON_CONTAINER = $("#test-selector"); // Test button container
+  static BUTTON_GROUP = $('<div class="btn-group" role="group"></div>'); // Button Group component
+  static BUTTON = $(
+    '<button type="button" class="btn btn-outline-secondary"></button>'
+  ); // Button component
   static COL = $('<div class="col text-center">'); // Column element
   static TEST_CONTAINER = $(
     '<div class="border p-3 mb-4 rounded bg-body text-body">'

@@ -3,6 +3,7 @@ export class BsDarkmodeToggleModel {
   static TOGGLE_SELECTOR = ".toggle";
   static TOGGLE_ON_SELECTOR = ".toggle > .toggle-group > .toggle-on";
   static TOGGLE_OFF_SELECTOR = ".toggle > .toggle-group > .toggle-off";
+  static TOGGLE_INPUT_SELECTOR = ".toggle > input";
 
   static DEFAULTS = {
     state: true,
@@ -24,8 +25,9 @@ export class BsDarkmodeToggleModel {
    * @returns {Boolena} State
    */
   static getState($element) {
-    let $toggle = $element.find(".toggle");
-    return !$toggle.hasClass("off");
+    return $element
+      .find(BsDarkmodeToggleModel.TOGGLE_INPUT_SELECTOR)
+      .is(":checked");
   }
 
   /**
@@ -49,7 +51,7 @@ export class BsDarkmodeToggleModel {
           break;
       }
     }
-    return state ?? options.state ?? this.DEFAULTS.state;
+    return state ?? options.state ?? BsDarkmodeToggleModel.DEFAULTS.state;
   }
 
   /**
@@ -59,7 +61,11 @@ export class BsDarkmodeToggleModel {
    * @returns {Boolena} root
    */
   static getRoot($element, options = {}) {
-    return $element.attr("data-root") ?? options.root ?? this.DEFAULTS.root;
+    return (
+      $element.attr("data-root") ??
+      options.root ??
+      BsDarkmodeToggleModel.DEFAULTS.root
+    );
   }
 
   /**
@@ -72,7 +78,7 @@ export class BsDarkmodeToggleModel {
     return (
       $element.attr("data-lightLabel") ??
       options.lightLabel ??
-      this.DEFAULTS.lightLabel
+      BsDarkmodeToggleModel.DEFAULTS.lightLabel
     );
   }
 
@@ -86,7 +92,7 @@ export class BsDarkmodeToggleModel {
     return (
       $element.attr("data-darkLabel") ??
       options.darkLabel ??
-      this.DEFAULTS.darkLabel
+      BsDarkmodeToggleModel.DEFAULTS.darkLabel
     );
   }
 
@@ -100,7 +106,7 @@ export class BsDarkmodeToggleModel {
     return (
       $element.attr("data-lightColorMode") ??
       options.lightColorMode ??
-      this.DEFAULTS.lightColorMode
+      BsDarkmodeToggleModel.DEFAULTS.lightColorMode
     );
   }
 
@@ -114,7 +120,7 @@ export class BsDarkmodeToggleModel {
     return (
       $element.attr("data-darkColorMode") ??
       options.darkColorMode ??
-      this.DEFAULTS.darkColorMode
+      BsDarkmodeToggleModel.DEFAULTS.darkColorMode
     );
   }
 
@@ -125,11 +131,32 @@ export class BsDarkmodeToggleModel {
    * @returns {Boolean} Check PASS or FAIL
    */
   static checkState($element, options = {}) {
-    let $toggle = cy.wrap($element).find(this.TOGGLE_SELECTOR);
+    let $toggle = cy.wrap($element).find(BsDarkmodeToggleModel.TOGGLE_SELECTOR);
     if (BsDarkmodeToggleModel.getInitialState($element, options)) {
       $toggle.should("not.have.class", "off");
     } else {
       $toggle.should("have.class", "off");
+    }
+  }
+
+  /**
+   * Check current state data attributes and options
+   * @param {jQuery Element} $element
+   * @param {Boolean} state Light or Dark
+   * @returns {Boolean} Check PASS or FAIL
+   */
+  static checkCurrentState($element, state) {
+    let $toggle = cy.wrap($element).find(BsDarkmodeToggleModel.TOGGLE_SELECTOR);
+    if (state) {
+      $toggle.should("not.have.class", "off");
+      cy.wrap($element)
+        .find(BsDarkmodeToggleModel.TOGGLE_INPUT_SELECTOR)
+        .should("be.checked");
+    } else {
+      $toggle.should("have.class", "off");
+      cy.wrap($element)
+        .find(BsDarkmodeToggleModel.TOGGLE_INPUT_SELECTOR)
+        .should("not.be.checked");
     }
   }
 
@@ -142,7 +169,7 @@ export class BsDarkmodeToggleModel {
   static checkRoot($element, options = {}) {
     let $root = cy.get(BsDarkmodeToggleModel.getRoot($element, options));
     $root
-      .should("have.attr", this.BS_ATTRIBUTE)
+      .should("have.attr", BsDarkmodeToggleModel.BS_ATTRIBUTE)
       .and(
         "eq",
         BsDarkmodeToggleModel.getState($element)
@@ -159,7 +186,7 @@ export class BsDarkmodeToggleModel {
    */
   static checkLightLabel($element, options = {}) {
     cy.wrap($element)
-      .find(this.TOGGLE_ON_SELECTOR)
+      .find(BsDarkmodeToggleModel.TOGGLE_ON_SELECTOR)
       .should(
         "have.html",
         BsDarkmodeToggleModel.getLightLabel($element, options)
@@ -174,10 +201,59 @@ export class BsDarkmodeToggleModel {
    */
   static checkDarkLabel($element, options = {}) {
     cy.wrap($element)
-      .find(this.TOGGLE_OFF_SELECTOR)
+      .find(BsDarkmodeToggleModel.TOGGLE_OFF_SELECTOR)
       .should(
         "have.html",
         BsDarkmodeToggleModel.getDarkLabel($element, options)
       );
+  }
+
+  /**
+   * Set Light Color Scheme
+   * @param {jQuery Element} $element
+   * @param {String} pluginInterface
+   * @static
+   */
+  static setLight($element, pluginInterface) {
+    switch (pluginInterface.toUpperCase()) {
+      case "ECMAS":
+        $element.get(0).bsDarkmodeToggle("light", true);
+        break;
+      case "JQUERY":
+        cy.wrap($element).invoke("bsDarkmodeToggle", "light", true);
+        break;
+
+      default:
+        throw new DOMException(
+          "Unknown interface: " + pluginInterface,
+          "NotSupportedError"
+        );
+    }
+
+    BsDarkmodeToggleModel.checkCurrentState($element, true);
+  }
+
+  /**
+   * Set Dark Color Scheme
+   * @param {jQuery Element} $element
+   * @param {String} pluginInterface
+   * @static
+   */
+  static setDark($element, pluginInterface) {
+    switch (pluginInterface.toUpperCase()) {
+      case "ECMAS":
+        $element.get(0).bsDarkmodeToggle("dark", true);
+        break;
+      case "JQUERY":
+        cy.wrap($element).invoke("bsDarkmodeToggle", "dark", true);
+        break;
+
+      default:
+        throw new DOMException(
+          "Unknown interface: " + pluginInterface,
+          "NotSupportedError"
+        );
+    }
+    BsDarkmodeToggleModel.checkCurrentState($element, false);
   }
 }
