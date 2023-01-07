@@ -8,7 +8,6 @@
  * @see https://github.com/palcarazm/bs-darkmode-toggle/blob/master/LICENSE
  */
 
-
 "use strict";
 +(
   /**
@@ -175,7 +174,7 @@
 
       /**
        * Fire a change event
-       * @param {Bolean} silent
+       * @param {Boolean} silent
        * @private
        */
       #trigger(silent) {
@@ -186,7 +185,7 @@
 
       /**
        * Set the cookie Authorization status
-       * @param {Bolena} status
+       * @param {Boolean} status
        */
       setCookieAutorization(status) {
         this.options.allowsCookie = status;
