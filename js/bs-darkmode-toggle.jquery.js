@@ -376,14 +376,9 @@
      * Replace all `[data-plugin="bs-darkmode-toggle"]` inputs with "Bootstrap-Darkmode"
      * Executes once page elements have rendered enabling script to be placed in `<head>`
      */
-    if (typeof window !== "undefined")
-      window.onload = function () {
-        document
-          .querySelectorAll('[data-plugin="bs-darkmode-toggle"]')
-          .forEach(function (ele) {
-            ele.bsDarkmodeToggle();
-          });
-      };
+    $(function () {
+      $('[data-plugin="bs-darkmode-toggle"]').bootstrapToggle();
+    });
 
     // Export library if possible
     if (typeof module !== "undefined" && module.exports) {
