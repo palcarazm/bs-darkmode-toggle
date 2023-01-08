@@ -8,6 +8,7 @@
  * @see https://github.com/palcarazm/bs-darkmode-toggle/blob/master/LICENSE
  */
 
+
 "use strict";
 
 /**
@@ -191,7 +192,7 @@
      * Set the cookie Authorization status
      * @param {Boolean} status
      */
-    setCookieAutorization(status) {
+    setCookieAuthorization(status) {
       this.options.allowsCookie = status;
       if (status) {
         this.#setCookie(
@@ -336,8 +337,8 @@
         case "dark":
           _bsDarkmodeToggle.dark(args);
           break;
-        case "setCookieAutorization":
-          _bsDarkmodeToggle.setCookieAutorization(args);
+        case "setcookieauthorization":
+          _bsDarkmodeToggle.setCookieAuthorization(args);
           break;
 
         default:
