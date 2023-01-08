@@ -109,13 +109,13 @@ Options can be passed via data attributes or JavaScript. For data attributes, ap
 Find in the example the same toggle can be personalize vía API options and data attributes.
 
 ```html
-<div data-plugin="bs-darkmode-toggle" data-state="dark" data-allowsCookie data-lightColorMode="blue"></div>
+<div data-plugin="bs-darkmode-toggle" data-state="dark" data-allowCookie data-lightColorMode="blue"></div>
 
 <div id="bs-darkmode-toggle"></div>
 <script>
   document.getElementById('bs-darkmode-toggle').bsDarkmodeToggle({
     state: false,
-    allowsCookie: true,
+    allowCookie: true,
     lightColorMode: "blue"
   });
 </script>
@@ -125,7 +125,7 @@ Find in the example the same toggle can be personalize vía API options and data
 | :--------------- | :---------: | :-------------------: | :---------- |
 | `state`          | Boolean     | "true"                | Default light (true) or dark (false) color scheme. For data attributes use light/dark instead. |
 | `root`           | String      | ":root"               | CSS selector for root element to apply color scheme. |
-| `allowsCookie`   | Boolean     | "false"               | Set if the user has allowed to use cookies. For data attribute the presence means true and the absence false. |
+| `allowCookie`    | Boolean     | "false"               | Set if the user has allowed to use cookies. For data attribute the presence means true and the absence false. |
 | `lightLabel`     | string/html | ![sun](img/sun.svg)   | Set the light toggle label. |
 | `darkLabel`      | string/html | ![moon](img/moon.svg) | Set the dark toggle label. |
 | `lightColorMode` | string      | "light"               | Set the light color scheme. |
@@ -140,19 +140,20 @@ Methods can be used to control the darkmode toggle directly.
   let demoElement = document.getElementById('bs-darkmode-toggle');
   demoElement.bsDarkmodeToggle({
     state: false,
-    allowsCookie: true,
+    allowCookie: true,
     lightColorMode: "blue"
   });
 </script>
 ```
 
 
-| Method                  | Example                                                       | Description                          |
-| :---------------------- | :------------------------------------------------------------ | :----------------------------------- |
-| `light`                 | `demoElement.bsDarkmodeToggle("light")`                       | Enable light color scheme.           |
-| `dark`                  | `demoElement.bsDarkmodeToggle("dark")`                        | Enable dark color scheme.            |
-| `toggle`                | `demoElement.bsDarkmodeToggle("toggle")`                      | Switch the enable color scheme.      |
-| `setCookieAutorization` | `demoElement.bsDarkmodeToggle("setCookieAutorization",false)` | Set the Cookie Authorization status. |
+| Method        | Example                                       | Description                                     |
+| :------------ | :-------------------------------------------- | :---------------------------------------------- |
+| `light`       | `demoElement.bsDarkmodeToggle("light")`       | Enable light color scheme.                      |
+| `dark`        | `demoElement.bsDarkmodeToggle("dark")`        | Enable dark color scheme.                       |
+| `toggle`      | `demoElement.bsDarkmodeToggle("toggle")`      | Switch the enable color scheme.                 |
+| `allowCookie` | `demoElement.bsDarkmodeToggle("allowCookie")` | Set the Cookie Authorization status to allowed. |
+| `denyCookie`  | `demoElement.bsDarkmodeToggle("denyCookie")`  | Set the Cookie Authorization status to denied.  |
 
 # Events
 
