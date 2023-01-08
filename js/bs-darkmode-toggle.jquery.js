@@ -59,23 +59,23 @@
             DEFAULTS.allowCookie,
           lightLabel: this.#sanitize(
             this.$element.attr("data-lightLabel") ||
-              options.lightLabel ||
-              DEFAULTS.lightLabel
+            options.lightLabel ||
+            DEFAULTS.lightLabel
           ),
           darkLabel: this.#sanitize(
             this.$element.attr("data-darkLabel") ||
-              options.darkLabel ||
-              DEFAULTS.darkLabel
+            options.darkLabel ||
+            DEFAULTS.darkLabel
           ),
           lightColorMode: this.#sanitize(
             this.$element.attr("data-lightColorMode") ||
-              options.lightColorMode ||
-              DEFAULTS.lightColorMode
+            options.lightColorMode ||
+            DEFAULTS.lightColorMode
           ),
           darkColorMode: this.#sanitize(
             this.$element.attr("data-darkColorMode") ||
-              options.darkColorMode ||
-              DEFAULTS.darkColorMode
+            options.darkColorMode ||
+            DEFAULTS.darkColorMode
           ),
           style: DEFAULTS.style,
         };
@@ -355,8 +355,8 @@
           default:
             throw new DOMException(
               "Bootstrap Darkmode Toggle method '" +
-                options +
-                "' doesn't exist",
+              options +
+              "' doesn't exist",
               "NotSupportedError"
             );
         }
@@ -377,7 +377,7 @@
      * Executes once page elements have rendered enabling script to be placed in `<head>`
      */
     $(function () {
-      $('[data-plugin="bs-darkmode-toggle"]').bootstrapToggle();
+      $('[data-plugin="bs-darkmode-toggle"]').bsDarkmodeToggle();
     });
 
     // Export library if possible
