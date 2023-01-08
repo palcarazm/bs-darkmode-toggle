@@ -1,3 +1,4 @@
+import { BsDarkmodeToggleModel } from "./BsDarkmodeToggleModel.js";
 export class TestAppModel {
   static TEST_CLASS = "test"; // Common test class
   static TEST_SELECTOR = "." + TestAppModel.TEST_CLASS; // Common test selector
@@ -31,6 +32,7 @@ export class TestAppModel {
         cy.stub(win.console, "error").as("consoleError");
       },
     });
+    cy.clearCookie(BsDarkmodeToggleModel.COOKIE_NAME);
     cy.get("button#" + testcaseID).click();
   }
 

@@ -177,11 +177,11 @@ class TestLoader {
                 .attr("id", "toggleSilent")
                 .text("Toggle Silent"),
               PAGEMODEL.BUTTON.clone()
-                .attr("id", "unsetCookieAutorization")
-                .text("Unset Cookie Autorization"),
+                .attr("id", "unsetCookieAuthorization")
+                .text("Unset Cookie Authorization"),
               PAGEMODEL.BUTTON.clone()
-                .attr("id", "setCookieAutorization")
-                .text("Set Cookie Autorization")
+                .attr("id", "setCookieAuthorization")
+                .text("Set Cookie Authorization")
             )
           )
         )
@@ -237,13 +237,13 @@ class TestLoader {
       clean();
       elementDiv.bsDarkmodeToggle("toggle", true);
     });
-    $("#unsetCookieAutorization").on("click", (_e) => {
+    $("#unsetCookieAuthorization").on("click", (_e) => {
       clean();
-      elementDiv.bsDarkmodeToggle("setCookieAutorization", false);
+      elementDiv.bsDarkmodeToggle("setCookieAuthorization", false);
     });
-    $("#setCookieAutorization").on("click", (_e) => {
+    $("#setCookieAuthorization").on("click", (_e) => {
       clean();
-      elementDiv.bsDarkmodeToggle("setCookieAutorization", true);
+      elementDiv.bsDarkmodeToggle("setCookieAuthorization", true);
     });
   }
 }
