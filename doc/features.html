@@ -1,0 +1,89 @@
+<h2>Features</h2>
+<hr />
+
+<h3 class="text-secondary">Nicer user interaction</h3>
+<p>Bootstrap Darkmode Toggle select the color scheme to render in function of:</p>
+<ul>
+  <li><strong>Site cookie</strong> (if enabled). To keep the user preference in the site a cookie save the prefered color scheme each time the color scheme is changed.</li>
+  <li><strong>User preferred color scheme</strong>. If the browser is set to preffered darkmode, darkmode will be rendered.</li>
+  <li><strong>Data-Atributes and API options</strong>.</li>
+</ul>
+
+<h3 class="text-secondary">State</h3>
+<p>
+    Bootstrap Darkmode initial state can be set by <code>data-state</code> attribute.</br>
+    <small>The site cookie (if enabled) or the user preferred color scheme dark is prioritary.</small>
+</p>
+<div class="example" code-lang="html">
+  <div id="state-light-example" class="p-3  bg-body border">
+    <div
+    data-plugin="bs-darkmode-toggle"
+    data-state="light"
+    data-root="#state-light-example"></div>
+  </div>
+  <div id="state-dark-example" class="p-3  bg-body border">
+    <div
+    data-plugin="bs-darkmode-toggle"
+    data-state="dark"
+    data-root="#state-dark-example"></div>
+  </div>
+</div>
+
+<h3 class="text-secondary">Custom Root Element</h3>
+<p>Bootstrap Darkmode root element can be set by <code>data-root</code> attribute.</p>
+<div class="example" code-lang="html">
+  <div id="root-example" class="p-3  bg-body border">
+    <div
+    data-plugin="bs-darkmode-toggle"
+    data-root="#root-example"></div>
+  </div>
+</div>
+
+<h3 class="text-secondary">Custom Label</h3>
+<p>Bootstrap Darkmode light and dark label can be set by <code>data-lightlabel</code> and <code>data-darklabel</code> attributes.</p>
+<div class="example" code-lang="html">
+  <div id="label-example" class="p-3  bg-body border">
+    <div
+    data-plugin="bs-darkmode-toggle"
+    data-lightlabel="LIGHT"
+    data-darklabel="DARK"
+    data-root="#label-example"></div>
+  </div>
+</div>
+
+<h3 class="text-secondary">Custom Color Scheme</h3>
+<p>Bootstrap Darkmode light and dark color scheme can be custumized by <code>data-lightColorMode</code> and <code>data-darkColorMode</code> attributes.<br>
+<small>Refer to <a href="https://getbootstrap.com/docs/5.3/customize/color-modes/" target="_blank" rel="noopener noreferrer">Bootstrap Color Mode Documentation</a> for help.</small></p>
+<div class="example" code-lang="html">
+  <style>
+    [data-bs-theme="blue"] {
+      --bs-body-color: #adb5bd;
+      --bs-body-color-rgb: 173, 181, 189;
+      --bs-body-bg: rgb(166, 199, 247);
+      --bs-body-bg-rgb: 166, 199, 247;
+    }
+    [data-bs-theme="red"] {
+      --bs-body-color: #adb5bd;
+      --bs-body-color-rgb: 173, 181, 189;
+      --bs-body-bg: rgb(226, 154, 161);
+      --bs-body-bg-rgb: 226, 154, 161;
+    }
+  </style>
+  <div id="colormode-example" class="p-3 bg-body border">
+    <div
+    data-plugin="bs-darkmode-toggle"
+    data-lightColorMode="blue"
+    data-darkColorMode="red"
+    data-root="#colormode-example"></div>
+  </div>
+</div>
+
+<h3 class="text-secondary">Prefered Color Scheme in Cookie</h3>
+<p>
+  Bootstrap Darkmode Toggle can save user prefered color schema in a cookie. To enable this feature add <code>allowCookie</code> data attribute or API option.
+</p>
+<div class="alert alert-info" role="alert">
+  <p><small>As per the GDPR and ePrivacy Directive, a website must ask its users’ consent to use cookies that are not necessary for accessing the website’s functionality. These cookies need consent because they collect user data for their purposes. According to the law, collecting data without users’ consent is unlawful.</small></p>
+  <p><small>The employed cookie is a User interface (UI) customization cookie that do not requiere a explicit authorization. However the default value is set to false in order to allow requesting cookie consent if wanted.</small></p>
+  <p><small>If consent is provided, the cookie usage can be enabled with <code>allowCookie</code> method or disabled with <code>denyCookie</code> method.</small></p>
+</div>

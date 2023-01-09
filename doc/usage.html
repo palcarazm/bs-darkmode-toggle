@@ -1,0 +1,61 @@
+<h2>Usage</h2>
+<hr />
+
+<h3 class="text-secondary">Initialize with HTML</h3>
+<p>
+  Simply create a <code>div</code> with the data attribute
+  <code>data-plugin="bs-darkmode-toggle"</code>.
+</p>
+<pre><code class="highlight language-html">&lt;div data-plugin="bs-darkmode-toggle&gt;&lt;/div&gt;</code></pre>
+
+<h3 class="text-secondary">Initialize with JavaScript</h3>
+<p>
+  Simply call the <code>bsDarkmodeToggle</code> method to convert checkboxes
+  into toggles. See <a href="#api">Options</a> for additional options.
+</p>
+<ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item">
+    <button
+      class="nav-link active"
+      id="usage-ecmas-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#usage-ecmas"
+      type="button"
+      role="tab"
+      aria-controls="usage-ecmas"
+      aria-selected="false">
+      ECMAS
+    </button>
+  </li>
+  <li class="nav-item">
+    <button
+      class="nav-link"
+      id="usage-jquery-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#usage-jquery"
+      type="button"
+      role="tab"
+      aria-controls="usage-jquery"
+      aria-selected="true">
+      jQuery
+    </button>
+  </li>
+</ul>
+<div class="tab-content">
+  <div
+    class="tab-pane fade show active"
+    id="usage-ecmas"
+    role="tabpanel"
+    aria-labelledby="usage-ecmas-tab"
+    tabindex="0">
+    <pre><code class="highlight language-javascript">document.getElementById('bs-darkmode-toggle').bsDarkmodeToggle();</code></pre>
+  </div>
+  <div
+    class="tab-pane fade"
+    id="usage-jquery"
+    role="tabpanel"
+    aria-labelledby="usage-jquery-tab"
+    tabindex="0">
+    <pre><code class="highlight language-javascript">$('#bs-darkmode-toggle').bsDarkmodeToggle();</code></pre>
+  </div>
+</div>

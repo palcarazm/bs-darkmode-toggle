@@ -1,0 +1,101 @@
+<h2>Events</h2>
+<hr />
+
+<h3 class="text-secondary">Event Propagation</h3>
+<p>
+  When the color scheme changes a <code>change event</code> is fired from
+  bootstrap darkmode toggle element, so you can listner for this event.
+</p>
+<div class="example skip">
+  <div id="bs-darkmode-toggle-event-example" class="p-3 bg-body border">
+    <div
+      data-plugin="bs-darkmode-toggle"
+      id="bs-darkmode-toggle-event"
+      data-root="#bs-darkmode-toggle-event-example"></div>
+  </div>
+  <script>
+    $("#bs-darkmode-toggle-event").change(function () {
+      $("#console-event").html(
+        $("#console-event").html() +
+          "Color Scheme: " +
+          ($(this).find("input").is(":checked") ? "light" : "dark") +
+          "<br>> "
+      );
+    });
+  </script>
+  <div>
+    <code
+      id="console-event"
+      class="badge bg-secondary w-100 text-start font-monospace"
+      >>
+    </code>
+  </div>
+</div>
+<pre><code class="highlight language-html">&lt;div id="bs-darkmode-toggle-event-example" class="p-3 bg-body border"&gt;
+&lt;div
+  data-plugin="bs-darkmode-toggle"
+  id="bs-darkmode-toggle-event"
+  data-root="#bs-darkmode-toggle-event-example"&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    document
+        .getElementById('bs-darkmode-toggle-event')
+        .aaddEventListener('Change',(_e)=>{
+            log(); // Or do whatever
+        });
+&lt;/script&gt;</code></pre>
+
+<h3 class="text-secondary">Stopping Event Propagation</h3>
+<p>
+  Passing <code>true</code> to the <code>light</code>, <code>dark</code> and
+  <code>toggle</code> methods will enable the silent option to prevent firing
+  the <code>change event</code> in cases where you want to update the color
+  scheme but do not want to fire the <code>change event</code>.
+</p>
+<div class="example skip">
+  <div id="bs-darkmode-toggle-silent-exemple" class="p-3 bg-body border">
+    <div
+      data-plugin="bs-darkmode-toggle"
+      id="bs-darkmode-toggle-silent"
+      data-root="#bs-darkmode-toggle-silent-exemple"
+      onchange="$('#chgConsole').html($('#chgConsole').html()+new Date().toISOString()+' ... change event fired!<br>> ')"></div>
+  </div>
+  <br />
+  <button
+    class="btn btn-outline-success"
+    onclick="$('#bs-darkmode-toggle-silent').bsDarkmodeToggle('light',true)">
+    Light (silent)
+  </button>
+  <button
+    class="btn btn-outline-success"
+    onclick="$('#bs-darkmode-toggle-silent').bsDarkmodeToggle('dark',true)">
+    Dark (silent)
+  </button>
+  <button
+    class="btn btn-outline-success"
+    onclick="$('#bs-darkmode-toggle-silent').bsDarkmodeToggle('toggle',true)">
+    Toggle (silent)</button
+  ><br />
+  <button
+    class="btn btn-outline-warning"
+    onclick="$('#bs-darkmode-toggle-silent').bsDarkmodeToggle('light',false)">
+    Light (not silent)
+  </button>
+  <button
+    class="btn btn-outline-warning"
+    onclick="$('#bs-darkmode-toggle-silent').bsDarkmodeToggle('dark',false)">
+    Dark (not silent)
+  </button>
+  <button
+    class="btn btn-outline-warning"
+    onclick="$('#bs-darkmode-toggle-silent').bsDarkmodeToggle('toggle',false)">
+    Toggle (not silent)
+  </button>
+  <div>
+    <code
+      id="chgConsole"
+      class="badge bg-secondary w-100 text-start font-monospace"
+      >>
+    </code>
+  </div>
+</div>
