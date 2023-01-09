@@ -236,7 +236,7 @@
        * @private
        */
       #actionPerformed(e, target) {
-        target.toggle(false);
+        target.toggle(true);
         if (target.options.allowCookie) {
           target.#setCookie(
             target.COOKIE_NAME,
