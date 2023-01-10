@@ -1,5 +1,5 @@
 /* Copyright Notice
- * bs-darkmode-toggle v0.0.0-beta
+ * bs-darkmode-toggle v1.0.0-alpha2
  * https://palcarazm.github.io/bs-darkmode-toggle/
  * @author 2023 Pablo Alcaraz Martínez (https://github.com/palcarazm)
  * @funding GitHub Sponsors
