@@ -11,5 +11,10 @@ node_modules
 .DS_Store
 .prettierrc
 
-# Cypress
-cypress/screenshots
+# Cypress and testing
+test/*
+cypress/*
+cypress.config.js
+
+# Templates
+*.template*
