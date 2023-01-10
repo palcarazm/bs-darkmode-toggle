@@ -1,7 +1,7 @@
 [![GitHub license](https://img.shields.io/github/license/palcarazm/bs-darkmode-toggle.svg?color=informational)](https://github.com/palcarazm/bs-darkmode-toggle/blob/master/LICENSE)
 [![Latest release](https://img.shields.io/github/package-json/v/palcarazm/bs-darkmode-toggle/v1?logo=github)](https://github.com/palcarazm/bs-darkmode-toggle/releases)
 [![Bootstrap 5](https://img.shields.io/static/v1?label=bootstrap&message=%5E5.3.0-alpha&color=informational&logo=bootstrap&logoColor=white)](https://getbootstrap.com/docs/5.0)
-[![BS Toggle](https://img.shields.io/static/v1?label=bs-toggle&message=%5E5.0.0-alpha&color=informational)](https://palcarazm.github.io/bootstrap5-toggle/)
+[![BS Toggle](https://img.shields.io/static/v1?label=bs-toggle&message=%5E5.0.0&color=informational)](https://palcarazm.github.io/bootstrap5-toggle/)
 [![JSDelivr Badge](https://img.shields.io/jsdelivr/npm/hm/bs-darkmode-toggle?label=hits&logo=jsdelivr&logoColor=white)](https://www.jsdelivr.com/package/npm/bs-darkmode-toggle)
 [![NPM Badge](https://img.shields.io/npm/dm/bs-darkmode-toggle?logo=npm)](https://www.npmjs.com/package/bs-darkmode-toggle)
 [![Build](https://img.shields.io/github/actions/workflow/status/palcarazm/bs-darkmode-toggle/build.yml?branch=v1&logo=npm)](https://github.com/palcarazm/bs-darkmode-toggle/actions?query=workflow%3A%22Build+Check%22)
