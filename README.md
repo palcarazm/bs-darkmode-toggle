@@ -41,6 +41,7 @@ See EOL for each version in [Security Policy Page](https://github.com/palcarazm/
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+
 - [Installation](#installation)
   - [CDN](#cdn)
     - [ECMAS Interface](#ecmas-interface)
@@ -143,8 +144,8 @@ Find in the example the same toggle can be personalize vía API options and data
 | `state`          | Boolean     | "true"                | Default light (true) or dark (false) color scheme. For data attributes use light/dark instead. |
 | `root`           | String      | ":root"               | CSS selector for root element to apply color scheme. |
 | `allowCookie`    | Boolean     | "false"               | Set if the user has allowed to use cookies. For data attribute the presence means true and the absence false. |
-| `lightLabel`     | string/html | ![sun](img/sun.svg)   | Set the light toggle label. |
-| `darkLabel`      | string/html | ![moon](img/moon.svg) | Set the dark toggle label. |
+| `lightLabel`     | string/html | ![sun](https://raw.githubusercontent.com/palcarazm/bs-darkmode-toggle/v1/img/sun.svg)   | Set the light toggle label. |
+| `darkLabel`      | string/html | ![moon](https://raw.githubusercontent.com/palcarazm/bs-darkmode-toggle/v1/img/moon.svg) | Set the dark toggle label. |
 | `lightColorMode` | string      | "light"               | Set the light color scheme. |
 | `darkColorMode`  | string      | "dark"                | Set the dark color scheme. |
 
