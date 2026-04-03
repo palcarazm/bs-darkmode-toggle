@@ -118,7 +118,7 @@ export default class TestCases {
         if (this.TESTCASES.has(testcase)) {
             PAGEMODEL.DESCRIPTION.html(this.TESTCASES.get(testcase).description);
             PAGEMODEL.MAIN.html("");
-            this.TESTCASES.get(testcase).loader(this.INTERFACE);
+            this.TESTCASES.get(testcase).load(this.INTERFACE);
         } else {
             throw new DOMException(
                 "Unknown test case: " + testcase,
@@ -134,7 +134,7 @@ export default class TestCases {
    */
     #run(testcase) {
         if (this.TESTCASES.has(testcase)) {
-            this.TESTCASES.get(testcase).runner();
+            this.TESTCASES.get(testcase).run();
         } else {
             throw new DOMException(
                 "Unknown test case: " + testcase,
@@ -158,4 +158,7 @@ class TestCase {
         this.loader = loader;
         this.runner = runner;
     }
+
+    load(engine) { this.loader(engine);}
+    run(){this.runner();}
 }
