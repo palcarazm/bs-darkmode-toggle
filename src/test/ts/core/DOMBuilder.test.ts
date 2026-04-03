@@ -60,7 +60,7 @@ describe("DOMBuilder", () => {
         });
 
         it("should call bootstrapToggle with correct options", () => {
-            const {  } = createBuilder();
+            const _instance = createBuilder();
 
             expect(bsToggleSpy).toHaveBeenCalledWith({
                 onlabel: options.lightLabel,
@@ -79,8 +79,8 @@ describe("DOMBuilder", () => {
 
             expect(bsToggleSpy).toHaveBeenCalledWith(BootstrapToggleMethods.ON, true);
 
-            expect(root1.getAttribute("data-bs-theme")).toBe("light");
-            expect(root2.getAttribute("data-bs-theme")).toBe("light");
+            expect(root1.dataset.bsTheme).toBe("light");
+            expect(root2.dataset.bsTheme).toBe("light");
         });
 
         it("should set dark mode", () => {
@@ -90,8 +90,8 @@ describe("DOMBuilder", () => {
 
             expect(bsToggleSpy).toHaveBeenCalledWith(BootstrapToggleMethods.OFF, true);
 
-            expect(root1.getAttribute("data-bs-theme")).toBe("dark");
-            expect(root2.getAttribute("data-bs-theme")).toBe("dark");
+            expect(root1.dataset.bsTheme).toBe("dark");
+            expect(root2.dataset.bsTheme).toBe("dark");
         });
 
         it("should update all root elements", () => {
@@ -99,8 +99,8 @@ describe("DOMBuilder", () => {
 
             builder.setState(true);
 
-            document.querySelectorAll(".root").forEach((el) => {
-                expect(el.getAttribute("data-bs-theme")).toBe("light");
+            document.querySelectorAll<HTMLElement>(".root").forEach((el) => {
+                expect(el.dataset.bsTheme).toBe("light");
             });
         });
     });

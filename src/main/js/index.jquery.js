@@ -1,6 +1,7 @@
 import { DarkModeToggle } from "./DarkModeToggle";
 import { Methods } from "./types/Methods";
-+(function ($) {
+
+(function ($) {
   /**
    * Add `bsDarkmodeToggle` prototype function to HTML Elements
    * Enables execution when used with HTML - ex: `document.getElementById('toggle').bsDarkmodeToggle('light')`
@@ -32,7 +33,7 @@ import { Methods } from "./types/Methods";
     });
   }
 
-  // No Confict
+  // No Conflict
   let old = $.fn.bsDarkmodeToggle;
   $.fn.bsDarkmodeToggle = Plugin;
   $.fn.bsDarkmodeToggle.Constructor = DarkModeToggle;

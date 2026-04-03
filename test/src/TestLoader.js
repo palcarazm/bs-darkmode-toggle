@@ -11,10 +11,12 @@ const OPTIONS = [
         options: [
             {
                 key: "lightLabel",
+                attr: "data-light-label",
                 value: "Good Morning",
             },
             {
                 key: "darkLabel",
+                attr: "data-dark-label",
                 value: "Good Night",
             },
         ],
@@ -26,10 +28,12 @@ const OPTIONS = [
         options: [
             {
                 key: "lightColorMode",
+                attr: "data-light-color-mode",
                 value: "blue",
             },
             {
                 key: "darkColorMode",
+                attr: "data-dark-color-mode",
                 value: "red",
             },
             { key: "state", value: "light" },
@@ -42,13 +46,19 @@ const OPTIONS = [
         options: [
             {
                 key: "lightColorMode",
+                attr: "data-light-color-mode",
                 value: "blue",
             },
             {
                 key: "darkColorMode",
+                attr: "data-dark-color-mode",
                 value: "red",
             },
-            { key: "state", value: "dark" },
+            { 
+                key: "state", 
+                attr: "data-state",
+                value: "dark" 
+            },
         ],
     },
     // CUSTOM STATE
@@ -59,7 +69,7 @@ const OPTIONS = [
     },
 ];
 
-class TestLoader {
+export default class TestLoader {
     /**
    * Create the layout for testing data attributes
    * @param {string} _pluginInterface Plugin Interface
@@ -73,7 +83,7 @@ class TestLoader {
                 "#" + testcase.code
             );
             testcase.options.forEach((option) => {
-                elementDiv.attr("data-" + option.key, option.value);
+                elementDiv.attr(option.attr, option.value);
             });
             testDiv = PAGEMODEL.TEST_CONTAINER.clone().attr("id", testcase.code);
             testDiv.append(
@@ -245,5 +255,3 @@ class TestLoader {
         });
     }
 }
-
-export { TestLoader as default };

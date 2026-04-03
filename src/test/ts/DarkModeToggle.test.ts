@@ -70,7 +70,7 @@ describe("DarkModeToggle", () => {
 
     describe("constructor", () => {
         it("should initialize and call update", () => {
-            new DarkModeToggle(element);
+            const _instance = new DarkModeToggle(element);
 
             expect(setStateMock).toHaveBeenCalledWith(true);
             expect(setCookieMock).toHaveBeenCalled();
@@ -78,7 +78,7 @@ describe("DarkModeToggle", () => {
         });
 
         it("should bind onChange handler", () => {
-            new DarkModeToggle(element);
+            const _instance = new DarkModeToggle(element);
 
             expect(onChangeMock).toHaveBeenCalled();
         });
@@ -216,7 +216,7 @@ describe("DarkModeToggle", () => {
         it("should NOT set cookie if disabled", () => {
             resolveMock.mockReturnValue({ ...baseOptions, allowCookie: false });
 
-            new DarkModeToggle(element);
+            const _instance = new DarkModeToggle(element);
 
             expect(setCookieMock).not.toHaveBeenCalled();
         });
@@ -226,7 +226,7 @@ describe("DarkModeToggle", () => {
         it("should apply dark from cookie", () => {
             getCookieMock.mockReturnValue("dark");
 
-            new DarkModeToggle(element);
+            const _instance = new DarkModeToggle(element);
 
             expect(doMock).toHaveBeenCalledWith(ActionType.DARK);
         });
@@ -234,7 +234,7 @@ describe("DarkModeToggle", () => {
         it("should apply light from cookie", () => {
             getCookieMock.mockReturnValue("light");
 
-            new DarkModeToggle(element);
+            const _instance = new DarkModeToggle(element);
 
             expect(doMock).toHaveBeenCalledWith(ActionType.LIGHT);
         });
@@ -242,7 +242,7 @@ describe("DarkModeToggle", () => {
         it("should skip applyPreferredScheme if cookies disabled", () => {
             resolveMock.mockReturnValue({ ...baseOptions, allowCookie: false });
 
-            new DarkModeToggle(element);
+            const _instance = new DarkModeToggle(element);
 
             expect(getCookieMock).not.toHaveBeenCalled();
         });
@@ -256,7 +256,7 @@ describe("DarkModeToggle", () => {
                 handler = cb;
             });
 
-            new DarkModeToggle(element);
+            const _instance = new DarkModeToggle(element);
 
             const preventDefault = jest.fn();
 

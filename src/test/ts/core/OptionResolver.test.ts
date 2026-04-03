@@ -12,16 +12,14 @@ describe("OptionResolver", () => {
 
     describe("state resolution", () => {
         it("should use data-state=dark", () => {
-            element.setAttribute("data-state", "dark");
-
+            element.dataset.state = "dark";
             const result = OptionResolver.resolve(element);
 
             expect(result.state).toBe(false);
         });
 
         it("should use data-state=light", () => {
-            element.setAttribute("data-state", "light");
-
+            element.dataset.state = "light";
             const result = OptionResolver.resolve(element);
 
             expect(result.state).toBe(true);
@@ -42,7 +40,7 @@ describe("OptionResolver", () => {
 
     describe("root resolution", () => {
         it("should use data-root", () => {
-            element.setAttribute("data-root", "#app");
+            element.dataset.root = "#app";
 
             const result = OptionResolver.resolve(element);
 
@@ -65,7 +63,7 @@ describe("OptionResolver", () => {
 
     describe("allowCookie resolution", () => {
         it("should enable allowCookie via attribute", () => {
-            element.setAttribute("data-allowCookie", "");
+            element.dataset.allowCookie = undefined;
 
             const result = OptionResolver.resolve(element);
 
@@ -87,8 +85,8 @@ describe("OptionResolver", () => {
 
     describe("label resolution", () => {
         it("should resolve light and dark Label from data", () => {
-            element.setAttribute("data-lightLabel", "<b>Light</b>");
-            element.setAttribute("data-darkLabel", "<b>Dark</b>");
+            element.dataset.lightLabel = "<b>Light</b>";
+            element.dataset.darkLabel = "<b>Dark</b>";
 
             const result = OptionResolver.resolve(element);
 
@@ -119,8 +117,8 @@ describe("OptionResolver", () => {
 
     describe("color mode resolution", () => {
         it("should resolve light and dark ColorMode from data", () => {
-            element.setAttribute("data-lightColorMode", "custom-light");
-            element.setAttribute("data-darkColorMode", "custom-dark");
+            element.dataset.lightColorMode = "custom-light";
+            element.dataset.darkColorMode = "custom-dark";
 
             const result = OptionResolver.resolve(element);
 
