@@ -99,7 +99,7 @@ describe("DOMBuilder", () => {
 
             builder.setState(true);
 
-            document.querySelectorAll<HTMLElement>(".root").forEach((el) => {
+            globalThis.document.querySelectorAll<HTMLElement>(".root").forEach((el) => {
                 expect(el.dataset.bsTheme).toBe("light");
             });
         });

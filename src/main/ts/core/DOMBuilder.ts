@@ -9,13 +9,13 @@ export class DOMBuilder {
     private static readonly BS_ATTRIBUTE = "bsTheme";
 
     constructor(container: HTMLElement, options: ResolvedOptions) {
-        this.root = document.querySelectorAll<HTMLElement>(options.root);
+        this.root = globalThis.document.querySelectorAll<HTMLElement>(options.root);
         this.lightColorMode = options.lightColorMode;
         this.darkColorMode = options.darkColorMode;
 
         container.innerHTML = "";
 
-        this.input = document.createElement("input") as BootstrapToggleElement;
+        this.input = globalThis.document.createElement("input") as BootstrapToggleElement;
         this.input.type = "checkbox";
 
         container.appendChild(this.input);
