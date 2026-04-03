@@ -21,6 +21,7 @@ docs
 test/*
 cypress/*
 cypress.config.js
+coverage
 
 # Templates
 *.template*

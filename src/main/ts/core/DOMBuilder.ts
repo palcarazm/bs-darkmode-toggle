@@ -46,14 +46,14 @@ export class DOMBuilder {
     }
 }
 
-interface BootstrapToggleElement extends HTMLInputElement {
+export interface BootstrapToggleElement extends HTMLInputElement {
   bootstrapToggle(
     options?: BootstrapToggleMethods | Record<string, unknown>,
     silent?: boolean
   ): void;
 }
 
-enum BootstrapToggleMethods {
+export enum BootstrapToggleMethods {
   ON = "ON",
   OFF = "OFF",
   TOGGLE = "TOGGLE",
