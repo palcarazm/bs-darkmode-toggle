@@ -1,6 +1,12 @@
 # Node modules
 node_modules
 
+# Debug
+debug
+
+# Docs
+docs
+
 # Logs
 *.log
 
