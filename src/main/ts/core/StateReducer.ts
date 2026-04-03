@@ -16,14 +16,14 @@ export class StateReducer {
         switch (action) {
         case ActionType.LIGHT:
             if(this.state.isLight) return false;
-            this.state.isLight = true;
+            this.state = { isLight: true };
             return true;
         case ActionType.DARK:
             if(!this.state.isLight) return false;
-            this.state.isLight = false;
+            this.state = { isLight: false };
             return true;
         case ActionType.TOGGLE:
-            this.state.isLight = !this.state.isLight;
+            this.state = { isLight: !this.state.isLight };
             return true;
         }
     }

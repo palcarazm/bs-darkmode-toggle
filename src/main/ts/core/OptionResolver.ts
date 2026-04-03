@@ -2,7 +2,7 @@ import { sanitize, SanitizeMode } from "./Tools";
 import { DarkModeOptions, ResolvedOptions } from "./OptionResolver.types";
 
 export class OptionResolver {
-    private static DEFAULTS: ResolvedOptions = {
+    private static readonly DEFAULTS: ResolvedOptions = {
         state: true,
         root: ":root",
         allowCookie: false,

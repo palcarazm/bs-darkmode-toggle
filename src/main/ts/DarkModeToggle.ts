@@ -6,13 +6,13 @@ import { ResolvedOptions } from "./core/OptionResolver.types";
 import { ActionType } from "./core/StateReducer.types";
 
 export class DarkModeToggle {
-    private element: HTMLElement;
-    private options: ResolvedOptions;
-    private state: StateReducer;
-    private cookie = new CookieManager();
-    private dom: DOMBuilder;
+    private readonly element: HTMLElement;
+    private readonly options: ResolvedOptions;
+    private readonly state: StateReducer;
+    private readonly cookie = new CookieManager();
+    private readonly dom: DOMBuilder;
 
-    private COOKIE_NAME = "bs-darkmode-toggle-color-scheme";
+    private static readonly COOKIE_NAME = "bs-darkmode-toggle-color-scheme";
 
     constructor(element: HTMLElement, opts = {}) {
         this.element = element;
@@ -64,7 +64,7 @@ export class DarkModeToggle {
 
     denyCookie() {
         this.options.allowCookie = false;
-        this.cookie.delete(this.COOKIE_NAME);
+        this.cookie.delete(DarkModeToggle.COOKIE_NAME);
     }
 
     private trigger(silent: boolean) {
@@ -76,7 +76,7 @@ export class DarkModeToggle {
     private updateCookie() {
         if (this.options.allowCookie) {
             this.cookie.set(
-                this.COOKIE_NAME,
+                DarkModeToggle.COOKIE_NAME,
                 this.state.get().isLight
                     ? this.options.lightColorMode
                     : this.options.darkColorMode,
@@ -88,7 +88,7 @@ export class DarkModeToggle {
     private applyPreferredScheme() {
         if (!this.options.allowCookie) return;
 
-        const cookie = this.cookie.get(this.COOKIE_NAME);
+        const cookie = this.cookie.get(DarkModeToggle.COOKIE_NAME);
 
         if (cookie === this.options.darkColorMode) this.state.do(ActionType.DARK);
         if (cookie === this.options.lightColorMode) this.state.do(ActionType.LIGHT);
