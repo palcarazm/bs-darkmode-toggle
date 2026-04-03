@@ -1,6 +1,7 @@
 {
   "name": "bs-darkmode-toggle",
   "version": "1.0.0-alpha2",
+  "type": "module",
   "description": "Bootstrap Darkmode Toggle is a plugin for bootstrap to add a ligthmode/darkmode switch in to your app.",
   "author": {
     "name": "Pablo Alcaraz Martínez",
@@ -28,7 +29,7 @@
   "bugs": {
     "url": "https://github.com/palcarazm/bs-darkmode-toggle/issues"
   },
-  "main": "js/bs-darkmode-toggle.ecmas.js",
+  "browser": "js/bs-darkmode-toggle.ecmas.js",
   "files": [
     "css/*",
     "js/*"
@@ -36,23 +37,54 @@
   "scripts": {
     "build": "grunt build",
     "postversion": "grunt build && grunt readme && doctoc README.md --github",
-    "prepack": "grunt build && grunt readme && doctoc README.md --github && git add -A",
-    "test": "cypress run --browser=chrome"
+    "prepack": "grunt build && grunt readme && doctoc README.md --github",
+    "prepublishOnly": "git add -A && git commit",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:e2e": "cypress run --headless",
+    "test:unit": "jest --coverage",
+    "lint": "eslint ./src",
+    "prepare": "husky"
   },
-  "dependencies": {
-    "bootstrap": "^5.3.0-alpha",
-    "bootstrap5-toggle": "^5.0.0"
+  "engines": {
+    "node": ">=22 <25",
+    "npm": ">=10"
+  },
+   "peerDependencies": {
+    "bootstrap": ">=5.3.0 <6"
+  },
+  "peerDependenciesMeta": {
+    "bootstrap": {
+      "optional": false
+    }
   },
   "optionalDependencies": {
-    "jquery": "^3.6.0"
+    "jquery": "^4.0.0"
   },
   "devDependencies": {
-    "cypress": "^12.2.0",
-    "doctoc": "^2.2.1",
-    "dompurify": "^3.0.0",
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@types/bootstrap": "^5.2.10",
+    "@types/jest": "^30.0.0",
+    "@types/jquery": "^3.5.33",
+    "@typescript-eslint/eslint-plugin": "^8.20.0",
+    "@typescript-eslint/parser": "^8.20.0",
+    "commitlint": "^20.3.1",
+    "eslint": "^10.0.0",
+    "cypress": "^15.8.1",
+    "cypress-plugin-tab": "^1.0.5",
+    "doctoc": "^2.2.0",
+    "globals": "^17.0.0",
     "grunt": "^1.5.3",
     "grunt-banner": "^0.6.0",
+    "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-uglify": "^5.2.2"
+    "grunt-exec": "^3.0.0",
+    "husky": "^9.0.11",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "rollup": "^4.54.0",
+    "ts-jest": "^29.4.6",
+    "typescript": "^5.9.3"
   }
 }
