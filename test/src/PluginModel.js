@@ -1,6 +1,6 @@
 import { BsDarkmodeToggleModel } from "../../cypress/support/BsDarkmodeToggleModel.js";
 
-class PluginModel extends BsDarkmodeToggleModel {
+export default class PluginModel extends BsDarkmodeToggleModel {
     /**
    * Check render state data attributes and options
    * @param {jQuery Element} $element
@@ -71,5 +71,3 @@ class PluginModel extends BsDarkmodeToggleModel {
         );
     }
 }
-
-export { PluginModel as default };

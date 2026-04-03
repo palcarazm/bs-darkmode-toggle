@@ -1,6 +1,6 @@
 import { TestAppModel } from "../../cypress/support/TestAppModel.js";
 
-class PageModel extends TestAppModel {
+export default class PageModel extends TestAppModel {
     static #ENV = $("#env-data"); // Enviroment data container
     static #package = "../../package-lock.json"; // Path to package lock
     static MAIN = $("main"); // Main container
@@ -82,5 +82,3 @@ class PageModel extends TestAppModel {
         );
     }
 }
-
-export { PageModel as default };

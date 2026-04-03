@@ -69,7 +69,7 @@ const OPTIONS = [
     },
 ];
 
-class TestLoader {
+export default class TestLoader {
     /**
    * Create the layout for testing data attributes
    * @param {string} _pluginInterface Plugin Interface
@@ -255,5 +255,3 @@ class TestLoader {
         });
     }
 }
-
-export { TestLoader as default };
