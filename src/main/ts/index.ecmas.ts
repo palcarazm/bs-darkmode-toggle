@@ -37,7 +37,7 @@ import { Methods } from "./types/Methods";
     /**
      * Auto-initialize plugin on elements with `data-plugin="bs-darkmode-toggle"`
      */
-    if (typeof globalThis.window !== "undefined") {
+    if (globalThis.window !== undefined) {
         globalThis.window.onload = () => {
             globalThis.document
                 .querySelectorAll<HTMLElement>('[data-plugin="bs-darkmode-toggle"]')
@@ -46,7 +46,7 @@ import { Methods } from "./types/Methods";
     }
 
     // Export library if possible
-    if (typeof module !== "undefined" && module.exports) {
+    if (module !== undefined && module.exports) {
         module.exports = DarkModeToggle;
     }
 
