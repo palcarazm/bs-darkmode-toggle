@@ -1,6 +1,12 @@
 # Node modules
 node_modules
 
+# Debug
+debug
+
+# Docs
+docs
+
 # Logs
 *.log
 
@@ -15,6 +21,7 @@ node_modules
 test/*
 cypress/*
 cypress.config.js
+coverage
 
 # Templates
 *.template*

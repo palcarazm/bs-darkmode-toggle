@@ -1,5 +1,13 @@
 # Node modules
 node_modules
+package-lock.json
+
+# Debug
+debug
+
+# Dist
+js
+!src/main/js
 
 # Logs
 *.log
@@ -9,5 +17,6 @@ node_modules
 .dccache
 .DS_Store
 
-# Cypress
+# Test
+coverage
 cypress/screenshots

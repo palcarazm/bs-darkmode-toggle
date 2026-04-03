@@ -121,15 +121,15 @@ Find in the example the same toggle can be personalize vía API options and data
 </script>
 ```
 
-| Name             | Type        | Default               | Description |
-| :--------------- | :---------: | :-------------------: | :---------- |
-| `state`          | Boolean     | "true"                | Default light (true) or dark (false) color scheme. For data attributes use light/dark instead. |
-| `root`           | String      | ":root"               | CSS selector for root element to apply color scheme. |
-| `allowCookie`    | Boolean     | "false"               | Set if the user has allowed to use cookies. For data attribute the presence means true and the absence false. |
-| `lightLabel`     | string/html | ![sun](https://raw.githubusercontent.com/palcarazm/bs-darkmode-toggle/v1/img/sun.svg)   | Set the light toggle label. |
-| `darkLabel`      | string/html | ![moon](https://raw.githubusercontent.com/palcarazm/bs-darkmode-toggle/v1/img/moon.svg) | Set the dark toggle label. |
-| `lightColorMode` | string      | "light"               | Set the light color scheme. |
-| `darkColorMode`  | string      | "dark"                | Set the dark color scheme. |
+| Name             |    Type     | Default | Description                                                                                                   |
+| :--------------- | :---------: | :-----: | :------------------------------------------------------------------------------------------------------------ |
+| `state`          |   Boolean   | "true"  | Default light (true) or dark (false) color scheme. For data attributes use light/dark instead.                |
+| `root`           |   String    | ":root" | CSS selector for root element to apply color scheme.                                                          |
+| `allowCookie`    |   Boolean   | "false" | Set if the user has allowed to use cookies. For data attribute the presence means true and the absence false. |
+| `lightLabel`     | string/html | "Light" | Set the light toggle label.                                                                                   |
+| `darkLabel`      | string/html | "Dark"  | Set the dark toggle label.                                                                                    |
+| `lightColorMode` |   string    | "light" | Set the light color scheme.                                                                                   |
+| `darkColorMode`  |   string    | "dark"  | Set the dark color scheme.                                                                                    |
 
 ## Methods
 Methods can be used to control the darkmode toggle directly.
