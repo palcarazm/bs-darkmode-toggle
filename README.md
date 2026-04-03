@@ -1,18 +1,20 @@
 [![GitHub license](https://img.shields.io/github/license/palcarazm/bs-darkmode-toggle.svg?color=informational)](https://github.com/palcarazm/bs-darkmode-toggle/blob/master/LICENSE)
 [![Latest release](https://img.shields.io/github/package-json/v/palcarazm/bs-darkmode-toggle/v1?logo=github)](https://github.com/palcarazm/bs-darkmode-toggle/releases)
-[![Bootstrap 5](https://img.shields.io/static/v1?label=bootstrap&message=%5E5.3.0-alpha&color=informational&logo=bootstrap&logoColor=white)](https://getbootstrap.com/docs/5.0)
-[![BS Toggle](https://img.shields.io/static/v1?label=bs-toggle&message=%5E5.0.0&color=informational)](https://palcarazm.github.io/bootstrap5-toggle/)
+[![Bootstrap 5](https://img.shields.io/static/v1?label=bootstrap&message=%5E5.3.0&color=informational&logo=bootstrap&logoColor=white)](https://getbootstrap.com/docs/5.3)
 [![JSDelivr Badge](https://img.shields.io/jsdelivr/npm/hm/bs-darkmode-toggle?label=hits&logo=jsdelivr&logoColor=white)](https://www.jsdelivr.com/package/npm/bs-darkmode-toggle)
 [![NPM Badge](https://img.shields.io/npm/dm/bs-darkmode-toggle?logo=npm)](https://www.npmjs.com/package/bs-darkmode-toggle)
-[![Build](https://img.shields.io/github/actions/workflow/status/palcarazm/bs-darkmode-toggle/build.yml?branch=v1&logo=npm)](https://github.com/palcarazm/bs-darkmode-toggle/actions?query=workflow%3A%22Build+Check%22)
-[![Test](https://img.shields.io/github/actions/workflow/status/palcarazm/bs-darkmode-toggle/cypress.yml?branch=v1&label=tests&logo=cypress)](https://github.com/palcarazm/bs-darkmode-toggle/actions?query=workflow%3A%22Cypress+Tests%22)
-[![Security](https://img.shields.io/snyk/vulnerabilities/npm/bs-darkmode-toggle@1.0.0-alpha2?logo=snyk)](https://snyk.io/advisor/npm-package/bs-darkmode-toggle)
 [![EOL](https://img.shields.io/endpoint?url=https%3A%2F%2Fpalcarazm.github.io%2Fbs-darkmode-toggle%2Fapi%2Feol%2Fv1)](https://github.com/palcarazm/bs-darkmode-toggle/security/policy)
 [![Funding](https://img.shields.io/badge/sponsor-30363D?style=flat&logo=GitHub-Sponsors&logoColor=#white)](https://github.com/sponsors/palcarazm)
-<!--[![Rate this package](https://badges.openbase.com/js/rating/bs-darkmode-toggle.svg?token=rNvznTVToo+EmX5g+KTvfYqI9+YTWJeUWTxPj7tLA6o=)](https://openbase.com/js/bs-darkmode-toggle?utm_source=embedded&utm_medium=badge&utm_campaign=rating-badge&utm_term=js/bs-darkmode-toggle)-->
+
+[![Coverage Status](https://img.shields.io/coverallsCoverage/github/palcarazm/bs-darkmode-toggle?branch=v5&logo=coveralls)](https://coveralls.io/github/palcarazm/bs-darkmode-toggle?branch=v5)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=palcarazm_bs-darkmode-toggle&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=palcarazm_bs-darkmode-toggle)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=palcarazm_bs-darkmode-toggle&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=palcarazm_bs-darkmode-toggle)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=palcarazm_bs-darkmode-toggle&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=palcarazm_bs-darkmode-toggle)
+[![Security](https://img.shields.io/badge/security-monitored-informational?logo=snyk)](https://snyk.io/advisor/npm-package/bs-darkmode-toggle)
+
 
 # Bootstrap Darkmode Toggle
-**Bootstrap Darkmode Toggle** is a plugin for bootstrap to add a ligthmode/darkmode switch in to your app.
+**Bootstrap Darkmode Toggle** is a plugin for bootstrap to add a light/dark mode switch in to your app.
 
 ---
 #### Library Distributions
@@ -195,10 +197,10 @@ Passing `true` to the `light`, `dark` and `toggle` methods will enable the silen
 
 # Collaborators welcom!
 
-- :sos: ¿Do you need some help? Open a question in [GitHub Discussion](https://github.com/palcarazm/bs-darkmode-toggle/discussions/categories/q-a)
-- :bug: ¿Do you find a bug? Open a issue in [GitHub bug report](https://github.com/palcarazm/bs-darkmode-toggle/issues/new?assignees=-&labels=bug&template=bug_report.yml&title=Provide+a+general+summary+of+the+issue)
-- :bulb: ¿Do you have a great idea? Open a issue in [GitHub feature request](https://github.com/palcarazm/bs-darkmode-toggle/issues/new?assignees=&labels=feature&template=feature_request.yml&title=Provide+a+general+summary+of+the+feature)
-- :computer: ¿Do you know how to fix a bug? Open a pull request in [GitHub pull repuest](https://github.com/palcarazm/bs-darkmode-toggle/compare).
+- :sos: Do you need some help? Open a thread in [GitHub Discussions Q&A](https://github.com/palcarazm/bs-darkmode-toggle/discussions/new?category=q-a)
+- :bug: Do you find a bug? Open an issue in [GitHub bug report](https://github.com/palcarazm/bs-darkmode-toggle/issues/new?template=01-BUG_REPORT.yml)
+- :bulb: Do you have a great idea? Open an issue in [GitHub feature request](https://github.com/palcarazm/bs-darkmode-toggle/issues/new?template=02-FEATURE_REQUEST.yml)
+- :computer: Do you know how to fix a bug? Open a pull request in [GitHub pull request](https://github.com/palcarazm/bs-darkmode-toggle/compare).
 
 [![GitHub Contributors](https://contrib.rocks/image?repo=palcarazm/bs-darkmode-toggle)](https://github.com/palcarazm/bs-darkmode-toggle/graphs/contributors)
 
