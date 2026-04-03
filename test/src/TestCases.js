@@ -7,7 +7,7 @@ const TESTLOADER = testloader.default;
 import * as testrunner from "./TestRunner.js";
 const TESTRUNNER = testrunner.default;
 
-class TestCases {
+export default class TestCases {
     TESTCASES = new Map();
 
     constructor(INTERFACE) {
@@ -159,5 +159,3 @@ class TestCase {
         this.runner = runner;
     }
 }
-
-export { TestCases as default };

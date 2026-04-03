@@ -4,7 +4,7 @@ const PAGEMODEL = pagemodel.default;
 import * as pluginmodel from "./PluginModel.js";
 const PLUGIN = pluginmodel.default;
 
-class TestRunner {
+export default class TestRunner {
     /**
    * Run data attributes test
    * @static
@@ -93,5 +93,3 @@ class TestRunner {
         }
     }
 }
-
-export { TestRunner as default };
