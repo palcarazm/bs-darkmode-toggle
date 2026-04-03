@@ -50,10 +50,14 @@
     "npm": ">=10"
   },
    "peerDependencies": {
-    "bootstrap": ">=5.3.0 <6"
+    "bootstrap": ">=5.3.0 <6",
+    "bootstrap5-toggle": ">=5 <6"
   },
   "peerDependenciesMeta": {
     "bootstrap": {
+      "optional": false
+    },
+    "bootstrap5-toggle": {
       "optional": false
     }
   },
