@@ -47,7 +47,7 @@
     "jquery": "^3.6.0"
   },
   "devDependencies": {
-    "cypress": "^12.2.0",
+    "cypress": "^15.13.0",
     "doctoc": "^2.2.1",
     "dompurify": "^3.0.0",
     "grunt": "^1.5.3",
