@@ -1,5 +1,12 @@
 # Node modules
 node_modules
+package-lock.json
+
+# Debug
+debug
+
+# Dist
+js
 
 # Logs
 *.log
