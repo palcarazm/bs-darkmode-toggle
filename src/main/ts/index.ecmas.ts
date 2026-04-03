@@ -46,7 +46,7 @@ import { Methods } from "./types/Methods";
     }
 
     // Export library if possible
-    if (module !== undefined && module.exports) {
+    if (typeof module !== "undefined" && module.exports) {
         module.exports = DarkModeToggle;
     }
 
