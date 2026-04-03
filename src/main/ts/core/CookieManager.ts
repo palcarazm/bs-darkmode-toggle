@@ -10,7 +10,8 @@ export class CookieManager {
     }
 
     get(name: string): string | null {
-        const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+        const regex = new RegExp("(^| )" + name + "=([^;]+)");
+        const match = regex.exec(document.cookie);
         return match ? decodeURIComponent(match[2]) : null;
     }
 
