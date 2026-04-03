@@ -33,7 +33,7 @@ import { Methods } from "./types/Methods";
     });
   }
 
-  // No Confict
+  // No Conflict
   let old = $.fn.bsDarkmodeToggle;
   $.fn.bsDarkmodeToggle = Plugin;
   $.fn.bsDarkmodeToggle.Constructor = DarkModeToggle;
