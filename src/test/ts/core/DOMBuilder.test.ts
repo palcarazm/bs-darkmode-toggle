@@ -60,7 +60,7 @@ describe("DOMBuilder", () => {
         });
 
         it("should call bootstrapToggle with correct options", () => {
-            const {  } = createBuilder();
+            const _instance = createBuilder();
 
             expect(bsToggleSpy).toHaveBeenCalledWith({
                 onlabel: options.lightLabel,
