@@ -1,0 +1,23 @@
+name: Issues Workflows
+
+on:
+  issues:
+    types: [opened, milestoned, assigned]
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  assign_one_project:
+    runs-on: ubuntu-latest
+    name: Issues Workflows
+    steps:
+      - name: Comment in NEW issues
+        #v5.0.0
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9
+        if: github.event.action == 'opened'
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            Hi! :wave:
+            Thanks for your issue. You are helping to improve Bootstrap Dark Mode Toggle.
+          reactions: "+1"
