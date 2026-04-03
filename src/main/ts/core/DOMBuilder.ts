@@ -6,7 +6,7 @@ export class DOMBuilder {
     private readonly lightColorMode: string;
     private readonly darkColorMode: string;
 
-    private readonly BS_ATTRIBUTE = "data-bs-theme";
+    private static readonly BS_ATTRIBUTE = "bsTheme";
 
     constructor(container: HTMLElement, options: ResolvedOptions) {
         this.root = document.querySelectorAll<HTMLElement>(options.root);
@@ -34,10 +34,7 @@ export class DOMBuilder {
             true
         );
         this.root.forEach((el) => {
-            el.setAttribute(
-                this.BS_ATTRIBUTE,
-                isLight ? this.lightColorMode : this.darkColorMode
-            );
+            el.dataset[DOMBuilder.BS_ATTRIBUTE] = isLight ? this.lightColorMode : this.darkColorMode;
         });
     }
 

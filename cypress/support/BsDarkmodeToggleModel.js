@@ -76,7 +76,7 @@ export class BsDarkmodeToggleModel {
    */
     static getLightLabel($element, options = {}) {
         return (
-            $element.attr("data-lightLabel") ??
+            $element.attr("data-light-label") ??
       options.lightLabel ??
       BsDarkmodeToggleModel.DEFAULTS.lightLabel
         );
@@ -90,7 +90,7 @@ export class BsDarkmodeToggleModel {
    */
     static getDarkLabel($element, options = {}) {
         return (
-            $element.attr("data-darkLabel") ??
+            $element.attr("data-dark-label") ??
       options.darkLabel ??
       BsDarkmodeToggleModel.DEFAULTS.darkLabel
         );
@@ -104,7 +104,7 @@ export class BsDarkmodeToggleModel {
    */
     static getLightColorMode($element, options = {}) {
         return (
-            $element.attr("data-lightColorMode") ??
+            $element.attr("data-light-color-mode") ??
       options.lightColorMode ??
       BsDarkmodeToggleModel.DEFAULTS.lightColorMode
         );
@@ -118,7 +118,7 @@ export class BsDarkmodeToggleModel {
    */
     static getDarkColorMode($element, options = {}) {
         return (
-            $element.attr("data-darkColorMode") ??
+            $element.attr("data-dark-color-mode") ??
       options.darkColorMode ??
       BsDarkmodeToggleModel.DEFAULTS.darkColorMode
         );
