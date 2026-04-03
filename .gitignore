@@ -17,5 +17,6 @@ js
 .dccache
 .DS_Store
 
-# Cypress
+# Test
+coverage
 cypress/screenshots
