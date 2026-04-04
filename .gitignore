@@ -2,6 +2,9 @@
 node_modules
 package-lock.json
 
+# Packaging
+bs-darkmode-toggle-*.tgz
+
 # Debug
 debug
 
@@ -9,6 +12,8 @@ debug
 js
 !src/main/js
 !docs/src/js
+css
+!docs/src/css
 
 # Logs
 *.log
@@ -20,4 +25,6 @@ js
 
 # Test
 coverage
+cypress/videos
 cypress/screenshots
+cypress/downloads

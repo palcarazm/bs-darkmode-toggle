@@ -1,6 +1,9 @@
 # Node modules
 node_modules
 
+# Packaging
+bs-darkmode-toggle-*.tgz
+
 # Debug
 debug
 
