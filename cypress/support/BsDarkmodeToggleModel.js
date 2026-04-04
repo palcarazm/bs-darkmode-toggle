@@ -125,6 +125,21 @@ export class BsDarkmodeToggleModel {
     }
 
     /**
+     * Get the wanted style regarding attributes and options
+     * @static
+     * @param {jQuery Element} $element
+     * @param {Object} options
+     * @returns {string} style
+     */
+    static getStyle($element, options = {}) {
+        return (
+            $element.attr("data-style") ??
+      options.style ??
+      BsDarkmodeToggleModel.DEFAULTS.style
+        );
+    }
+
+    /**
    * Check render state data attributes and options
    * @param {jQuery Element} $element
    * @param {Object} options
@@ -205,6 +220,21 @@ export class BsDarkmodeToggleModel {
             .should(
                 "have.html",
                 BsDarkmodeToggleModel.getDarkLabel($element, options)
+            );
+    }
+
+    /**
+     * Check render style data attributes and options
+     * @param {jQuery Element} $element
+     * @param {Object} options
+     * @returns {Boolean} Check PASS or FAIL
+     */
+    static checkStyle($element, options = {}) {
+        cy.wrap($element)
+            .find(BsDarkmodeToggleModel.TOGGLE_SELECTOR)
+            .should(
+                "have.class",
+                `btn-${BsDarkmodeToggleModel.getStyle($element, options)}`
             );
     }
 

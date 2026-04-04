@@ -3,6 +3,7 @@ const { cwd } = require("node:process");
 
 module.exports = function (grunt) {
     const pkg = grunt.file.readJSON("package.json");
+    const isDev = grunt.option("dev");
 
     grunt.initConfig({
         pkg,
@@ -31,33 +32,41 @@ module.exports = function (grunt) {
                 dest: "dist/index.html",
                 options: {
                     process: function (content, _srcpath) {
-                        return content
-                            .replace(/\{\{bootstrapVersion\}\}/g, pkg.dependencies.bootstrap)
-                            .replace(/\{\{jqueryVersion\}\}/g, pkg.dependencies.jquery)
-                            .replace(
-                                /\{\{fontawesomeVersion\}\}/g,
+                        let processed = content
+                            .replaceAll("{{bootstrapVersion}}", pkg.dependencies.bootstrap)
+                            .replaceAll("{{jqueryVersion}}", pkg.dependencies.jquery)
+                            .replaceAll(
+                                "{{fontawesomeVersion}}",
                                 pkg.dependencies["@fortawesome/fontawesome-free"]
                             )
-                            .replace(
-                                /\{\{highlightjsVersion\}\}/g,
+                            .replaceAll(
+                                "{{highlightjsVersion}}",
                                 pkg.dependencies["@highlightjs/cdn-assets"]
                             )
-                            .replace(
-                                /\{\{highlightjsBadgeVersion\}\}/g,
+                            .replaceAll(
+                                "{{highlightjsBadgeVersion}}",
                                 pkg.dependencies["highlightjs-badge"]
                             )
-                            .replace(
-                                /\{\{bootstrapTocVersion\}\}/g,
+                            .replaceAll(
+                                "{{bootstrapTocVersion}}",
                                 pkg.config.externalDependencies["afeld/bootstrap-toc"]
                             )
-                            .replace(
-                                /\{\{bootstrap5ToggleVersion\}\}/g,
+                            .replaceAll(
+                                "{{bootstrap5ToggleVersion}}",
                                 pkg.dependencies["bootstrap5-toggle"]
                             )
-                            .replace(
-                                /\{\{bsDarkmodeToggleVersion\}\}/g,
-                                pkg.dependencies["bs-darkmode-toggle"]
-                            );
+                            .replaceAll("{{bsDarkmodeToggleVersion}}", pkg.dependencies["bs-darkmode-toggle"]);
+                        
+                        // Replace BS Darkmode Toggle paths based on environment
+                        console.log(`Processed HTML for ${isDev ? "development" : "production"} environment.`);
+                        if (isDev) {
+                            processed = processed
+                                .replaceAll(
+                                    `https://cdn.jsdelivr.net/npm/bs-darkmode-toggle@${pkg.dependencies["bs-darkmode-toggle"]}`,
+                                    "../.."
+                                );
+                        }
+                        return processed;
                     },
                 },
             },

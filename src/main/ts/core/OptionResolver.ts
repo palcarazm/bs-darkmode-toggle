@@ -1,5 +1,5 @@
 import { sanitize, SanitizeMode } from "./Tools";
-import { DarkModeOptions, ResolvedOptions } from "./OptionResolver.types";
+import { DarkModeOptions, ResolvedOptions, ToggleStyle } from "./OptionResolver.types";
 
 export class OptionResolver {
     private static readonly DEFAULTS: ResolvedOptions = {
@@ -13,6 +13,12 @@ export class OptionResolver {
         style: "outline-secondary",
     };
 
+    /**
+     * Resolves the options for the dark mode toggle by merging user-provided options, HTML data attributes, and defaults.
+     * @param element - The base HTML element to parse attributes
+     * @param options - The user provided initialization options
+     * @returns The option to use
+     */
     static resolve(element: HTMLElement, options: DarkModeOptions = {}): ResolvedOptions {
         let state: boolean | null = null;
 
@@ -28,7 +34,7 @@ export class OptionResolver {
             darkLabel: sanitize(element.dataset.darkLabel || options.darkLabel || this.DEFAULTS.darkLabel, { mode: SanitizeMode.HTML })!,
             lightColorMode: sanitize(element.dataset.lightColorMode || options.lightColorMode || this.DEFAULTS.lightColorMode, { mode: SanitizeMode.TEXT })!,
             darkColorMode: sanitize(element.dataset.darkColorMode || options.darkColorMode || this.DEFAULTS.darkColorMode, { mode: SanitizeMode.TEXT })!,
-            style: this.DEFAULTS.style,
+            style: sanitize(element.dataset.style || options.style || this.DEFAULTS.style, { mode: SanitizeMode.TEXT }) as ToggleStyle,
         };
     }
 }

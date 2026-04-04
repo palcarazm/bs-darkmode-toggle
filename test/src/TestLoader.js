@@ -67,6 +67,18 @@ const OPTIONS = [
         code: "custom_state",
         options: [{ key: "state", value: "dark" }],
     },
+    // CUSTOM STYLE
+    {
+        name: "custom style",
+        code: "custom_style",
+        options: [
+            {
+                key: "style",
+                attr: "data-style",
+                value: "danger",
+            },
+        ],
+    },
 ];
 
 export default class TestLoader {

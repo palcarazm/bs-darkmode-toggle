@@ -45,14 +45,28 @@ module.exports = function setup(grunt) {
                 },
             },
         },
+        watch: {
+            ts:{
+                files: ["src/main/ts/**/*"],
+                tasks: ["exec:ts"],
+                options: { spawn: false },
+            },
+            js:{
+                files: ["src/main/js/**/*"],
+                tasks: ["exec:rollup"],
+                options: { spawn: false },
+            },
+        },
     });
 
     grunt.loadNpmTasks("grunt-banner");
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-exec");
+    grunt.loadNpmTasks("grunt-contrib-watch");
   
     grunt.registerTask("default", ["clean", "exec:ts", "exec:rollup", "usebanner"]);
     grunt.registerTask("build", ["clean", "exec:ts", "exec:rollup", "usebanner"]);
     grunt.registerTask("readme", ["copy"]);
+    grunt.registerTask("dev", ["build", "watch"]);
 };

@@ -62,5 +62,17 @@ function testCase(pluginInterface) {
         });
       });
     });
+
+    it("Then Boostrap Darkmode Toggle take style or default", () => {
+      TestAppModel.load(pluginInterface, data_test);
+      TestAppModel.getTests().each(($test) => {
+        TestAppModel.getElement($test).each(($element) => {
+          BsDarkmodeToggleModel.checkStyle(
+            $element,
+            TestAppModel.getOptions($test)
+          );
+        });
+      });
+    });
   });
 }

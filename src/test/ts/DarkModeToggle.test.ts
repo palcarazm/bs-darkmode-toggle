@@ -2,6 +2,7 @@
 import { DarkModeToggle } from "../../main/ts/DarkModeToggle";
 import { ActionType } from "../../main/ts/core/StateReducer.types";
 import { OptionResolver } from "../../main/ts/core/OptionResolver";
+import { ResolvedOptions } from "../../main/ts/core/OptionResolver.types";
 
 const setStateMock = jest.fn();
 const onChangeMock = jest.fn();
@@ -15,7 +16,7 @@ jest.mock("../../main/ts/core/DOMBuilder", () => {
     };
 });
 
-const baseOptions = {
+const baseOptions: ResolvedOptions = {
     state: true,
     root: ":root",
     allowCookie: true,
@@ -23,7 +24,7 @@ const baseOptions = {
     darkLabel: "Dark",
     lightColorMode: "light",
     darkColorMode: "dark",
-    style: "outline",
+    style: "outline-secondary",
 };
 
 const resolveMock = jest.spyOn(OptionResolver, "resolve").mockReturnValue({ ...baseOptions });

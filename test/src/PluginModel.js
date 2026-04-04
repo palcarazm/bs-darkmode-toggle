@@ -70,4 +70,20 @@ export default class PluginModel extends BsDarkmodeToggleModel {
       BsDarkmodeToggleModel.getDarkLabel($element, options)
         );
     }
+
+    /**
+     * Check render style data attributes and options
+     * @static
+     * @param {jQuery Element} $element
+     * @param {Object} options
+     * @returns {Boolean} Check PASS or FAIL
+     * @override
+     */
+    static checkStyle($element, options = {}) {
+        let $toggle = $element.find(this.TOGGLE_SELECTOR);
+
+        return (
+            $toggle.hasClass(`btn-${BsDarkmodeToggleModel.getStyle($element, options)}`)
+        );
+    }
 }
