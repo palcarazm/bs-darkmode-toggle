@@ -1,0 +1,37 @@
+{
+  "version": "v1.0.0",
+  "components": {
+    "icon": {
+      "name": "icon",
+      "text": "",
+      "color": "#7337cd",
+      "fontFamily": "\"Font Awesome 6 Free\"",
+      "fontWeight": "900",
+      "fontSize": 48,
+      "letterSpacing": 0
+    },
+    "main": {
+      "name": "main",
+      "text": "bs",
+      "color": "#7337cd",
+      "fontFamily": "Quicksand",
+      "fontWeight": "normal",
+      "fontSize": 48,
+      "letterSpacing": 0
+    },
+    "accent": {
+      "name": "accent",
+      "text": "Darkmode Toggle",
+      "color": "#ffffff",
+      "fontFamily": "Quicksand",
+      "fontWeight": "bold",
+      "fontSize": 48,
+      "letterSpacing": 0
+    }
+  },
+  "global": {
+    "offset": { "size": 0, "color": "#e2e2e2" },
+    "layout": "HORIZONTAL",
+    "shapes": true
+  }
+}
