@@ -8,6 +8,7 @@ debug
 # Dist
 js
 !src/main/js
+!docs/src/js
 
 # Logs
 *.log
