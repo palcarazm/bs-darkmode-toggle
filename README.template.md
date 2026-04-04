@@ -19,23 +19,15 @@
 ---
 #### Library Distributions
 
-| Branch | Bootstrap Support | Last Release |
-| :----: | :---------------: | :----------: |
-| [bootstrap5-toggle v1](https://github.com/palcarazm/bs-darkmode-toggle/tree/v1) | [![Bootstrap 5](https://img.shields.io/static/v1?label=bootstrap&message=%5E5.3.0-alpha&color=informational&logo=bootstrap&logoColor=white)](https://getbootstrap.com/docs/5.0) | [![Latest release](https://img.shields.io/github/package-json/v/palcarazm/bs-darkmode-toggle/v1?logo=github)](https://github.com/palcarazm/bs-darkmode-toggle/releases) |
+| Version | Bootstrap Support | Last Release |
+| :-----: | :---------------: | :----------: |
+| [v1](https://github.com/palcarazm/bs-darkmode-toggle/tree/v1) | [![Bootstrap 5](https://img.shields.io/static/v1?label=bootstrap&message=%5E5.3.0-alpha&color=informational&logo=bootstrap&logoColor=white)](https://getbootstrap.com/docs/5.0) | [![Latest release](https://img.shields.io/github/package-json/v/palcarazm/bs-darkmode-toggle/v1?logo=github)](https://github.com/palcarazm/bs-darkmode-toggle/releases) |
 
 See EOL for each version in [Security Policy Page](https://github.com/palcarazm/bs-darkmode-toggle/security/policy).
-# Demos
 
-**Demos and API Docs:** https://palcarazm.github.io/bs-darkmode-toggle/
+# Demo and documentation
 
-# Related Bootstrap Plugins
-
-<div align="center">
-  <a href="https://github.com/palcarazm/bootstrap5-toggle" title="Boostrap Toggle"
-    ><img
-      src="https://github-readme-stats.vercel.app/api/pin/?username=palcarazm&repo=bootstrap5-toggle&border_radius=10&show_owner=true"
-  /></a>
-</div>
+**Please read our documentation page for a completed usage explanation:** https://palcarazm.github.io/bs-darkmode-toggle/
 
 ---
 
@@ -103,81 +95,7 @@ Simply select the element and invoke the Boostrap Darkmode Toggle API.
 </script>
 ```
 
-# API
-
-## Options
-Options can be passed via data attributes or JavaScript. For data attributes, append the option name to `data-`. Options and data attributes can be use together.
-
-Find in the example the same toggle can be personalize vía API options and data attributes.
-
-```html
-<div data-plugin="bs-darkmode-toggle" data-state="dark" data-allowCookie data-lightColorMode="blue"></div>
-
-<div id="bs-darkmode-toggle"></div>
-<script>
-  document.getElementById('bs-darkmode-toggle').bsDarkmodeToggle({
-    state: false,
-    allowCookie: true,
-    lightColorMode: "blue"
-  });
-</script>
-```
-
-| Name             |    Type     | Default | Description                                                                                                   |
-| :--------------- | :---------: | :-----: | :------------------------------------------------------------------------------------------------------------ |
-| `state`          |   Boolean   | "true"  | Default light (true) or dark (false) color scheme. For data attributes use light/dark instead.                |
-| `root`           |   String    | ":root" | CSS selector for root element to apply color scheme.                                                          |
-| `allowCookie`    |   Boolean   | "false" | Set if the user has allowed to use cookies. For data attribute the presence means true and the absence false. |
-| `lightLabel`     | string/html | "Light" | Set the light toggle label.                                                                                   |
-| `darkLabel`      | string/html | "Dark"  | Set the dark toggle label.                                                                                    |
-| `lightColorMode` |   string    | "light" | Set the light color scheme.                                                                                   |
-| `darkColorMode`  |   string    | "dark"  | Set the dark color scheme.                                                                                    |
-
-## Methods
-Methods can be used to control the darkmode toggle directly.
-
-```html
-<div id="bs-darkmode-toggle"></div>
-<script>
-  let demoElement = document.getElementById('bs-darkmode-toggle');
-  demoElement.bsDarkmodeToggle({
-    state: false,
-    allowCookie: true,
-    lightColorMode: "blue"
-  });
-</script>
-```
-
-
-| Method        | Example                                       | Description                                     |
-| :------------ | :-------------------------------------------- | :---------------------------------------------- |
-| `light`       | `demoElement.bsDarkmodeToggle("light")`       | Enable light color scheme.                      |
-| `dark`        | `demoElement.bsDarkmodeToggle("dark")`        | Enable dark color scheme.                       |
-| `toggle`      | `demoElement.bsDarkmodeToggle("toggle")`      | Switch the enable color scheme.                 |
-| `allowCookie` | `demoElement.bsDarkmodeToggle("allowCookie")` | Set the Cookie Authorization status to allowed. |
-| `denyCookie`  | `demoElement.bsDarkmodeToggle("denyCookie")`  | Set the Cookie Authorization status to denied.  |
-
-# Events
-
-## Event Propagation
-When the color scheme changes a `change` event is fired from bootstrap darkmode toggle element. so you can listner for this event. 
-
-```html
-<div data-plugin="bs-darkmode-toggle" id="bs-darkmode-toggle"></div>
-
-<div id="bs-darkmode-toggle"></div>
-<script>
-  let demoElement = document.getElementById('bs-darkmode-toggle');
-  demoElement.addEventListener('Change',(_e)=>{
-    //Do something
-  });
-</script>
-```
-## Stopping Event Propagation
-Passing `true` to the `light`, `dark` and `toggle` methods will enable the silent option to prevent firing the `change` event in cases where you want to update the color scheme but do not want to fire the `change` event.
-
-
-# Collaborators welcom!
+# Collaborators welcome!
 
 - :sos: Do you need some help? Open a thread in [GitHub Discussions Q&A](https://github.com/palcarazm/bs-darkmode-toggle/discussions/new?category=q-a)
 - :bug: Do you find a bug? Open an issue in [GitHub bug report](https://github.com/palcarazm/bs-darkmode-toggle/issues/new?template=01-BUG_REPORT.yml)
