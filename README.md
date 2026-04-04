@@ -76,14 +76,14 @@ See EOL for each version in [Security Policy Page](https://github.com/palcarazm/
 
 ```html
 <!-- Consider loading Bootstrap and Bootstrap 5 toggle dependencies -->
-<script src="https://cdn.jsdelivr.net/npm/bs-darkmode-toggle@1.0.0-alpha2/js/bs-darkmode-toggle.ecmas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-darkmode-toggle@1.0.0-rc1/js/bs-darkmode-toggle.ecmas.min.js"></script>
 ```
 
 ### jQuery Interface
 
 ```html
 <!-- Consider loading Bootstrap, jQuery and Bootstrap 5 toggle dependencies -->
-<script src="https://cdn.jsdelivr.net/npm/bs-darkmode-toggle@1.0.0-alpha2/js/bs-darkmode-toggle.jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-darkmode-toggle@1.0.0-rc1/js/bs-darkmode-toggle.jquery.min.js"></script>
 ```
 
 ## Download
@@ -95,13 +95,13 @@ See EOL for each version in [Security Policy Page](https://github.com/palcarazm/
 [![NPM Badge](https://img.shields.io/npm/dm/bs-darkmode-toggle?logo=npm)](https://www.npmjs.com/package/bs-darkmode-toggle)
 
 ```ksh
-npm install bs-darkmode-toggle@1.0.0-alpha2
+npm install bs-darkmode-toggle@1.0.0-rc1
 ```
 
 ## Yarn
 
 ```ksh
-yarn add bs-darkmode-toggle@1.0.0-alpha2
+yarn add bs-darkmode-toggle@1.0.0-rc1
 ```
 
 # Usage

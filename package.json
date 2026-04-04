@@ -1,6 +1,6 @@
 {
   "name": "bs-darkmode-toggle",
-  "version": "1.0.0-alpha2",
+  "version": "1.0.0-rc1",
   "type": "module",
   "description": "Bootstrap Darkmode Toggle is a plugin for bootstrap to add a ligthmode/darkmode switch in to your app.",
   "author": {
@@ -49,7 +49,7 @@
     "node": ">=22 <25",
     "npm": ">=10"
   },
-   "peerDependencies": {
+  "peerDependencies": {
     "bootstrap": ">=5.3.0 <6",
     "bootstrap5-toggle": ">=5 <6"
   },
