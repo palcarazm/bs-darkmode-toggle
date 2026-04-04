@@ -2,7 +2,6 @@
   "name": "bs-darkmode-toggle-doc",
   "version": "1.0.0",
   "description": "Documentation of bs-darkmode-toggle",
-  "main": "src/js/main.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/palcarazm/bs-darkmode-toggle.git"
