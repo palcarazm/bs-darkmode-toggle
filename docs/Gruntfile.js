@@ -1,3 +1,6 @@
+const path = require("node:path");
+const { cwd } = require("node:process");
+
 module.exports = function (grunt) {
     const pkg = grunt.file.readJSON("package.json");
 
@@ -60,9 +63,8 @@ module.exports = function (grunt) {
             },
         },
         exec: {
-            rollup: "npx rollup -c",
-            postcss:
-        "npx postcss src/css/styles.css -o dist/css/styles.min.css --map --env production",
+            rollup: {cmd:"npx rollup -c", cwd: path.resolve(__dirname)},
+            postcss:{cmd:"npx postcss src/css/styles.css -o dist/css/styles.min.css --map --env production", cwd: path.resolve(__dirname)},
         },
         watch: {
             assets: {
