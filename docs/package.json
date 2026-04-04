@@ -16,7 +16,7 @@
   "license": "MIT",
   "scripts": {
     "build": "grunt build",
-    "dev": "grunt dev"
+    "dev": "grunt dev --dev"
   },
   "config": {
     "externalDependencies": {
