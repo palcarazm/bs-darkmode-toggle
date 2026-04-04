@@ -1,11 +1,12 @@
 const terser = require("@rollup/plugin-terser");
+const path = require("node:path");
 
 module.exports = [
     {
-        input: "./src/js/main.js",
+        input: path.resolve(__dirname, "src/js/main.js"),
         output: [
             {
-                file: "./dist/js/bundle.min.js",
+                file: path.resolve(__dirname, "dist/js/bundle.min.js"),
                 format: "umd",
                 sourcemap: true,
                 plugins: [terser()]
