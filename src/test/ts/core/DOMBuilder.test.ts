@@ -20,7 +20,7 @@ describe("DOMBuilder", () => {
         darkLabel: "Dark",
         lightColorMode: "light",
         darkColorMode: "dark",
-        style: "outline",
+        style: "outline-secondary",
     };
 
     beforeEach(() => {

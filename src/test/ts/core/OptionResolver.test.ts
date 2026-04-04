@@ -1,4 +1,5 @@
 import { OptionResolver } from "../../../main/ts/core/OptionResolver";
+import { ToggleStyle } from "../../../main/ts/core/OptionResolver.types";
 import * as Tools from "../../../main/ts/core/Tools";
 
 describe("OptionResolver", () => {
@@ -148,10 +149,29 @@ describe("OptionResolver", () => {
     });
 
     describe("style resolution", () => {
-        it("should always use default style", () => {
+        const btnStyles: ToggleStyle[] = [
+            "primary", "secondary", "success", "danger", "warning", "info", "light", "dark", "link",
+            "outline-primary", "outline-secondary", "outline-success", "outline-danger", "outline-warning", "outline-info", "outline-light", "outline-dark"
+        ];
+
+        it.each(btnStyles)("should resolve %s style from data", (style) => {
+            element.dataset.style = `${style}`;
+
+            const result = OptionResolver.resolve(element);
+
+            expect(result.style).toBe(`${style}`);
+        });
+
+        it.each(btnStyles)("should resolve %s style from options", (style) => {
             const result = OptionResolver.resolve(element, {
-                style: "ignored",
+                style: style,
             });
+
+            expect(result.style).toBe(style);
+        });
+
+        it("should fallback style to defaults", () => {
+            const result = OptionResolver.resolve(element);
 
             expect(result.style).toBe("outline-secondary");
         });

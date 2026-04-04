@@ -2,6 +2,7 @@ import DocSection from "./DocSection";
 import State from "./features/State";
 import Root from "./features/Root";
 import Label from "./features/Label";
+import Style from "./features/Style";
 import ColorScheme from "./features/ColorScheme";
 import Cookie from "./features/Cookie";
 
@@ -11,6 +12,7 @@ class Features extends DocSection {
             State.build(),
             Root.build(),
             Label.build(),
+            Style.build(),
             ColorScheme.build(),
             Cookie.build(),
         ]);

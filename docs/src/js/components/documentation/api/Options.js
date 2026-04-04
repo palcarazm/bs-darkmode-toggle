@@ -29,6 +29,7 @@ class Options extends DocArticle {
           darkLabel: "Good Evening",
           lightColorMode: "blue",
           darkColorMode: "red",
+          style: "primary",
         });
     });
 </script>`;
@@ -49,6 +50,7 @@ class Options extends DocArticle {
           darkLabel: "Good Evening",
           lightColorMode: "blue",
           darkColorMode: "red",
+          style: "primary",
         });
     });
 </script>`;
@@ -85,6 +87,7 @@ class Options extends DocArticle {
                 darkLabel: "Good Evening",
                 lightColorMode: "blue",
                 darkColorMode: "red",
+                style: "primary",
             });
         };
 
@@ -151,6 +154,17 @@ class Options extends DocArticle {
                 <td>
                     Set the dark toggle label.
                 </td>
+            </tr>
+            <tr>
+                <td><code class="text-nowrap">style</code></td>
+                <td><code class="text-nowrap">data-style</code></td>
+                <td>string</td>
+                <td><code class="text-nowrap">"outline-secondary"</code></td>
+                <td>
+                    Style of the toggle.<br>Possible values are:
+                    <code>primary</code>, <code>secondary</code>, <code>success</code>, <code>danger</code>,
+                    <code>warning</code>, <code>info</code>, <code>light</code>, <code>dark</code><br>
+                    and their <code>outline</code> variants as <code>outline-primary</code>.
             </tr>
             <tr>
                 <td><code class="text-nowrap">lightColorMode</code></td>
