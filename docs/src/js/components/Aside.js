@@ -65,7 +65,7 @@ class Aside {
     static #navBar() {
         const navBar = document.createElement("nav");
         navBar.className =
-      "navbar navbar-expand-md navbar-light flex-md-column p-0";
+      "navbar navbar-expand-md navbar-light flex-md-column p-0 mb-3";
         navBar.setAttribute("aria-label", "Site menu");
 
         const button = document.createElement("button");
@@ -82,6 +82,12 @@ class Aside {
 
         button.appendChild(span);
         navBar.appendChild(button);
+
+        const darkModeToggle = document.createElement("div");
+        darkModeToggle.dataset.plugin = "bs-darkmode-toggle";
+        darkModeToggle.dataset.allowCookie = "";
+
+        navBar.appendChild(darkModeToggle);
 
         const collapseDiv = document.createElement("div");
         collapseDiv.className = "collapse navbar-collapse";
