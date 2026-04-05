@@ -3,7 +3,11 @@ import { TEST_CONSTANTS } from "../common/constants.js";
 
 export class BaseLoader {
     load(testCases, interface_) {
-        throw new Error("Must implement load()");
+        globalThis.window.matchMedia = (_query) => ({
+            matches: false,
+            addEventListener: () => {},
+            removeEventListener: () => {},
+        });
     }
 
     buildElement(testCase, id) {

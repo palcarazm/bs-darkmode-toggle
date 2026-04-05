@@ -2,7 +2,8 @@ import { BaseLoader } from "./BaseLoader.js";
 
 export class OptionsLoader extends BaseLoader {
     load(testCases, interface_) {
-        testCases.forEach(testCase => {
+        super.load(testCases, interface_);
+        testCases.forEach((testCase) => {
             const id = testCase.id;
             const $element = this.buildElement(testCase, id);
             const $container = this.buildContainer(id, $element, true);
@@ -19,7 +20,7 @@ export class OptionsLoader extends BaseLoader {
 
     #convertToOptions(options) {
         const result = {};
-        options.forEach(opt => {
+        options.forEach((opt) => {
             if (opt.key) {
                 result[opt.key] = opt.value;
             } else if (opt.attr === "data-state") {
@@ -49,14 +50,17 @@ export class OptionsLoader extends BaseLoader {
 
     #initializeWithOptions($element, options, interface_) {
         switch (interface_) {
-        case "ECMAS":
-            $element[0].bsDarkmodeToggle(options);
-            break;
-        case "JQUERY":
-            $element.bsDarkmodeToggle(options);
-            break;
-        default:
-            throw new DOMException(`Unknown interface: ${interface_}`, "NotSupportedError");
+            case "ECMAS":
+                $element[0].bsDarkmodeToggle(options);
+                break;
+            case "JQUERY":
+                $element.bsDarkmodeToggle(options);
+                break;
+            default:
+                throw new DOMException(
+                    `Unknown interface: ${interface_}`,
+                    "NotSupportedError"
+                );
         }
     }
 }

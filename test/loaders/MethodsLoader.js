@@ -4,6 +4,7 @@ import { PageModel } from "../app/PageModel.js";
 
 export class MethodsLoader extends BaseLoader {
     load(_testCases, interface_) {
+        super.load(_testCases, interface_);
         const $container = PageModel.TEST_CONTAINER.clone().attr(
             "id",
             "test_methods"
