@@ -4,6 +4,7 @@ import { CookieManager } from "./core/CookieManager";
 import { DOMBuilder } from "./core/DOMBuilder";
 import { ResolvedOptions } from "./core/OptionResolver.types";
 import { ActionType } from "./core/StateReducer.types";
+import { ColorModes } from "./types/ColorModes";
 
 export class DarkModeToggle {
     private readonly element: HTMLElement;
@@ -85,12 +86,70 @@ export class DarkModeToggle {
         }
     }
 
-    private applyPreferredScheme() {
-        if (!this.options.allowCookie) return;
+    /**
+     * Applies the preferred color scheme based on cookies or system preference
+     * @returns a boolean indicating whether a preference was applied (true) or not (false)
+     */
+    private applyPreferredScheme(): boolean {
+        return this.applyCookies() || this.applySystemPreference();
+    }
 
-        const cookie = this.cookie.get(DarkModeToggle.COOKIE_NAME);
+    /**
+     * Applies the color scheme based on cookies if allowed and available
+     * @returns a boolean indicating whether a preference was applied (true) or not (false)
+     */
+    private applyCookies(): boolean {
+        if (this.options.allowCookie){
+            const cookie = this.cookie.get(DarkModeToggle.COOKIE_NAME);
+    
+            if (cookie === this.options.darkColorMode) {
+                this.state.do(ActionType.DARK);
+                return true;
+            }
+            if (cookie === this.options.lightColorMode) {
+                this.state.do(ActionType.LIGHT);
+                return true;
+            }
+        }
+        return false;
+    }
 
-        if (cookie === this.options.darkColorMode) this.state.do(ActionType.DARK);
-        if (cookie === this.options.lightColorMode) this.state.do(ActionType.LIGHT);
+    /**
+     * Applies the color scheme based on system preferences if available
+     * @returns a boolean indicating whether a preference was applied (true) or not (false)
+     */
+    private applySystemPreference(): boolean {
+        const systemPreference = this.getSystemPreference();
+        if (systemPreference === ColorModes.DARK) {
+            this.state.do(ActionType.DARK);
+            return true;
+        }
+        if (systemPreference === ColorModes.LIGHT) {
+            this.state.do(ActionType.LIGHT);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Gets the system color scheme preference if available
+     * @returns color scheme preference as `ColorModes`
+     */
+    private getSystemPreference(): ColorModes {
+        try {
+            const darkModeQuery = globalThis.window?.matchMedia("(prefers-color-scheme: dark)");
+            const lightModeQuery = globalThis.window?.matchMedia("(prefers-color-scheme: light)");
+            
+            if (darkModeQuery?.matches) {
+                return ColorModes.DARK;
+            }
+            if (lightModeQuery?.matches) {
+                return ColorModes.LIGHT;
+            }
+            return ColorModes.NONE;
+        } catch (error) {
+            console.warn("Unable to detect system color scheme preference:", error);
+            return ColorModes.NONE;
+        }
     }
 }

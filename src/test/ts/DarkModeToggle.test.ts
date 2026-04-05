@@ -1,8 +1,10 @@
+/// <reference types="jest" />
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DarkModeToggle } from "../../main/ts/DarkModeToggle";
 import { ActionType } from "../../main/ts/core/StateReducer.types";
 import { OptionResolver } from "../../main/ts/core/OptionResolver";
 import { ResolvedOptions } from "../../main/ts/core/OptionResolver.types";
+import { ColorModes } from "../../main/ts/types/ColorModes";
 
 const setStateMock = jest.fn();
 const onChangeMock = jest.fn();
@@ -55,6 +57,16 @@ jest.mock("../../main/ts/core/CookieManager", () => {
     };
 });
 
+const matchMediaMock = jest.fn();
+
+function setMatchMedia(colorMode: ColorModes) {
+    matchMediaMock.mockImplementation((query) => ({
+        matches: query === `(prefers-color-scheme: ${colorMode})`,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn()
+    }));
+}
+
 describe("DarkModeToggle", () => {
     let element: HTMLElement;
 
@@ -67,7 +79,10 @@ describe("DarkModeToggle", () => {
 
         getMock.mockReturnValue({ isLight: true });
         doMock.mockReturnValue(true);
+
+        globalThis.window.matchMedia = matchMediaMock;
     });
+
 
     describe("constructor", () => {
         it("should initialize and call update", () => {
@@ -195,7 +210,6 @@ describe("DarkModeToggle", () => {
             expect(dispatchSpy).not.toHaveBeenCalled();
         });
     });
-
   
     describe("cookie integration", () => {
         it("should allow cookie and update", () => {
@@ -224,28 +238,93 @@ describe("DarkModeToggle", () => {
     });
 
     describe("applyPreferredScheme()", () => {
-        it("should apply dark from cookie", () => {
+        it("should use cookie over system preference when cookie exists", () => {
             getCookieMock.mockReturnValue("dark");
-
+            
+            setMatchMedia(ColorModes.LIGHT);
+            
             const _instance = new DarkModeToggle(element);
-
+            
             expect(doMock).toHaveBeenCalledWith(ActionType.DARK);
         });
 
-        it("should apply light from cookie", () => {
-            getCookieMock.mockReturnValue("light");
-
+        it("should use system preference when no cookie exists and allowCookie is true", () => {
+            getCookieMock.mockReturnValue(null);
+            
+            setMatchMedia(ColorModes.DARK);
+            
             const _instance = new DarkModeToggle(element);
+            
+            expect(doMock).toHaveBeenCalledWith(ActionType.DARK);
+        });
 
+        it("should use system preference (light) when no cookie exists", () => {
+            getCookieMock.mockReturnValue(null);
+            
+            setMatchMedia(ColorModes.LIGHT);
+            
+            const _instance = new DarkModeToggle(element);
+            
             expect(doMock).toHaveBeenCalledWith(ActionType.LIGHT);
         });
 
-        it("should skip applyPreferredScheme if cookies disabled", () => {
-            resolveMock.mockReturnValue({ ...baseOptions, allowCookie: false });
-
+        it("should fallback to default (light) when no preference detectable and no explicit state", () => {
+            getCookieMock.mockReturnValue(null);
+            
+            setMatchMedia(ColorModes.NONE);
+            
             const _instance = new DarkModeToggle(element);
+            
+            expect(doMock).not.toHaveBeenCalled();
+        });
 
-            expect(getCookieMock).not.toHaveBeenCalled();
+        it("should NOT use cookie when allowCookie is false even if cookie exists", () => {
+            resolveMock.mockReturnValue({ ...baseOptions, allowCookie: false });
+            getCookieMock.mockReturnValue("light");
+            
+            setMatchMedia(ColorModes.DARK);
+            
+            const _instance = new DarkModeToggle(element);
+            
+            expect(doMock).toHaveBeenCalledWith(ActionType.DARK);
+        });
+    });
+
+    describe("getSystemPreference()", () => {
+        it.each([ColorModes.DARK, ColorModes.LIGHT])("should return the correct preference when system prefers %s", (expectedPreference) => {
+            setMatchMedia(expectedPreference);
+            
+            const instance = new DarkModeToggle(element);
+            const result = (instance as any).getSystemPreference();
+            
+            expect(result).toBe(expectedPreference);
+        });
+
+        it("should return null when matchMedia not available", () => {
+            globalThis.window.matchMedia = undefined as any;
+            
+            const instance = new DarkModeToggle(element);
+            const result = (instance as any).getSystemPreference();
+            
+            expect(result).toBe(ColorModes.NONE);
+        });
+
+        it("should return null when no preference detected", () => {
+            setMatchMedia(ColorModes.NONE);
+            
+            const instance = new DarkModeToggle(element);
+            const result = (instance as any).getSystemPreference();
+            
+            expect(result).toBe(ColorModes.NONE);
+        });
+
+        it("should handle missing matchMedia gracefully (old browsers)", () => {
+            getCookieMock.mockReturnValue(null);
+            
+            globalThis.window.matchMedia = undefined as any;
+
+            expect(() => (new DarkModeToggle(element) as any).getSystemPreference()).not.toThrow();
+            expect((new DarkModeToggle(element) as any).getSystemPreference()).toBe(ColorModes.NONE);
         });
     });
 
