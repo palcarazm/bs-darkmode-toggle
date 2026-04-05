@@ -1,5 +1,5 @@
 import { OptionResolver } from "../../../main/ts/core/OptionResolver";
-import { ToggleStyle } from "../../../main/ts/core/OptionResolver.types";
+import { StorageType, ToggleStyle } from "../../../main/ts/core/OptionResolver.types";
 import * as Tools from "../../../main/ts/core/Tools";
 
 describe("OptionResolver", () => {
@@ -62,25 +62,28 @@ describe("OptionResolver", () => {
         });
     });
 
-    describe("allowCookie resolution", () => {
-        it("should enable allowCookie via attribute", () => {
-            element.dataset.allowCookie = undefined;
+    describe("storage resolution", () => {
+        const storages = [StorageType.COOKIE, StorageType.LOCAL, StorageType.NONE];
+        it.each(storages)("should enable storage via attribute when storage is %s", (storage) => {
+            element.dataset.storage = storage;
 
             const result = OptionResolver.resolve(element);
 
-            expect(result.allowCookie).toBe(true);
+            expect(result.storage).toBe(storage);
         });
 
-        it("should enable allowCookie via options", () => {
-            const result = OptionResolver.resolve(element, { allowCookie: true });
+        it.each(storages)("should enable storage via options when storage is %s", (storage) => {
+            delete element.dataset.storage;
+            const result = OptionResolver.resolve(element, { storage: storage });
 
-            expect(result.allowCookie).toBe(true);
+            expect(result.storage).toBe(storage);
         });
 
-        it("should fallback allowCookie to default", () => {
+        it("should fallback storage to default", () => {
+            delete element.dataset.storage;
             const result = OptionResolver.resolve(element);
 
-            expect(result.allowCookie).toBe(false);
+            expect(result.storage).toBe(StorageType.NONE);
         });
     });
 

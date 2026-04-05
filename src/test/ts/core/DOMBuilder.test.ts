@@ -1,5 +1,5 @@
 import { DOMBuilder, BootstrapToggleElement, BootstrapToggleMethods} from "../../../main/ts/core/DOMBuilder";
-import { ResolvedOptions } from "../../../main/ts/core/OptionResolver.types";
+import { ResolvedOptions, StorageType } from "../../../main/ts/core/OptionResolver.types";
 
 Object.defineProperty(HTMLInputElement.prototype, "bootstrapToggle", {
     value: jest.fn(),
@@ -15,7 +15,7 @@ describe("DOMBuilder", () => {
     const options: ResolvedOptions = {
         state: true,
         root: ".root",
-        allowCookie: false,
+        storage: StorageType.NONE,
         lightLabel: "Light",
         darkLabel: "Dark",
         lightColorMode: "light",

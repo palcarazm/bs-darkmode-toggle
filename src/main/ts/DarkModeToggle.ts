@@ -1,8 +1,8 @@
 import { OptionResolver } from "./core/OptionResolver";
 import { StateReducer } from "./core/StateReducer";
-import { CookieManager } from "./core/CookieManager";
+import { StorageManager } from "./core/storage/StorageManager";
 import { DOMBuilder } from "./core/DOMBuilder";
-import { ResolvedOptions } from "./core/OptionResolver.types";
+import { ResolvedOptions, StorageType } from "./core/OptionResolver.types";
 import { ActionType } from "./core/StateReducer.types";
 import { ColorModes } from "./types/ColorModes";
 
@@ -10,22 +10,22 @@ export class DarkModeToggle {
     private readonly element: HTMLElement;
     private readonly options: ResolvedOptions;
     private readonly state: StateReducer;
-    private readonly cookie = new CookieManager();
+    private readonly storage: StorageManager;
     private readonly dom: DOMBuilder;
-
-    private static readonly COOKIE_NAME = "bs-darkmode-toggle-color-scheme";
 
     constructor(element: HTMLElement, opts = {}) {
         this.element = element;
 
         this.options = OptionResolver.resolve(element, opts);
         this.state = new StateReducer(this.options.state);
+        this.storage = new StorageManager(this.options.storage);
+
         this.applyPreferredScheme();
 
         this.dom = new DOMBuilder(this.element, this.options);
         this.dom.onChange((e) => {
             this.toggle(true);
-            this.updateCookie();
+            this.persistState();
             e.preventDefault();
         });
 
@@ -37,7 +37,7 @@ export class DarkModeToggle {
     private update() {
         const isLight = this.state.get().isLight;
         this.dom.setState(isLight);
-        this.updateCookie();
+        this.persistState();
     }
 
     toggle(silent = false) {
@@ -58,14 +58,9 @@ export class DarkModeToggle {
         this.trigger(silent);
     }
 
-    allowCookie() {
-        this.options.allowCookie = true;
-        this.updateCookie();
-    }
-
-    denyCookie() {
-        this.options.allowCookie = false;
-        this.cookie.delete(DarkModeToggle.COOKIE_NAME);
+    setStorageType(type: StorageType) {
+        this.storage.setStorageType(type);
+        this.persistState();
     }
 
     private trigger(silent: boolean) {
@@ -74,16 +69,12 @@ export class DarkModeToggle {
         }
     }
 
-    private updateCookie() {
-        if (this.options.allowCookie) {
-            this.cookie.set(
-                DarkModeToggle.COOKIE_NAME,
-                this.state.get().isLight
-                    ? this.options.lightColorMode
-                    : this.options.darkColorMode,
-                0.25
-            );
-        }
+    private persistState() {
+        this.storage.set(
+            this.state.get().isLight
+                ? this.options.lightColorMode
+                : this.options.darkColorMode
+        );
     }
 
     /**
@@ -91,25 +82,23 @@ export class DarkModeToggle {
      * @returns a boolean indicating whether a preference was applied (true) or not (false)
      */
     private applyPreferredScheme(): boolean {
-        return this.applyCookies() || this.applySystemPreference();
+        return this.applyStoredPreference() || this.applySystemPreference();
     }
 
     /**
-     * Applies the color scheme based on cookies if allowed and available
+     * Applies the color scheme based on stored preference if available
      * @returns a boolean indicating whether a preference was applied (true) or not (false)
      */
-    private applyCookies(): boolean {
-        if (this.options.allowCookie){
-            const cookie = this.cookie.get(DarkModeToggle.COOKIE_NAME);
-    
-            if (cookie === this.options.darkColorMode) {
-                this.state.do(ActionType.DARK);
-                return true;
-            }
-            if (cookie === this.options.lightColorMode) {
-                this.state.do(ActionType.LIGHT);
-                return true;
-            }
+    private applyStoredPreference(): boolean {
+        const value = this.storage.get();
+
+        if (value === this.options.darkColorMode) {
+            this.state.do(ActionType.DARK);
+            return true;
+        }
+        if (value === this.options.lightColorMode) {
+            this.state.do(ActionType.LIGHT);
+            return true;
         }
         return false;
     }

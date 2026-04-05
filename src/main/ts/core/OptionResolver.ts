@@ -1,11 +1,11 @@
 import { sanitize, SanitizeMode } from "./Tools";
-import { DarkModeOptions, ResolvedOptions, ToggleStyle } from "./OptionResolver.types";
+import { DarkModeOptions, ResolvedOptions, StorageType, ToggleStyle } from "./OptionResolver.types";
 
 export class OptionResolver {
     private static readonly DEFAULTS: ResolvedOptions = {
         state: true,
         root: ":root",
-        allowCookie: false,
+        storage: StorageType.NONE,
         lightLabel: "Light",
         darkLabel: "Dark",
         lightColorMode: "light",
@@ -29,7 +29,7 @@ export class OptionResolver {
         return {
             state: state ?? options.state ?? this.DEFAULTS.state,
             root: sanitize(element.dataset.root || options.root || this.DEFAULTS.root, { mode: SanitizeMode.TEXT })!,
-            allowCookie: !!element.dataset.allowCookie || options.allowCookie || this.DEFAULTS.allowCookie,
+            storage: sanitize(element.dataset.storage || options.storage || this.DEFAULTS.storage, { mode: SanitizeMode.TEXT }) as StorageType,
             lightLabel: sanitize(element.dataset.lightLabel || options.lightLabel || this.DEFAULTS.lightLabel, { mode: SanitizeMode.HTML })!,
             darkLabel: sanitize(element.dataset.darkLabel || options.darkLabel || this.DEFAULTS.darkLabel, { mode: SanitizeMode.HTML })!,
             lightColorMode: sanitize(element.dataset.lightColorMode || options.lightColorMode || this.DEFAULTS.lightColorMode, { mode: SanitizeMode.TEXT })!,

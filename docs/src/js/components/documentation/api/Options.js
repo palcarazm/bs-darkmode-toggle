@@ -24,7 +24,7 @@ class Options extends DocArticle {
         .bsDarkmodeToggle({
           state: false,
           root: "#api-option-toggle-container",
-          allowCookie: false,
+          storage: "local",
           lightLabel: "Good Morning",
           darkLabel: "Good Evening",
           lightColorMode: "blue",
@@ -45,7 +45,7 @@ class Options extends DocArticle {
         .bsDarkmodeToggle({
           state: false,
           root: "#api-option-toggle-container",
-          allowCookie: false,
+          storage: "local",
           lightLabel: "Good Morning",
           darkLabel: "Good Evening",
           lightColorMode: "blue",
@@ -82,7 +82,7 @@ class Options extends DocArticle {
             toggle.bsDarkmodeToggle({
                 state: false,
                 root: "#api-option-toggle-container",
-                allowCookie: false,
+                storage: "local",
                 lightLabel: "Good Morning",
                 darkLabel: "Good Evening",
                 lightColorMode: "blue",
@@ -128,13 +128,13 @@ class Options extends DocArticle {
                 <td>CSS selector for root element to apply color scheme.</td>
             </tr>
             <tr>
-                <td><code class="text-nowrap">allowCookie</code></td>
-                <td><code class="text-nowrap">data-allow-cookie</code></td>
-                <td>boolean</td>
-                <td><code class="text-nowrap">false</code></td>
+                <td><code class="text-nowrap">storage</code></td>
+                <td><code class="text-nowrap">data-storage</code></td>
+                <td>string</td>
+                <td><code class="text-nowrap">"none"</code></td>
                 <td>
-                    Set if the user has allowed to use cookies.<br>
-                    <small class="text-muted">For data attribute the presence means <code>true</code> and the absence <code>false</code>.</small>
+                    Set the storage to use for user preferences.<br>Possible values are:
+                     <code>cache</code>, <code>local</code> or <code>none</code>.
                 </td>
             </tr>
             <tr>
