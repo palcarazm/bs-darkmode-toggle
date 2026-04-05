@@ -2,26 +2,17 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Bootstrap Darkmode Toggle | Test App</title>
-    <link
-      rel="stylesheet"
-      href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
-    <link
-      rel="stylesheet"
-      href="../node_modules/bootstrap5-toggle/css/bootstrap5-toggle.min.css" />
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../node_modules/bootstrap5-toggle/css/bootstrap5-toggle.min.css" />
     <link rel="stylesheet" href="./styles.css" />
-
+    
+    <!-- Core scripts -->
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../node_modules/bootstrap5-toggle/js/bootstrap5-toggle.ecmas.js"></script>
-    <script src="../js/bs-darkmode-toggle.ecmas.js"></script>
-
-    <script>
-      const INTERFACE = "ECMAS";
-    </script>
   </head>
 
   <body class="bg-light p-4">
@@ -39,6 +30,8 @@
       <hr />
     </div>
     <main class="container bg-white px-3 py-3 rounded"></main>
+    
+    <!-- Dynamic script loader -->
+    <script src="./app-loader.js"></script>
   </body>
-  <script type="module" src="scripts.js"></script>
 </html>
