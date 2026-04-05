@@ -4,7 +4,7 @@ import Root from "./features/Root";
 import Label from "./features/Label";
 import Style from "./features/Style";
 import ColorScheme from "./features/ColorScheme";
-import Cookie from "./features/Cookie";
+import Storage from "./features/Storage";
 
 class Features extends DocSection {
     static build() {
@@ -14,7 +14,7 @@ class Features extends DocSection {
             Label.build(),
             Style.build(),
             ColorScheme.build(),
-            Cookie.build(),
+            Storage.build(),
         ]);
     }
 }

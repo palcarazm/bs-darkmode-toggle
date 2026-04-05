@@ -4,7 +4,7 @@ class DarkmodeToggleComponent {
     static TOGGLE_ON_SELECTOR = ".toggle > .toggle-group > .toggle-on";
     static TOGGLE_OFF_SELECTOR = ".toggle > .toggle-group > .toggle-off";
     static BS_ATTRIBUTE = "data-bs-theme";
-    static COOKIE_NAME = "bs-darkmode-toggle-color-scheme";
+    static STORAGE_KEY = "bs-darkmode-theme";
 
     static DEFAULTS = {
         state: true,

@@ -74,16 +74,22 @@ export class MethodsLoader extends BaseLoader {
                     $element[0].bsDarkmodeToggle("toggle", true),
             },
             {
-                id: "denyCookie",
-                text: "Deny Cookie",
-                onClickJquery: () => $element.bsDarkmodeToggle("denyCookie"),
-                onClickEcmas: () => $element[0].bsDarkmodeToggle("denyCookie"),
+                id: "setProviderCookie",
+                text: "Set provider COOKIE",
+                onClickJquery: () => $element.bsDarkmodeToggle("set_storage", "cookie"),
+                onClickEcmas: () => $element[0].bsDarkmodeToggle("set_storage", "cookie"),
             },
             {
-                id: "allowCookie",
-                text: "Allow Cookie",
-                onClickJquery: () => $element.bsDarkmodeToggle("allowCookie"),
-                onClickEcmas: () => $element[0].bsDarkmodeToggle("allowCookie"),
+                id: "setProviderLocal",
+                text: "Set provider LOCAL",
+                onClickJquery: () => $element.bsDarkmodeToggle("set_storage", "local"),
+                onClickEcmas: () => $element[0].bsDarkmodeToggle("set_storage", "local"),
+            },
+            {
+                id: "setProviderNone",
+                text: "Set provider NONE",
+                onClickJquery: () => $element.bsDarkmodeToggle("set_storage", "none"),
+                onClickEcmas: () => $element[0].bsDarkmodeToggle("set_storage", "none"),
             },
         ];
     }
@@ -98,17 +104,17 @@ export class MethodsLoader extends BaseLoader {
                 .on("click", () => {
                     $console.text("");
                     switch (interface_) {
-                        case "ECMAS":
-                            btn.onClickEcmas();
-                            break;
-                        case "JQUERY":
-                            btn.onClickJquery();
-                            break;
-                        default:
-                            throw new DOMException(
-                                `Unknown interface: ${interface_}`,
-                                "NotSupportedError"
-                            );
+                    case "ECMAS":
+                        btn.onClickEcmas();
+                        break;
+                    case "JQUERY":
+                        btn.onClickJquery();
+                        break;
+                    default:
+                        throw new DOMException(
+                            `Unknown interface: ${interface_}`,
+                            "NotSupportedError"
+                        );
                     }
                 });
 

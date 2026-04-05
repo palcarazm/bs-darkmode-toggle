@@ -9,30 +9,24 @@ class Methods extends DocArticle {
         },
         {
             method: "light",
-            params: "light",
+            params: ["light"],
             description: "Enable light color scheme.",
         },
         {
             method: "dark",
-            params: "dark",
+            params: ["dark"],
             description: "Enable dark color scheme.",
         },
         {
             method: "toggle",
-            params: "toggle",
+            params: ["toggle"],
             description: "Switch the enabled color scheme.",
         },
         {
-            method: "allowCookie",
-            params: "allowCookie",
-            description: "Set the Cookie Authorization status to allowed.",
-        },
-        {
-            method: "denyCookie",
-            params: "denyCookie",
-            description:
-        `Set the Cookie Authorization status to denied.<br>
-        <small class="text-muted">The cookie will be deleted if it exists.</small>`,
+            method: "setStorage",
+            params: ["set_storage", "none"],
+            description: `Set the storage to use for user preferences.<br>
+            <small class="text-muted">Provide <code>cache</code>, <code>local</code> or <code>none</code> as second argument.</small>`,
         },
     ];
 
@@ -104,7 +98,7 @@ class Methods extends DocArticle {
 
             const td2 = document.createElement("td");
             td2.innerHTML = params
-                ? `<code>myToggle.bsDarkmodeToggle("${params}")</code>`
+                ? `<code>myToggle.bsDarkmodeToggle("${params.join("\", \"")}")</code>`
                 : "<code>myToggle.bsDarkmodeToggle()</code>";
 
             const td3 = document.createElement("td");
@@ -112,10 +106,10 @@ class Methods extends DocArticle {
 
             const td4 = document.createElement("td");
             const button = document.createElement("button");
-            button.className = "btn btn-outline-dark btn-sm w-100";
+            button.className = "btn btn-outline-secondary btn-sm w-100";
             button.textContent = method;
             button.onclick = () => {
-                toggle.bsDarkmodeToggle(params);
+                toggle.bsDarkmodeToggle(...params);
             };
             td4.append(button);
 

@@ -102,7 +102,7 @@ class SilencedActions extends DocArticle {
 
             const td3 = document.createElement("td");
             const defaultBtn = document.createElement("button");
-            defaultBtn.className = "btn btn-outline-dark btn-sm w-100";
+            defaultBtn.className = "btn btn-outline-secondary btn-sm w-100";
             defaultBtn.textContent = method;
             defaultBtn.onclick = () => {
                 toggle.bsDarkmodeToggle(method, false);
@@ -111,7 +111,7 @@ class SilencedActions extends DocArticle {
 
             const td4 = document.createElement("td");
             const silenceBtn = document.createElement("button");
-            silenceBtn.className = "btn btn-outline-dark btn-sm w-100";
+            silenceBtn.className = "btn btn-outline-secondary btn-sm w-100";
             silenceBtn.textContent = method;
             silenceBtn.onclick = () => {
                 toggle.bsDarkmodeToggle(method, true);
