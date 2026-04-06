@@ -1,5 +1,6 @@
+/// <reference types="jest" />
 import { OptionResolver } from "../../../main/ts/core/OptionResolver";
-import { StorageType, ToggleStyle } from "../../../main/ts/core/OptionResolver.types";
+import { Layout, StorageType, ToggleStyle } from "../../../main/ts/core/OptionResolver.types";
 import * as Tools from "../../../main/ts/core/Tools";
 
 describe("OptionResolver", () => {
@@ -179,4 +180,29 @@ describe("OptionResolver", () => {
             expect(result.style).toBe("outline-secondary");
         });
     }); 
+
+    describe("layout resolution", () => {
+        const layouts = [Layout.BUTTON, Layout.TOGGLE];
+        it.each(layouts)("should enable layout via attribute when storage is %s", (layout) => {
+            element.dataset.layout = layout;
+
+            const result = OptionResolver.resolve(element);
+
+            expect(result.layout).toBe(layout);
+        });
+
+        it.each(layouts)("should enable layout via options when layout is %s", (layout) => {
+            delete element.dataset.layout;
+            const result = OptionResolver.resolve(element, { layout: layout });
+
+            expect(result.layout).toBe(layout);
+        });
+
+        it("should fallback layout to default", () => {
+            delete element.dataset.layout;
+            const result = OptionResolver.resolve(element);
+
+            expect(result.layout).toBe(Layout.TOGGLE);
+        });
+    });
 });

@@ -7,6 +7,7 @@ export interface DarkModeOptions {
     lightColorMode?: string;
     darkColorMode?: string;
     style?: ToggleStyle;
+    layout?: Layout;
 }
 
 export interface ResolvedOptions {
@@ -18,6 +19,7 @@ export interface ResolvedOptions {
     lightColorMode: string;
     darkColorMode: string;
     style: ToggleStyle;
+    layout: Layout;
 }
 
 export type ToggleStyle =
@@ -43,4 +45,9 @@ export enum StorageType {
     COOKIE = "cookie",
     LOCAL = "local",
     NONE = "none",
+}
+
+export enum Layout {
+    BUTTON = "button",
+    TOGGLE = "toggle"
 }

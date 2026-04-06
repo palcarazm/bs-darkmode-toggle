@@ -3,17 +3,15 @@
 import { DarkModeToggle } from "../../main/ts/DarkModeToggle";
 import { ActionType } from "../../main/ts/core/StateReducer.types";
 import { OptionResolver } from "../../main/ts/core/OptionResolver";
-import { ResolvedOptions, StorageType } from "../../main/ts/core/OptionResolver.types";
+import { Layout, ResolvedOptions, StorageType } from "../../main/ts/core/OptionResolver.types";
 import { ColorModes } from "../../main/ts/types/ColorModes";
 
 const setStateMock = jest.fn();
-const onChangeMock = jest.fn();
 
-jest.mock("../../main/ts/core/DOMBuilder", () => {
+jest.mock("../../main/ts/core/dom/DomManager", () => {
     return {
-        DOMBuilder: jest.fn().mockImplementation(() => ({
+        DomManager: jest.fn().mockImplementation(() => ({
             setState: setStateMock,
-            onChange: onChangeMock,
         })),
     };
 });
@@ -27,6 +25,7 @@ const baseOptions: ResolvedOptions = {
     lightColorMode: "light",
     darkColorMode: "dark",
     style: "outline-secondary",
+    layout: Layout.TOGGLE,
 };
 
 const resolveMock = jest.spyOn(OptionResolver, "resolve").mockReturnValue({ ...baseOptions });
@@ -95,11 +94,6 @@ describe("DarkModeToggle", () => {
             expect((element as any)._bsDarkmodeToggle).toBeDefined();
         });
 
-        it("should bind onChange handler", () => {
-            const _instance = new DarkModeToggle(element);
-
-            expect(onChangeMock).toHaveBeenCalled();
-        });
     });
 
     describe("toggle(silent = false)", () => {
@@ -293,26 +287,6 @@ describe("DarkModeToggle", () => {
 
             expect(() => (new DarkModeToggle(element) as any).getSystemPreference()).not.toThrow();
             expect((new DarkModeToggle(element) as any).getSystemPreference()).toBe(ColorModes.NONE);
-        });
-    });
-
-    describe("DOM change event", () => {
-        it("should handle DOM change event", () => {
-            let handler: any;
-
-            onChangeMock.mockImplementation((cb) => {
-                handler = cb;
-            });
-
-            const _instance = new DarkModeToggle(element);
-
-            const preventDefault = jest.fn();
-
-            handler({ preventDefault });
-
-            expect(doMock).toHaveBeenCalledWith(ActionType.TOGGLE);
-            expect(setStorageMock).toHaveBeenCalled();
-            expect(preventDefault).toHaveBeenCalled();
         });
     });
 });

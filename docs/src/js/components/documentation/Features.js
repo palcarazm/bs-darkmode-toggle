@@ -4,6 +4,7 @@ import Root from "./features/Root";
 import Label from "./features/Label";
 import Style from "./features/Style";
 import ColorScheme from "./features/ColorScheme";
+import Layout from "./features/Layout";
 import Storage from "./features/Storage";
 
 class Features extends DocSection {
@@ -14,6 +15,7 @@ class Features extends DocSection {
             Label.build(),
             Style.build(),
             ColorScheme.build(),
+            Layout.build(),
             Storage.build(),
         ]);
     }

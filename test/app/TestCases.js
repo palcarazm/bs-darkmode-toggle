@@ -4,6 +4,7 @@ import { OptionsLoader } from "../loaders/OptionsLoader.js";
 import { MethodsLoader } from "../loaders/MethodsLoader.js";
 import { PageModel } from "./PageModel.js";
 import { TestRunner } from "../runners/TestRunner.js";
+import { ButtonLoader } from "../loaders/ButtonLoader.js";
 
 export class TestCases {
     constructor(interface_) {
@@ -32,6 +33,13 @@ export class TestCases {
             label: "methods",
             description: "Check <code>bs-darkmode-toggle</code> API Methods",
             load: () => new MethodsLoader().load(TEST_CASES, this.interface),
+            run: () => {},
+        });
+
+        this.cases.set("button-layout",{
+            label: "Button Layout",
+            description: "Check <code>bs-darkmode-toggle</code> with button layout",
+            load: () => new ButtonLoader().load(TEST_CASES, this.interface),
             run: () => {},
         });
     }

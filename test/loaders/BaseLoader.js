@@ -10,7 +10,7 @@ export class BaseLoader {
         });
     }
 
-    buildElement(testCase, id) {
+    buildElement(testCase, id, layout) {
         const $element = PageModel.TEST_ELEMENT.clone().attr(
             "data-root",
             `#${id}`
@@ -19,6 +19,8 @@ export class BaseLoader {
         testCase.options?.forEach((opt) => {
             if (opt.attr) $element.attr(opt.attr, opt.value);
         });
+
+        if (layout) $element.attr("data-layout", layout);
 
         return $element;
     }
