@@ -36,7 +36,7 @@ export class ToggleLayout extends AbstractLayout {
      * @param {boolean} isLight - A boolean indicating whether to set light mode (`true`) or dark mode (`false`)
      */
     updateControlState(isLight: boolean) {
-        this.input!.bootstrapToggle(
+        this.input.bootstrapToggle(
             isLight ? BootstrapToggleMethods.ON : BootstrapToggleMethods.OFF,
             true
         );
@@ -48,7 +48,7 @@ export class ToggleLayout extends AbstractLayout {
      * @param {(e: Event) => void} handler - The callback handler to blink
      */
     onChange(handler: (e: Event) => void) {
-        this.input!.addEventListener("change", handler);
+        this.input.addEventListener("change", handler);
     }
 }
 

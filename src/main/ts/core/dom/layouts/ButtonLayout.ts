@@ -31,14 +31,14 @@ export class ButtonLayout extends AbstractLayout {
      */
     updateControlState(isLight: boolean): void {
         const label = isLight ? this.lightLabel : this.darkLabel;
-        this.button!.innerHTML = label;
+        this.button.innerHTML = label;
         
         if (isLight) {
-            this.button!.classList.add("active");
-            this.button!.ariaPressed = "true";
+            this.button.classList.add("active");
+            this.button.ariaPressed = "true";
         } else {
-            this.button!.classList.remove("active");
-            this.button!.ariaPressed = "false";
+            this.button.classList.remove("active");
+            this.button.ariaPressed = "false";
         }
     }
 
@@ -48,7 +48,7 @@ export class ButtonLayout extends AbstractLayout {
      * @param {(e: Event) => void} handler - The callback handler to blink
      */
     onChange(handler: (e: Event) => void): void {
-        this.button!.addEventListener("click", (e) => {
+        this.button.addEventListener("click", (e) => {
             handler(e);
         });
     }
