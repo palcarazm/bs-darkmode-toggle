@@ -1,27 +1,28 @@
-import { DOMBuilder, BootstrapToggleElement, BootstrapToggleMethods} from "../../../main/ts/core/DOMBuilder";
-import { ResolvedOptions, StorageType } from "../../../main/ts/core/OptionResolver.types";
+import { ToggleLayout, BootstrapToggleElement, BootstrapToggleMethods} from "../../../../../main/ts/core/dom/layouts/ToggleLayout";
+import { Layout, ResolvedOptions, StorageType } from "../../../../../main/ts/core/OptionResolver.types";
 
 Object.defineProperty(HTMLInputElement.prototype, "bootstrapToggle", {
     value: jest.fn(),
     writable: true,
 });
 
-describe("DOMBuilder", () => {
+const options: ResolvedOptions = {
+    state: true,
+    root: ".root",
+    storage: StorageType.NONE,
+    lightLabel: "Light",
+    darkLabel: "Dark",
+    lightColorMode: "light",
+    darkColorMode: "dark",
+    style: "outline-secondary",
+    layout: Layout.TOGGLE,
+};
+
+describe("ToggleLayout", () => {
     const bsToggleSpy = jest.spyOn(HTMLInputElement.prototype as BootstrapToggleElement, "bootstrapToggle").mockImplementation(() => {});
     let container: HTMLElement;
     let root1: HTMLElement;
     let root2: HTMLElement;
-
-    const options: ResolvedOptions = {
-        state: true,
-        root: ".root",
-        storage: StorageType.NONE,
-        lightLabel: "Light",
-        darkLabel: "Dark",
-        lightColorMode: "light",
-        darkColorMode: "dark",
-        style: "outline-secondary",
-    };
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -41,22 +42,22 @@ describe("DOMBuilder", () => {
     });
 
     function createBuilder() {
-        const builder = new DOMBuilder(container, options);
+        const builder = new ToggleLayout(container, options);
 
-        const input = container.querySelector("input") as BootstrapToggleElement;
+        const control = container.querySelector("input") as BootstrapToggleElement;
 
-        return { builder, input };
+        return { builder, control };
     }
 
     describe("constructor", () => {
-        it("should clear container and create input", () => {
+        it("should clear container and create control", () => {
             container.innerHTML = "<span>old</span>";
 
-            const { input } = createBuilder();
+            const { control } = createBuilder();
 
             expect(container.innerHTML).not.toContain("old");
-            expect(input).toBeInstanceOf(HTMLInputElement);
-            expect(input.type).toBe("checkbox");
+            expect(control).toBeInstanceOf(HTMLInputElement);
+            expect(control.type).toBe("checkbox");
         });
 
         it("should call bootstrapToggle with correct options", () => {
@@ -107,15 +108,56 @@ describe("DOMBuilder", () => {
 
     describe("onChange(handler: (e: Event) => void)", () => {
         it("should attach change listener", () => {
-            const { builder, input } = createBuilder();
+            const { builder, control } = createBuilder();
 
             const handler = jest.fn();
 
             builder.onChange(handler);
 
-            input.dispatchEvent(new Event("change"));
+            control.dispatchEvent(new Event("change"));
 
             expect(handler).toHaveBeenCalled();
+        });
+    });
+
+    describe("onChange()", () => {
+        const handler = jest.fn();
+
+        it("should trigger onChange handler on input change event", () => {
+            const { builder, control } = createBuilder();
+            
+            builder.onChange(handler);
+            
+            control.dispatchEvent(new Event("change"));
+            
+            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler).toHaveBeenCalledWith(expect.any(Event));
+            expect(handler).toHaveBeenCalledWith(expect.objectContaining({ type: "change" }));
+        });
+
+        it("should pass the correct event object to handler", () => {
+            const { builder, control } = createBuilder();
+            
+            builder.onChange(handler);
+            
+            const changeEvent = new Event("change", { bubbles: true });
+            control.dispatchEvent(changeEvent);
+            
+            expect(handler).toHaveBeenCalledWith(changeEvent);
+        });
+
+        it("should handle multiple onChange handlers", () => {
+            const { builder, control } = createBuilder();
+            const handler1 = jest.fn();
+            const handler2 = jest.fn();
+            
+            builder.onChange(handler1);
+            builder.onChange(handler2);
+            
+            control.dispatchEvent(new Event("change"));
+            
+            expect(handler1).toHaveBeenCalledTimes(1);
+            expect(handler2).toHaveBeenCalledTimes(1);
         });
     });
 });

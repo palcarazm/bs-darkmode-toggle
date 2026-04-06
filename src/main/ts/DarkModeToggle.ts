@@ -1,7 +1,7 @@
 import { OptionResolver } from "./core/OptionResolver";
 import { StateReducer } from "./core/StateReducer";
 import { StorageManager } from "./core/storage/StorageManager";
-import { DOMBuilder } from "./core/DOMBuilder";
+import { DomManager } from "./core/dom/DomManager";
 import { ResolvedOptions, StorageType } from "./core/OptionResolver.types";
 import { ActionType } from "./core/StateReducer.types";
 import { ColorModes } from "./types/ColorModes";
@@ -11,7 +11,7 @@ export class DarkModeToggle {
     private readonly options: ResolvedOptions;
     private readonly state: StateReducer;
     private readonly storage: StorageManager;
-    private readonly dom: DOMBuilder;
+    private readonly dom: DomManager;
 
     constructor(element: HTMLElement, opts = {}) {
         this.element = element;
@@ -22,8 +22,7 @@ export class DarkModeToggle {
 
         this.applyPreferredScheme();
 
-        this.dom = new DOMBuilder(this.element, this.options);
-        this.dom.onChange((e) => {
+        this.dom = new DomManager(this.element, this.options, (e) => {
             this.toggle(true);
             this.persistState();
             e.preventDefault();

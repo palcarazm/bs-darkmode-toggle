@@ -30,6 +30,7 @@ class Options extends DocArticle {
           lightColorMode: "blue",
           darkColorMode: "red",
           style: "primary",
+          layout : "toggle"
         });
     });
 </script>`;
@@ -51,6 +52,7 @@ class Options extends DocArticle {
           lightColorMode: "blue",
           darkColorMode: "red",
           style: "primary",
+          layout : "toggle"
         });
     });
 </script>`;
@@ -88,6 +90,7 @@ class Options extends DocArticle {
                 lightColorMode: "blue",
                 darkColorMode: "red",
                 style: "primary",
+                layout : "toggle"
             });
         };
 
@@ -179,6 +182,13 @@ class Options extends DocArticle {
                 <td>string</td>
                 <td><code class="text-nowrap">"dark"</code></td>
                 <td>Set the dark color scheme</td>
+            </tr>
+            <tr>
+                <td><code class="text-nowrap">layout</code></td>
+                <td><code class="text-nowrap">data-layout</code></td>
+                <td>string</td>
+                <td><code class="text-nowrap">"toggle"</code></td>
+                <td>Set the layout.<br>Possible values are: <code>toggle</code> and <code>button</code></td>
             </tr>
         </tbody>
     </table>

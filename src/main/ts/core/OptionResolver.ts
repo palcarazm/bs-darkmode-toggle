@@ -1,5 +1,5 @@
 import { sanitize, SanitizeMode } from "./Tools";
-import { DarkModeOptions, ResolvedOptions, StorageType, ToggleStyle } from "./OptionResolver.types";
+import { DarkModeOptions, Layout, ResolvedOptions, StorageType, ToggleStyle } from "./OptionResolver.types";
 
 export class OptionResolver {
     private static readonly DEFAULTS: ResolvedOptions = {
@@ -11,6 +11,7 @@ export class OptionResolver {
         lightColorMode: "light",
         darkColorMode: "dark",
         style: "outline-secondary",
+        layout : Layout.TOGGLE
     };
 
     /**
@@ -35,6 +36,7 @@ export class OptionResolver {
             lightColorMode: sanitize(element.dataset.lightColorMode || options.lightColorMode || this.DEFAULTS.lightColorMode, { mode: SanitizeMode.TEXT })!,
             darkColorMode: sanitize(element.dataset.darkColorMode || options.darkColorMode || this.DEFAULTS.darkColorMode, { mode: SanitizeMode.TEXT })!,
             style: sanitize(element.dataset.style || options.style || this.DEFAULTS.style, { mode: SanitizeMode.TEXT }) as ToggleStyle,
+            layout: sanitize(element.dataset.layout || options.layout || this.DEFAULTS.layout, { mode: SanitizeMode.TEXT }) as Layout,
         };
     }
 }
