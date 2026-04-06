@@ -114,8 +114,8 @@ describe("OptionResolver", () => {
         it("should fallback labels to defaults", () => {
             const result = OptionResolver.resolve(element);
 
-            expect(result.lightLabel).toBe("Light");
-            expect(result.darkLabel).toBe("Dark");
+            expect(result.lightLabel).toBe("<i class=\"bs-darkmode-toggle sun\"></i>");
+            expect(result.darkLabel).toBe("<i class=\"bs-darkmode-toggle moon\"></i>");
         });
     });
 

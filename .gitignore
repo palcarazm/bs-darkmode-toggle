@@ -13,6 +13,7 @@ js
 !src/main/js
 !docs/src/js
 css
+!src/main/css
 !docs/src/css
 
 # Logs
