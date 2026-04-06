@@ -25,8 +25,8 @@ class Options extends DocArticle {
           state: false,
           root: "#api-option-toggle-container",
           storage: "local",
-          lightLabel: "Good Morning",
-          darkLabel: "Good Evening",
+          lightLabel: "<i class='bs-darkmode-toggle bulb-off'></i>",
+          darkLabel: "<i class='bs-darkmode-toggle bulb-on'></i>",
           lightColorMode: "blue",
           darkColorMode: "red",
           style: "primary",
@@ -46,8 +46,8 @@ class Options extends DocArticle {
           state: false,
           root: "#api-option-toggle-container",
           storage: "local",
-          lightLabel: "Good Morning",
-          darkLabel: "Good Evening",
+          lightLabel: "<i class='bs-darkmode-toggle bulb-off'></i>",
+          darkLabel: "<i class='bs-darkmode-toggle bulb-on'></i>",
           lightColorMode: "blue",
           darkColorMode: "red",
           style: "primary",
@@ -83,8 +83,8 @@ class Options extends DocArticle {
                 state: false,
                 root: "#api-option-toggle-container",
                 storage: "local",
-                lightLabel: "Good Morning",
-                darkLabel: "Good Evening",
+                lightLabel: "<i class=\"bs-darkmode-toggle bulb-off\"></i>",
+                darkLabel: "<i class=\"bs-darkmode-toggle bulb-on\"></i>",
                 lightColorMode: "blue",
                 darkColorMode: "red",
                 style: "primary",
@@ -141,7 +141,7 @@ class Options extends DocArticle {
                 <td><code class="text-nowrap">lightLabel</code></td>
                 <td><code class="text-nowrap">data-light-label</code></td>
                 <td>string | html</td>
-                <td><code class="text-nowrap">"Light"</code></td>
+                <td><code class="text-nowrap"><i class="bs-darkmode-toggle sun"></i></code></td>
                 <td>
                     Set the light toggle label.
                 </td>
@@ -150,7 +150,7 @@ class Options extends DocArticle {
                 <td><code class="text-nowrap">darkLabel</code></td>
                 <td><code class="text-nowrap">data-dark-label</code></td>
                 <td>string | html</td>
-                <td><code class="text-nowrap">"Dark"</code></td>
+                <td><code class="text-nowrap"><i class="bs-darkmode-toggle moon"></i></code></td>
                 <td>
                     Set the dark toggle label.
                 </td>

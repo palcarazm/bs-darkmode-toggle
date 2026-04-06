@@ -19,6 +19,8 @@ module.exports = function setup(grunt) {
         exec: {
             ts: "npx tsc",
             rollup: "npx rollup -c",
+            postcss: "npx postcss src/main/css/bs-darkmode-toggle.css -o css/bs-darkmode-toggle.css --map",
+            postcssMin: "npx postcss src/main/css/bs-darkmode-toggle.css -o css/bs-darkmode-toggle.min.css --map --env production",
         },
         usebanner: {
             taskName: {
@@ -46,6 +48,11 @@ module.exports = function setup(grunt) {
             },
         },
         watch: {
+            css:{
+                files: ["src/main/css/**/*"],
+                tasks: ["exec:postcss", "exec:postcssMin"],
+                options: { spawn: false },
+            },
             ts:{
                 files: ["src/main/ts/**/*"],
                 tasks: ["exec:ts"],
@@ -65,8 +72,8 @@ module.exports = function setup(grunt) {
     grunt.loadNpmTasks("grunt-exec");
     grunt.loadNpmTasks("grunt-contrib-watch");
   
-    grunt.registerTask("default", ["clean", "exec:ts", "exec:rollup", "usebanner"]);
-    grunt.registerTask("build", ["clean", "exec:ts", "exec:rollup", "usebanner"]);
+    grunt.registerTask("default", ["clean", "exec:ts", "exec:rollup", "exec:postcss", "exec:postcssMin", "usebanner"]);
+    grunt.registerTask("build", ["clean", "exec:ts", "exec:rollup", "exec:postcss", "exec:postcssMin", "usebanner"]);
     grunt.registerTask("readme", ["copy"]);
     grunt.registerTask("dev", ["build", "watch"]);
 };

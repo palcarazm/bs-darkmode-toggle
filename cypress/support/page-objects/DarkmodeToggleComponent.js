@@ -9,8 +9,8 @@ class DarkmodeToggleComponent {
     static DEFAULTS = {
         state: true,
         root: ":root",
-        lightLabel: "Light",
-        darkLabel: "Dark",
+        lightLabel: "<i class=\"bs-darkmode-toggle sun\"></i>",
+        darkLabel: "<i class=\"bs-darkmode-toggle moon\"></i>",
         lightColorMode: "light",
         darkColorMode: "dark",
         style: "outline-secondary",
