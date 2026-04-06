@@ -72,7 +72,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: Install dependencies
-        run: npm install --include=optional
+        run: npm install
       - name: Build project
         run: npm run build
       - name: Cypress run
