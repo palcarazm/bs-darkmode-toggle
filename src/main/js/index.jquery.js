@@ -6,26 +6,23 @@ import { Methods } from "./types/Methods";
    * Add `bsDarkmodeToggle` prototype function to HTML Elements
    * Enables execution when used with HTML - ex: `document.getElementById('toggle').bsDarkmodeToggle('light')`
    */
-  function Plugin(options, silent) {
+  function Plugin(options, args) {
     return this.each(function () {
       let _bsDarkmodeToggle = this._bsDarkmodeToggle || new DarkModeToggle(this, options && typeof options !== "string" ? options : {});
 
       if (options && typeof options === "string") {
         switch (options.toUpperCase()) {
           case Methods.TOGGLE:
-            _bsDarkmodeToggle.toggle(silent);
+            _bsDarkmodeToggle.toggle(args);
             break;
           case Methods.LIGHT:
-            _bsDarkmodeToggle.light(silent);
+            _bsDarkmodeToggle.light(args);
             break;
           case Methods.DARK:
-            _bsDarkmodeToggle.dark(silent);
+            _bsDarkmodeToggle.dark(args);
             break;
-          case Methods.ALLOW_COOKIE:
-            _bsDarkmodeToggle.allowCookie();
-            break;
-          case Methods.DENY_COOKIE:
-            _bsDarkmodeToggle.denyCookie();
+          case Methods.SET_STORAGE:
+            _bsDarkmodeToggle.setStorageType(args);
             break;
         }
       }

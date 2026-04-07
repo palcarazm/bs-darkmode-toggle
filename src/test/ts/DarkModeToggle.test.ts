@@ -1,29 +1,31 @@
+/// <reference types="jest" />
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DarkModeToggle } from "../../main/ts/DarkModeToggle";
 import { ActionType } from "../../main/ts/core/StateReducer.types";
 import { OptionResolver } from "../../main/ts/core/OptionResolver";
+import { Layout, ResolvedOptions, StorageType } from "../../main/ts/core/OptionResolver.types";
+import { ColorModes } from "../../main/ts/types/ColorModes";
 
 const setStateMock = jest.fn();
-const onChangeMock = jest.fn();
 
-jest.mock("../../main/ts/core/DOMBuilder", () => {
+jest.mock("../../main/ts/core/dom/DomManager", () => {
     return {
-        DOMBuilder: jest.fn().mockImplementation(() => ({
+        DomManager: jest.fn().mockImplementation(() => ({
             setState: setStateMock,
-            onChange: onChangeMock,
         })),
     };
 });
 
-const baseOptions = {
+const baseOptions: ResolvedOptions = {
     state: true,
     root: ":root",
-    allowCookie: true,
+    storage: StorageType.NONE,
     lightLabel: "Light",
     darkLabel: "Dark",
     lightColorMode: "light",
     darkColorMode: "dark",
-    style: "outline",
+    style: "outline-secondary",
+    layout: Layout.TOGGLE,
 };
 
 const resolveMock = jest.spyOn(OptionResolver, "resolve").mockReturnValue({ ...baseOptions });
@@ -40,19 +42,31 @@ jest.mock("../../main/ts/core/StateReducer", () => {
     };
 });
 
-const setCookieMock = jest.fn();
-const getCookieMock = jest.fn();
-const deleteCookieMock = jest.fn();
+const setStorageMock = jest.fn();
+const getStorageMock = jest.fn();
+const deleteStorageMock = jest.fn();
+const setStorageTypeMock = jest.fn();
 
-jest.mock("../../main/ts/core/CookieManager", () => {
+jest.mock("../../main/ts/core/storage/StorageManager", () => {
     return {
-        CookieManager: jest.fn().mockImplementation(() => ({
-            set: setCookieMock,
-            get: getCookieMock,
-            delete: deleteCookieMock,
+        StorageManager: jest.fn().mockImplementation(() => ({
+            set: setStorageMock,
+            get: getStorageMock,
+            delete: deleteStorageMock,
+            setStorageType: setStorageTypeMock,
         })),
     };
 });
+
+const matchMediaMock = jest.fn();
+
+function setMatchMedia(colorMode: ColorModes) {
+    matchMediaMock.mockImplementation((query) => ({
+        matches: query === `(prefers-color-scheme: ${colorMode})`,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn()
+    }));
+}
 
 describe("DarkModeToggle", () => {
     let element: HTMLElement;
@@ -66,22 +80,20 @@ describe("DarkModeToggle", () => {
 
         getMock.mockReturnValue({ isLight: true });
         doMock.mockReturnValue(true);
+
+        globalThis.window.matchMedia = matchMediaMock;
     });
+
 
     describe("constructor", () => {
         it("should initialize and call update", () => {
             const _instance = new DarkModeToggle(element);
 
             expect(setStateMock).toHaveBeenCalledWith(true);
-            expect(setCookieMock).toHaveBeenCalled();
+            expect(setStorageMock).toHaveBeenCalled();
             expect((element as any)._bsDarkmodeToggle).toBeDefined();
         });
 
-        it("should bind onChange handler", () => {
-            const _instance = new DarkModeToggle(element);
-
-            expect(onChangeMock).toHaveBeenCalled();
-        });
     });
 
     describe("toggle(silent = false)", () => {
@@ -194,77 +206,87 @@ describe("DarkModeToggle", () => {
             expect(dispatchSpy).not.toHaveBeenCalled();
         });
     });
-
   
-    describe("cookie integration", () => {
-        it("should allow cookie and update", () => {
+    describe("setStorageType", () => {
+        it("should change storage type and persist state", () => {
             const instance = new DarkModeToggle(element);
-
-            instance.allowCookie();
-
-            expect(setCookieMock).toHaveBeenCalled();
-        });
-
-        it("should deny cookie and delete", () => {
-            const instance = new DarkModeToggle(element);
-
-            instance.denyCookie();
-
-            expect(deleteCookieMock).toHaveBeenCalled();
-        });
-        
-        it("should NOT set cookie if disabled", () => {
-            resolveMock.mockReturnValue({ ...baseOptions, allowCookie: false });
-
-            const _instance = new DarkModeToggle(element);
-
-            expect(setCookieMock).not.toHaveBeenCalled();
+            
+            instance.setStorageType(StorageType.LOCAL);
+            
+            expect(setStorageTypeMock).toHaveBeenCalledWith(StorageType.LOCAL);
+            expect(setStorageTypeMock).toHaveBeenCalled();
         });
     });
 
     describe("applyPreferredScheme()", () => {
-        it("should apply dark from cookie", () => {
-            getCookieMock.mockReturnValue("dark");
-
+        it.each([ColorModes.LIGHT,ColorModes.DARK])("should use stored '%s' value over system preference when stored exists", (colorMode) => {
+            getStorageMock.mockReturnValue(colorMode);
+            
+            setMatchMedia(ColorModes.LIGHT);
+            
             const _instance = new DarkModeToggle(element);
-
-            expect(doMock).toHaveBeenCalledWith(ActionType.DARK);
+            
+            expect(doMock).toHaveBeenCalledWith(colorMode);
+            expect(doMock).toHaveBeenCalledTimes(1);
         });
 
-        it("should apply light from cookie", () => {
-            getCookieMock.mockReturnValue("light");
-
+        it.each([ColorModes.LIGHT,ColorModes.DARK])("should use system preference '%s' when no stored exists", (colorMode) => {
+            getStorageMock.mockReturnValue(null);
+            
+            setMatchMedia(colorMode);
+            
             const _instance = new DarkModeToggle(element);
-
-            expect(doMock).toHaveBeenCalledWith(ActionType.LIGHT);
+            
+            expect(doMock).toHaveBeenCalledWith(colorMode);
+            expect(doMock).toHaveBeenCalledTimes(1);
         });
 
-        it("should skip applyPreferredScheme if cookies disabled", () => {
-            resolveMock.mockReturnValue({ ...baseOptions, allowCookie: false });
-
+        it("should fallback to default (light) when no preference detectable and no explicit state", () => {
+            getStorageMock.mockReturnValue(null);
+            
+            setMatchMedia(ColorModes.NONE);
+            
             const _instance = new DarkModeToggle(element);
-
-            expect(getCookieMock).not.toHaveBeenCalled();
+            
+            expect(doMock).not.toHaveBeenCalled();
         });
     });
 
-    describe("DOM change event", () => {
-        it("should handle DOM change event", () => {
-            let handler: any;
+    describe("getSystemPreference()", () => {
+        it.each([ColorModes.DARK, ColorModes.LIGHT])("should return the correct preference when system prefers %s", (expectedPreference) => {
+            setMatchMedia(expectedPreference);
+            
+            const instance = new DarkModeToggle(element);
+            const result = (instance as any).getSystemPreference();
+            
+            expect(result).toBe(expectedPreference);
+        });
 
-            onChangeMock.mockImplementation((cb) => {
-                handler = cb;
-            });
+        it("should return null when matchMedia not available", () => {
+            globalThis.window.matchMedia = undefined as any;
+            
+            const instance = new DarkModeToggle(element);
+            const result = (instance as any).getSystemPreference();
+            
+            expect(result).toBe(ColorModes.NONE);
+        });
 
-            const _instance = new DarkModeToggle(element);
+        it("should return null when no preference detected", () => {
+            setMatchMedia(ColorModes.NONE);
+            
+            const instance = new DarkModeToggle(element);
+            const result = (instance as any).getSystemPreference();
+            
+            expect(result).toBe(ColorModes.NONE);
+        });
 
-            const preventDefault = jest.fn();
+        it("should handle missing matchMedia gracefully (old browsers)", () => {
+            getStorageMock.mockReturnValue(null);
+            
+            globalThis.window.matchMedia = undefined as any;
 
-            handler({ preventDefault });
-
-            expect(doMock).toHaveBeenCalledWith(ActionType.TOGGLE);
-            expect(setCookieMock).toHaveBeenCalled();
-            expect(preventDefault).toHaveBeenCalled();
+            expect(() => (new DarkModeToggle(element) as any).getSystemPreference()).not.toThrow();
+            expect((new DarkModeToggle(element) as any).getSystemPreference()).toBe(ColorModes.NONE);
         });
     });
 });

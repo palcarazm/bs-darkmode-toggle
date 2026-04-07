@@ -12,8 +12,10 @@ class Installation extends DocSection {
     }
 
     static #cdn() {
-        const ecmas = `<script src="https://cdn.jsdelivr.net/npm/bs-darkmode-toggle@${versions.bsDarkmodeToggle}/js/bs-darkmode-toggle.ecmas.min.js"></script>`;
-        const jquery = `<script src="https://cdn.jsdelivr.net/npm/bs-darkmode-toggle@${versions.bsDarkmodeToggle}/js/bs-darkmode-toggle.jquery.min.js"></script>`;
+        const ecmas = `<link href="https://cdn.jsdelivr.net/npm/bs-darkmode-toggle@${versions.bsDarkmodeToggle}/css/bs-darkmode-toggle.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bs-darkmode-toggle@${versions.bsDarkmodeToggle}/js/bs-darkmode-toggle.ecmas.min.js"></script>`;
+        const jquery = `<link href="https://cdn.jsdelivr.net/npm/bs-darkmode-toggle@${versions.bsDarkmodeToggle}/css/bs-darkmode-toggle.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bs-darkmode-toggle@${versions.bsDarkmodeToggle}/js/bs-darkmode-toggle.jquery.min.js"></script>`;
         return DocArticle.build({
             title: "CDN",
             badge: {

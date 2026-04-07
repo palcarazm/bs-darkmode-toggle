@@ -24,11 +24,13 @@ class Options extends DocArticle {
         .bsDarkmodeToggle({
           state: false,
           root: "#api-option-toggle-container",
-          allowCookie: false,
-          lightLabel: "Good Morning",
-          darkLabel: "Good Evening",
+          storage: "local",
+          lightLabel: "<i class='bs-darkmode-toggle bulb-off'></i>",
+          darkLabel: "<i class='bs-darkmode-toggle bulb-on'></i>",
           lightColorMode: "blue",
           darkColorMode: "red",
+          style: "primary",
+          layout : "toggle"
         });
     });
 </script>`;
@@ -44,11 +46,13 @@ class Options extends DocArticle {
         .bsDarkmodeToggle({
           state: false,
           root: "#api-option-toggle-container",
-          allowCookie: false,
-          lightLabel: "Good Morning",
-          darkLabel: "Good Evening",
+          storage: "local",
+          lightLabel: "<i class='bs-darkmode-toggle bulb-off'></i>",
+          darkLabel: "<i class='bs-darkmode-toggle bulb-on'></i>",
           lightColorMode: "blue",
           darkColorMode: "red",
+          style: "primary",
+          layout : "toggle"
         });
     });
 </script>`;
@@ -80,11 +84,13 @@ class Options extends DocArticle {
             toggle.bsDarkmodeToggle({
                 state: false,
                 root: "#api-option-toggle-container",
-                allowCookie: false,
-                lightLabel: "Good Morning",
-                darkLabel: "Good Evening",
+                storage: "local",
+                lightLabel: "<i class=\"bs-darkmode-toggle bulb-off\"></i>",
+                darkLabel: "<i class=\"bs-darkmode-toggle bulb-on\"></i>",
                 lightColorMode: "blue",
                 darkColorMode: "red",
+                style: "primary",
+                layout : "toggle"
             });
         };
 
@@ -125,20 +131,20 @@ class Options extends DocArticle {
                 <td>CSS selector for root element to apply color scheme.</td>
             </tr>
             <tr>
-                <td><code class="text-nowrap">allowCookie</code></td>
-                <td><code class="text-nowrap">data-allow-cookie</code></td>
-                <td>boolean</td>
-                <td><code class="text-nowrap">false</code></td>
+                <td><code class="text-nowrap">storage</code></td>
+                <td><code class="text-nowrap">data-storage</code></td>
+                <td>string</td>
+                <td><code class="text-nowrap">"none"</code></td>
                 <td>
-                    Set if the user has allowed to use cookies.<br>
-                    <small class="text-muted">For data attribute the presence means <code>true</code> and the absence <code>false</code>.</small>
+                    Set the storage to use for user preferences.<br>Possible values are:
+                     <code>cache</code>, <code>local</code> or <code>none</code>.
                 </td>
             </tr>
             <tr>
                 <td><code class="text-nowrap">lightLabel</code></td>
                 <td><code class="text-nowrap">data-light-label</code></td>
                 <td>string | html</td>
-                <td><code class="text-nowrap">"Light"</code></td>
+                <td><code class="text-nowrap"><i class="bs-darkmode-toggle sun"></i></code></td>
                 <td>
                     Set the light toggle label.
                 </td>
@@ -147,10 +153,21 @@ class Options extends DocArticle {
                 <td><code class="text-nowrap">darkLabel</code></td>
                 <td><code class="text-nowrap">data-dark-label</code></td>
                 <td>string | html</td>
-                <td><code class="text-nowrap">"Dark"</code></td>
+                <td><code class="text-nowrap"><i class="bs-darkmode-toggle moon"></i></code></td>
                 <td>
                     Set the dark toggle label.
                 </td>
+            </tr>
+            <tr>
+                <td><code class="text-nowrap">style</code></td>
+                <td><code class="text-nowrap">data-style</code></td>
+                <td>string</td>
+                <td><code class="text-nowrap">"outline-secondary"</code></td>
+                <td>
+                    Style of the toggle.<br>Possible values are:
+                    <code>primary</code>, <code>secondary</code>, <code>success</code>, <code>danger</code>,
+                    <code>warning</code>, <code>info</code>, <code>light</code>, <code>dark</code><br>
+                    and their <code>outline</code> variants as <code>outline-primary</code>.
             </tr>
             <tr>
                 <td><code class="text-nowrap">lightColorMode</code></td>
@@ -165,6 +182,13 @@ class Options extends DocArticle {
                 <td>string</td>
                 <td><code class="text-nowrap">"dark"</code></td>
                 <td>Set the dark color scheme</td>
+            </tr>
+            <tr>
+                <td><code class="text-nowrap">layout</code></td>
+                <td><code class="text-nowrap">data-layout</code></td>
+                <td>string</td>
+                <td><code class="text-nowrap">"toggle"</code></td>
+                <td>Set the layout.<br>Possible values are: <code>toggle</code> and <code>button</code></td>
             </tr>
         </tbody>
     </table>

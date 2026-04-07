@@ -4,6 +4,7 @@ import Usage from "./documentation/Usage";
 import Features from "./documentation/Features";
 import Api from "./documentation/Api";
 import Events from "./documentation/Events";
+import Icons from "./documentation/Icons";
 
 class Documentation {
     static #sections = [
@@ -13,6 +14,7 @@ class Documentation {
         Features.build(),
         Api.build(),
         Events.build(),
+        Icons.build(),
     ];
 
     static build() {

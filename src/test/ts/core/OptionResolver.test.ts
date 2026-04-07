@@ -1,4 +1,6 @@
+/// <reference types="jest" />
 import { OptionResolver } from "../../../main/ts/core/OptionResolver";
+import { Layout, StorageType, ToggleStyle } from "../../../main/ts/core/OptionResolver.types";
 import * as Tools from "../../../main/ts/core/Tools";
 
 describe("OptionResolver", () => {
@@ -61,25 +63,28 @@ describe("OptionResolver", () => {
         });
     });
 
-    describe("allowCookie resolution", () => {
-        it("should enable allowCookie via attribute", () => {
-            element.dataset.allowCookie = undefined;
+    describe("storage resolution", () => {
+        const storages = [StorageType.COOKIE, StorageType.LOCAL, StorageType.NONE];
+        it.each(storages)("should enable storage via attribute when storage is %s", (storage) => {
+            element.dataset.storage = storage;
 
             const result = OptionResolver.resolve(element);
 
-            expect(result.allowCookie).toBe(true);
+            expect(result.storage).toBe(storage);
         });
 
-        it("should enable allowCookie via options", () => {
-            const result = OptionResolver.resolve(element, { allowCookie: true });
+        it.each(storages)("should enable storage via options when storage is %s", (storage) => {
+            delete element.dataset.storage;
+            const result = OptionResolver.resolve(element, { storage: storage });
 
-            expect(result.allowCookie).toBe(true);
+            expect(result.storage).toBe(storage);
         });
 
-        it("should fallback allowCookie to default", () => {
+        it("should fallback storage to default", () => {
+            delete element.dataset.storage;
             const result = OptionResolver.resolve(element);
 
-            expect(result.allowCookie).toBe(false);
+            expect(result.storage).toBe(StorageType.NONE);
         });
     });
 
@@ -110,8 +115,8 @@ describe("OptionResolver", () => {
         it("should fallback labels to defaults", () => {
             const result = OptionResolver.resolve(element);
 
-            expect(result.lightLabel).toBe("Light");
-            expect(result.darkLabel).toBe("Dark");
+            expect(result.lightLabel).toBe("<i class=\"bs-darkmode-toggle sun\"></i>");
+            expect(result.darkLabel).toBe("<i class=\"bs-darkmode-toggle moon\"></i>");
         });
     });
 
@@ -148,12 +153,56 @@ describe("OptionResolver", () => {
     });
 
     describe("style resolution", () => {
-        it("should always use default style", () => {
+        const btnStyles: ToggleStyle[] = [
+            "primary", "secondary", "success", "danger", "warning", "info", "light", "dark", "link",
+            "outline-primary", "outline-secondary", "outline-success", "outline-danger", "outline-warning", "outline-info", "outline-light", "outline-dark"
+        ];
+
+        it.each(btnStyles)("should resolve %s style from data", (style) => {
+            element.dataset.style = `${style}`;
+
+            const result = OptionResolver.resolve(element);
+
+            expect(result.style).toBe(`${style}`);
+        });
+
+        it.each(btnStyles)("should resolve %s style from options", (style) => {
             const result = OptionResolver.resolve(element, {
-                style: "ignored",
+                style: style,
             });
+
+            expect(result.style).toBe(style);
+        });
+
+        it("should fallback style to defaults", () => {
+            const result = OptionResolver.resolve(element);
 
             expect(result.style).toBe("outline-secondary");
         });
     }); 
+
+    describe("layout resolution", () => {
+        const layouts = [Layout.BUTTON, Layout.TOGGLE];
+        it.each(layouts)("should enable layout via attribute when storage is %s", (layout) => {
+            element.dataset.layout = layout;
+
+            const result = OptionResolver.resolve(element);
+
+            expect(result.layout).toBe(layout);
+        });
+
+        it.each(layouts)("should enable layout via options when layout is %s", (layout) => {
+            delete element.dataset.layout;
+            const result = OptionResolver.resolve(element, { layout: layout });
+
+            expect(result.layout).toBe(layout);
+        });
+
+        it("should fallback layout to default", () => {
+            delete element.dataset.layout;
+            const result = OptionResolver.resolve(element);
+
+            expect(result.layout).toBe(Layout.TOGGLE);
+        });
+    });
 });

@@ -2,6 +2,5 @@ export enum Methods {
   LIGHT = "LIGHT",
   DARK = "DARK",
   TOGGLE = "TOGGLE",
-  ALLOW_COOKIE = "ALLOWCOOKIE",
-  DENY_COOKIE = "DENYCOOKIE",
+  SET_STORAGE = "SET_STORAGE",
 }

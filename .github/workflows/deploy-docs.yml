@@ -2,10 +2,15 @@ name: Deploy documentation
 
 on:
   push:
-    branches: ["v1"]
-  pull_request:
-    branches: ["v1"]
+    tags: 
+      - "v*"
   workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to deploy"
+        required: true
+        default: "v1"
+        type: string
 
 permissions:
   contents: read
@@ -25,6 +30,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref_name }}
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:

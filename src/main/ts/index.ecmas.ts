@@ -1,5 +1,5 @@
 import { DarkModeToggle } from "./DarkModeToggle";
-import { DarkModeOptions } from "./core/OptionResolver.types";
+import { DarkModeOptions, StorageType } from "./core/OptionResolver.types";
 import { Methods } from "./types/Methods";
 
 (function () {
@@ -9,27 +9,23 @@ import { Methods } from "./types/Methods";
      * Enables usage like: `document.getElementById("my-toggle").bsDarkmodeToggle({ ...options });`
      * or with methods: `document.getElementById("my-toggle").bsDarkmodeToggle("toggle");`
      */
-    HTMLElement.prototype.bsDarkmodeToggle = function (options?: DarkModeOptions | Methods, args?: boolean) {
+    HTMLElement.prototype.bsDarkmodeToggle = function (options?: DarkModeOptions | Methods, args?: unknown) {
         let instance = this._bsDarkmodeToggle || new DarkModeToggle(this, options);
 
         if (typeof options === "string") {
             switch (options.toUpperCase()) {
             case Methods.TOGGLE:
-                instance.toggle(args);
+                instance.toggle(args as boolean);
                 break;
             case Methods.LIGHT:
-                instance.light(args);
+                instance.light(args as boolean);
                 break;
             case Methods.DARK:
-                instance.dark(args);
+                instance.dark(args as boolean);
                 break;
-            case Methods.ALLOW_COOKIE:
-                instance.allowCookie();
+            case Methods.SET_STORAGE:
+                instance.setStorageType(args as StorageType);
                 break;
-            case Methods.DENY_COOKIE:
-                instance.denyCookie();
-                break;
-
             }
         }
     };
