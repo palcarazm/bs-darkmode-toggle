@@ -75,6 +75,28 @@ describe("StateReducer", () => {
         });
     });
 
+    describe(`do(${ActionType.OVERRIDE})`, () => {
+        it("should not change state if same isLight is provided", () => {
+            const reducer = createStateReducer(true);
+
+            const result = reducer.do(ActionType.OVERRIDE, { isLight: true });
+
+            expect(result).toBe(false);
+            expect(reducer.get().isLight).toBe(true);
+            expect(reducer.get().theme).toBe(LIGHT);
+        });
+
+        it("should change state if different isLight is provided", () => {
+            const reducer = createStateReducer(false);
+
+            const result = reducer.do(ActionType.OVERRIDE, { isLight: true });
+
+            expect(result).toBe(true);
+            expect(reducer.get().isLight).toBe(true);
+            expect(reducer.get().theme).toBe(LIGHT);
+        });
+    });
+
     describe("get()", () => {
         it("should return a frozen copy of state", () => {
             const reducer = createStateReducer(true);

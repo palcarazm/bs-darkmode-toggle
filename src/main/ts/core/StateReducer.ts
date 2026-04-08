@@ -1,4 +1,4 @@
-import { ActionType, DarkModeState } from "./StateReducer.types";
+import { ActionPayloadMap, ActionType, DarkModeState } from "./StateReducer.types";
 
 export class StateReducer {
     private state: DarkModeState;
@@ -16,7 +16,7 @@ export class StateReducer {
      * @param action The action to be performed
      * @returns A boolean indicating whether the action was successful.
      */
-    do(action: ActionType): boolean{
+    do<A extends ActionType>(action: A, payload?: ActionPayloadMap[A]): boolean{
         switch (action) {
         case ActionType.LIGHT:
             if(this.state.isLight) return false;
@@ -29,6 +29,12 @@ export class StateReducer {
         case ActionType.TOGGLE: {
             const newIsLight = !this.state.isLight;
             this.state = { isLight: newIsLight, theme: this.getTheme(newIsLight) };
+            return true;
+        }
+        case ActionType.OVERRIDE: {
+            const { isLight } = payload as ActionPayloadMap[ActionType.OVERRIDE];
+            if (this.state.isLight === isLight) return false;
+            this.state = { isLight: isLight, theme: this.getTheme(isLight) };
             return true;
         }
         }
