@@ -6,6 +6,8 @@ import { ResolvedOptions, StorageType } from "./core/OptionResolver.types";
 import { ActionType } from "./core/StateReducer.types";
 import { ColorModes } from "./types/ColorModes";
 import { EventManager } from "./core/events/EventManager";
+import { DarkModeToggleEvent } from "./core/events/DarkModeToggleEvent";
+import { CustomEventTypes } from "./core/events/Events.types";
 
 export class DarkModeToggle {
     private readonly element: HTMLElement;
@@ -35,8 +37,38 @@ export class DarkModeToggle {
 
         this.element._bsDarkmodeToggle = this;
 
+        this.setupCrossInstanceSync();
         this.syncState();
     }
+
+    /**
+     * Sets up an event listener to handle external theme change events.
+     * When an external theme change event is triggered, this method updates the control state.
+     * @private
+     */
+    private setupCrossInstanceSync(){
+        // TODO: Remove this event listener in destroy() method - see issue #64
+        globalThis.document.addEventListener(CustomEventTypes.CHANGE, this.handleExternalThemeChange);
+    }
+
+    /**
+     * Handles an external theme change event by updating the state and the DOM
+     * if the root elements of the event and the component share roots.
+     * 
+     * Implementation note: for performance reasons, DOM is only updated when the state is updated.
+     * @private
+     * @param e - The external theme change event
+     */
+    private readonly handleExternalThemeChange = (e: Event) =>{
+        const { isLight, roots: eventRoots } = (e as DarkModeToggleEvent).detail;
+        
+        const thisRoots = this.dom.roots;
+        const allRootsAffected = thisRoots.every(root => eventRoots.includes(root));
+        
+        if (allRootsAffected && this.state.do(ActionType.OVERRIDE, { isLight })) {
+            this.dom.setState(this.state.get());
+        }
+    };
 
     /**
      * Syncs the state of the dark mode toggle by updating the DOM and persisting the current theme to storage.

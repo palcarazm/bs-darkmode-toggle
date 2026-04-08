@@ -5,14 +5,20 @@ import { ActionType } from "../../main/ts/core/StateReducer.types";
 import { OptionResolver } from "../../main/ts/core/OptionResolver";
 import { Layout, ResolvedOptions, StorageType } from "../../main/ts/core/OptionResolver.types";
 import { ColorModes } from "../../main/ts/types/ColorModes";
+import { CustomEventTypes } from "../../main/ts/core/events/Events.types";
+import { DarkModeToggleEvent } from "../../main/ts/core/events/DarkModeToggleEvent";
+import { DomManager } from "../../main/ts/core/dom/DomManager";
 
 const setStateMock = jest.fn();
 
+const domManagerMock: Partial<DomManager> = {
+    setState: setStateMock,
+    roots: [],
+};
+
 jest.mock("../../main/ts/core/dom/DomManager", () => {
     return {
-        DomManager: jest.fn().mockImplementation(() => ({
-            setState: setStateMock,
-        })),
+        DomManager: jest.fn().mockImplementation(() => domManagerMock),
     };
 });
 
@@ -79,9 +85,11 @@ function setMatchMedia(colorMode: ColorModes) {
 
 describe("DarkModeToggle", () => {
     let element: HTMLElement;
+    let documentAddEventListenerSpy: jest.SpyInstance;
 
     beforeEach(() => {
         jest.clearAllMocks();
+        (domManagerMock as any).roots = [];
 
         element = document.createElement("div");
 
@@ -91,6 +99,14 @@ describe("DarkModeToggle", () => {
         doMock.mockReturnValue(true);
 
         globalThis.window.matchMedia = matchMediaMock;
+        documentAddEventListenerSpy = jest.spyOn(globalThis.document, "addEventListener");
+    });
+
+    afterEach(() => {
+        for (const [eventName, listener] of documentAddEventListenerSpy.mock.calls) {
+            globalThis.document.removeEventListener(eventName, listener);
+        }
+        documentAddEventListenerSpy.mockRestore();
     });
 
 
@@ -103,6 +119,14 @@ describe("DarkModeToggle", () => {
             expect((element as any)._bsDarkmodeToggle).toBeDefined();
         });
 
+        it("should set up cross-instance synchronization listener", () => {
+            const _instance = new DarkModeToggle(element);
+            
+            expect(documentAddEventListenerSpy).toHaveBeenCalledWith(
+                CustomEventTypes.CHANGE,
+                expect.any(Function)
+            );
+        });
     });
 
     describe("toggle(silent = false)", () => {
@@ -280,6 +304,105 @@ describe("DarkModeToggle", () => {
 
             expect(() => (new DarkModeToggle(element) as any).getSystemPreference()).not.toThrow();
             expect((new DarkModeToggle(element) as any).getSystemPreference()).toBe(ColorModes.NONE);
+        });
+    });
+
+    describe("cross-instance synchronization", () => {
+        let root1: HTMLElement;
+        let root2: HTMLElement;
+
+        beforeEach(() => {
+            root1 = document.createElement("div");
+            root2 = document.createElement("div");
+            root1.className = "root";
+            root2.className = "root";
+            document.body.appendChild(root1);
+            document.body.appendChild(root2);
+
+            (domManagerMock as any).roots = [root1, root2];
+        });
+
+        afterEach(() => {
+            root1.remove();
+            root2.remove();
+        });
+
+        it("should update state and DOM when external event shares roots", () => {
+            doMock.mockReturnValue(true);
+            const _instance = new DarkModeToggle(element);
+            setStateMock.mockClear();
+            
+            const event = new DarkModeToggleEvent(CustomEventTypes.CHANGE,
+                { isLight: false, theme: "dark", source: element, roots: [root1, root2] }
+            );
+            
+            globalThis.document.dispatchEvent(event);
+            
+            expect(doMock).toHaveBeenCalledWith(ActionType.OVERRIDE, {isLight:false});
+            expect(setStateMock).toHaveBeenCalledTimes(1);
+        });
+
+        it("should NOT update DOM when event state matches current state", () => {
+            doMock.mockReturnValue(false);
+            const _instance = new DarkModeToggle(element);
+            setStateMock.mockClear();
+            
+            const event = new DarkModeToggleEvent(CustomEventTypes.CHANGE,
+                { isLight: true, theme: "light", source: element, roots: [root1, root2] }
+            );
+            
+            globalThis.document.dispatchEvent(event);
+            
+            expect(doMock).toHaveBeenCalledWith(ActionType.OVERRIDE, {isLight:true});
+            expect(setStateMock).toHaveBeenCalledTimes(0);
+        });
+
+        it("should NOT update state and DOM when external event has no shared roots", () => {
+            const differentRoot = document.createElement("div");
+
+            const _instance = new DarkModeToggle(element);
+            
+            setStateMock.mockClear();
+            
+            const event = new DarkModeToggleEvent(CustomEventTypes.CHANGE,
+                { isLight: true, theme: "light", source: element, roots: [differentRoot] }
+            );
+            
+            globalThis.document.dispatchEvent(event);
+            
+            expect(doMock).not.toHaveBeenCalled();
+            expect(setStateMock).toHaveBeenCalledTimes(0);
+        });
+
+        it("should NOT update when event affects only a subset of roots", () => {
+            const _instance = new DarkModeToggle(element);
+
+            setStateMock.mockClear();
+
+            const event = new DarkModeToggleEvent(CustomEventTypes.CHANGE,
+                { isLight: false, theme: "dark", source: element, roots: [root1] }
+            );
+
+            globalThis.document.dispatchEvent(event);
+
+            expect(doMock).not.toHaveBeenCalled();
+            expect(setStateMock).toHaveBeenCalledTimes(0);
+        });
+
+        it("should not update storage or trigger events when external event is received", () => {
+            const _instance = new DarkModeToggle(element);
+
+            setStorageMock.mockClear();
+            dispatchMock.mockClear();
+                    
+            const event = new DarkModeToggleEvent(CustomEventTypes.CHANGE,
+                { isLight: true, theme: "light", source: element, roots: [root1, root2] }
+            );
+
+            globalThis.document.dispatchEvent(event);
+
+            expect(setStorageMock).toHaveBeenCalledTimes(0);
+            expect(dispatchMock).toHaveBeenCalledTimes(0);
         });
     });
 });

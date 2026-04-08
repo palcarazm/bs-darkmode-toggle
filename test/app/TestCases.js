@@ -5,6 +5,7 @@ import { MethodsLoader } from "../loaders/MethodsLoader.js";
 import { PageModel } from "./PageModel.js";
 import { TestRunner } from "../runners/TestRunner.js";
 import { ButtonLoader } from "../loaders/ButtonLoader.js";
+import { MultiControlLoader } from "../loaders/MultiControlLoader.js";
 
 export class TestCases {
     constructor(interface_) {
@@ -40,6 +41,13 @@ export class TestCases {
             label: "Button Layout",
             description: "Check <code>bs-darkmode-toggle</code> with button layout",
             load: () => new ButtonLoader().load(TEST_CASES, this.interface),
+            run: () => {},
+        });
+
+        this.cases.set("multiple",{
+            label: "Multiple Control",
+            description: "Check <code>bs-darkmode-toggle</code> with multiple control handling the same container",
+            load: () => new MultiControlLoader().load(TEST_CASES, this.interface),
             run: () => {},
         });
     }
