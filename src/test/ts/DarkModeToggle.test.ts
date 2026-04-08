@@ -58,6 +58,15 @@ jest.mock("../../main/ts/core/storage/StorageManager", () => {
     };
 });
 
+const dispatchMock = jest.fn();
+jest.mock("../../main/ts/core/events/EventManager", () => {
+    return {
+        EventManager: jest.fn().mockImplementation(() => ({
+            dispatch: dispatchMock,
+        })),
+    };
+});
+
 const matchMediaMock = jest.fn();
 
 function setMatchMedia(colorMode: ColorModes) {
@@ -98,112 +107,96 @@ describe("DarkModeToggle", () => {
 
     describe("toggle(silent = false)", () => {
         it("should toggle and trigger event", () => {
-            const dispatchSpy = jest.spyOn(element, "dispatchEvent");
-
             const instance = new DarkModeToggle(element);
 
             instance.toggle();
 
             expect(doMock).toHaveBeenCalledWith(ActionType.TOGGLE);
             expect(setStateMock).toHaveBeenCalledTimes(2);
-            expect(dispatchSpy).toHaveBeenCalledTimes(1);
+            expect(dispatchMock).toHaveBeenCalledTimes(1);
         });
 
         it("should NOT toggle if reducer returns false", () => {
             doMock.mockReturnValue(false);
-            const dispatchSpy = jest.spyOn(element, "dispatchEvent");
-
             const instance = new DarkModeToggle(element);
 
             instance.toggle();
 
             expect(setStateMock).toHaveBeenCalledTimes(1);
-            expect(dispatchSpy).not.toHaveBeenCalled();
+            expect(dispatchMock).not.toHaveBeenCalled();
         });
 
         it("should not trigger event when silent", () => {
-            const dispatchSpy = jest.spyOn(element, "dispatchEvent");
-
             const instance = new DarkModeToggle(element);
 
             instance.toggle(true);
 
             expect(setStateMock).toHaveBeenCalledTimes(2);
-            expect(dispatchSpy).not.toHaveBeenCalled();
+            expect(dispatchMock).not.toHaveBeenCalled();
         });
     });
 
     describe("light(silent = false)", () => {
         it("should set light and trigger event", () => {
-            const dispatchSpy = jest.spyOn(element, "dispatchEvent");
-
             const instance = new DarkModeToggle(element);
 
             instance.light();
 
             expect(doMock).toHaveBeenCalledWith(ActionType.LIGHT);
             expect(setStateMock).toHaveBeenCalledTimes(2);
-            expect(dispatchSpy).toHaveBeenCalledTimes(1);
+            expect(dispatchMock).toHaveBeenCalledTimes(1);
         });
 
         it("should NOT set light if reducer returns false", () => {
             doMock.mockReturnValue(false);
-            const dispatchSpy = jest.spyOn(element, "dispatchEvent");
 
             const instance = new DarkModeToggle(element);
 
             instance.light();
 
             expect(setStateMock).toHaveBeenCalledTimes(1);
-            expect(dispatchSpy).not.toHaveBeenCalled();
+            expect(dispatchMock).not.toHaveBeenCalled();
         });
 
         it("should not trigger event when silent", () => {
-            const dispatchSpy = jest.spyOn(element, "dispatchEvent");
-
             const instance = new DarkModeToggle(element);
 
             instance.light(true);
 
             expect(setStateMock).toHaveBeenCalledTimes(2);
-            expect(dispatchSpy).not.toHaveBeenCalled();
+            expect(dispatchMock).not.toHaveBeenCalled();
         });
     });
 
     describe("dark(silent = false)", () => {
         it("should set dark and trigger event", () => {
-            const dispatchSpy = jest.spyOn(element, "dispatchEvent");
-
             const instance = new DarkModeToggle(element);
 
             instance.dark();
 
             expect(doMock).toHaveBeenCalledWith(ActionType.DARK);
             expect(setStateMock).toHaveBeenCalledTimes(2);
-            expect(dispatchSpy).toHaveBeenCalledTimes(1);
+            expect(dispatchMock).toHaveBeenCalledTimes(1);
         });
 
         it("should NOT set dark if reducer returns false", () => {
             doMock.mockReturnValue(false);
-            const dispatchSpy = jest.spyOn(element, "dispatchEvent");
 
             const instance = new DarkModeToggle(element);
 
             instance.dark();
 
             expect(setStateMock).toHaveBeenCalledTimes(1);
-            expect(dispatchSpy).not.toHaveBeenCalled();
+            expect(dispatchMock).not.toHaveBeenCalled();
         });
 
         it("should not trigger event when silent", () => {
-            const dispatchSpy = jest.spyOn(element, "dispatchEvent");
-
             const instance = new DarkModeToggle(element);
 
             instance.dark(true);
 
             expect(setStateMock).toHaveBeenCalledTimes(2);
-            expect(dispatchSpy).not.toHaveBeenCalled();
+            expect(dispatchMock).not.toHaveBeenCalled();
         });
     });
   

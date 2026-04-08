@@ -31,7 +31,7 @@ export class MethodsLoader extends BaseLoader {
 
         $container.append($row);
         this.appendToMain("Case Methods", $container);
-        this.#bindEvents($element, $console);
+        this.#bindEvents($element, $container, $console);
     }
 
     #getButtons($element) {
@@ -124,9 +124,20 @@ export class MethodsLoader extends BaseLoader {
         return $group;
     }
 
-    #bindEvents($element, $console) {
-        $element.on("change", () => {
-            $console.text(TEST_CONSTANTS.CONSOLE_FIRED_TEXT);
+    #bindEvents($element, $container, $console) {
+        $element.on("change", (e) => {
+            e.stopPropagation();
+            $console.append(`<div>${TEST_CONSTANTS.EVENTS_CONSOLE_TEXT.element.change}</div>`);
+        });
+
+        $element.on("darkmode:change", (e) => {
+            e.stopPropagation();
+            $console.append(`<div>${TEST_CONSTANTS.EVENTS_CONSOLE_TEXT.element.darkmode_change}</div>`);
+        });
+
+        $container.on("darkmode:change", (e) => {
+            e.stopPropagation();
+            $console.append(`<div>${TEST_CONSTANTS.EVENTS_CONSOLE_TEXT.container.darkmode_change}</div>`);
         });
     }
 }

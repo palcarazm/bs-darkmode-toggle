@@ -5,6 +5,7 @@ import { DomManager } from "./core/dom/DomManager";
 import { ResolvedOptions, StorageType } from "./core/OptionResolver.types";
 import { ActionType } from "./core/StateReducer.types";
 import { ColorModes } from "./types/ColorModes";
+import { EventManager } from "./core/events/EventManager";
 
 export class DarkModeToggle {
     private readonly element: HTMLElement;
@@ -12,6 +13,7 @@ export class DarkModeToggle {
     private readonly state: StateReducer;
     private readonly storage: StorageManager;
     private readonly dom: DomManager;
+    private readonly eventManager: EventManager;
 
     constructor(element: HTMLElement, opts = {}) {
         this.element = element;
@@ -19,12 +21,12 @@ export class DarkModeToggle {
         this.options = OptionResolver.resolve(element, opts);
         this.state = new StateReducer(this.options.state, this.options.lightColorMode, this.options.darkColorMode);
         this.storage = new StorageManager(this.options.storage);
+        this.eventManager = new EventManager(this.element, this.options.root);
 
         this.applyPreferredScheme();
 
         this.dom = new DomManager(this.element, this.options, (e) => {
-            this.toggle(true);
-            this.persistTheme();
+            this.toggle();
             e.preventDefault();
         });
 
@@ -65,10 +67,16 @@ export class DarkModeToggle {
         this.persistTheme();
     }
 
+    /**
+     * Triggers the events if silent is false.
+     * The events are triggered with the current state of the dark mode toggle.
+     * Delegates dispatch events to the event manager.
+     * @private
+     * @param {boolean} silent - Whether to trigger the event.
+     */
     private trigger(silent: boolean) {
-        if (!silent) {
-            this.element.dispatchEvent(new Event("change", { bubbles: true }));
-        }
+        if (silent) return;
+        this.eventManager.dispatch(this.state.get());
     }
 
     /**
