@@ -2,7 +2,7 @@ import { ResolvedOptions } from "../OptionResolver.types";
 import { DarkModeState } from "../StateReducer.types";
 
 export abstract class AbstractLayout {
-    protected readonly root: NodeListOf<HTMLElement>;
+    protected readonly rootSelector: string;
     protected readonly lightLabel: string;
     protected readonly darkLabel: string;
     protected readonly style: string;
@@ -15,13 +15,23 @@ export abstract class AbstractLayout {
      * @param {ResolvedOptions} options - The resolved options to apply to the layout.
      */
     constructor(container: HTMLElement, options: ResolvedOptions) {
-        this.root = globalThis.document.querySelectorAll<HTMLElement>(options.root);
+        this.rootSelector = options.root;
         this.lightLabel = options.lightLabel;
         this.darkLabel = options.darkLabel;
         this.style = options.style;
 
         container.innerHTML = "";
         this.createControl(container);
+    }
+
+    /**
+     * Gets the root elements in the layout.
+     * 
+     * Implementation note: roots are not cached to avoid re-querying the DOM because roots can change (added or removed) during runtime.
+     * @returns {HTMLElement[]} The root elements in the layout.
+     */
+    public get roots(): HTMLElement[] {
+        return Array.from(globalThis.document.querySelectorAll<HTMLElement>(this.rootSelector));
     }
 
     /**
@@ -40,7 +50,7 @@ export abstract class AbstractLayout {
      */
     public setState(state: DarkModeState): void{
         this.updateControlState(state);
-        this.root.forEach((el) => {
+        this.roots.forEach((el) => {
             el.dataset[AbstractLayout.BS_ATTRIBUTE] = state.theme;
         });
     }

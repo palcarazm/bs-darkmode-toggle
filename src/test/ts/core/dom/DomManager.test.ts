@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /// <reference types="jest" />
 import { DomManager } from "../../../../main/ts/core/dom/DomManager";
 import { Layout, ResolvedOptions, StorageType } from "../../../../main/ts/core/OptionResolver.types";
@@ -11,21 +12,21 @@ const mockOnChange: jest.Mock = jest.fn()
     .mockImplementation((handler) => {capturedHandler = handler;});
 const mockOnChangeHandler = jest.fn();
 
+const mockLayout: Partial<AbstractLayout> = {
+    setState: mockSetState,
+    onChange: mockOnChange,
+    roots: [document.createElement("div"), document.createElement("span")],
+};
+
 jest.mock("../../../../main/ts/core/dom/layouts/ButtonLayout", () => {
     return {
-        ButtonLayout: jest.fn().mockImplementation(() => ({
-            setState: mockSetState,
-            onChange: mockOnChange,
-        })),
+        ButtonLayout: jest.fn().mockImplementation(() => mockLayout),
     };
 });
 
 jest.mock("../../../../main/ts/core/dom/layouts/ToggleLayout", () => {
     return {
-        ToggleLayout: jest.fn().mockImplementation(() => ({
-            setState: mockSetState,
-            onChange: mockOnChange,
-        })),
+        ToggleLayout: jest.fn().mockImplementation(() => mockLayout),
     };
 });
 
@@ -62,6 +63,7 @@ describe("DomManager", () => {
     beforeEach(() => {
         jest.clearAllMocks();
         capturedHandler = () => {};
+        (mockLayout as any).roots = [document.createElement("div"), document.createElement("span")];
 
         element = document.createElement("div");
     });
@@ -90,6 +92,13 @@ describe("DomManager", () => {
             const domManager = createDomManager(layout);
             domManager.setState({isLight:true, theme:"light"});
             expect(mockSetState).toHaveBeenCalledWith({isLight:true, theme:"light"});
+        });
+    });
+
+    describe("roots", () => {
+        it.each(layouts)("should delegate roots on layout %s", (layout) => {
+            const domManager = createDomManager(layout);
+            expect(domManager.roots).toEqual(mockLayout.roots);
         });
     });
 

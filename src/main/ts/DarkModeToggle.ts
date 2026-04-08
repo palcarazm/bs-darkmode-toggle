@@ -21,14 +21,17 @@ export class DarkModeToggle {
         this.options = OptionResolver.resolve(element, opts);
         this.state = new StateReducer(this.options.state, this.options.lightColorMode, this.options.darkColorMode);
         this.storage = new StorageManager(this.options.storage);
-        this.eventManager = new EventManager(this.element, this.options.root);
 
         this.applyPreferredScheme();
 
-        this.dom = new DomManager(this.element, this.options, (e) => {
+        const dom = new DomManager(this.element, this.options, (e) => {
             this.toggle();
             e.preventDefault();
         });
+
+        this.dom = dom;
+
+        this.eventManager = new EventManager(this.element, () => dom.roots);
 
         this.element._bsDarkmodeToggle = this;
 

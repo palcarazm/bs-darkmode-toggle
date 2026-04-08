@@ -40,4 +40,12 @@ export class DomManager{
     public setState(state: DarkModeState): void{
         this.layout.setState(state);
     }
+
+    /**
+     * Returns the root elements by delegating to the layout.
+     * @returns {HTMLElement[]} The root elements.
+     */
+    public get roots(): HTMLElement[] {
+        return this.layout.roots;
+    }
 }

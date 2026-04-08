@@ -8,35 +8,22 @@ let root: HTMLElement;
 
 const elementEventDispatchMock = jest.fn();
 const rootEventDispatchMock = jest.fn();
+const mockRootsFn = jest.fn(() => [root]);
 
 function createEventManager():EventManager{
-    return new EventManager(element, ".root");
+    return new EventManager(element, mockRootsFn);
 }
 
-describe("DomManager", () => {
+describe("EventManager", () => {
     beforeEach(() => {
         jest.clearAllMocks();
-        document.body.innerHTML = "";
 
         element = document.createElement("div");
-        document.body.appendChild(element);
         jest.spyOn(element, "dispatchEvent").mockImplementation(elementEventDispatchMock);
 
         root = document.createElement("div");
         root.className = "root";
-        document.body.appendChild(root);
         jest.spyOn(root, "dispatchEvent").mockImplementation(rootEventDispatchMock);
-    });
-
-    describe("constructor", () => {
-        it("should get all roots", () => {
-            const root2 = document.createElement("div");
-            root2.className = "root";
-            document.body.appendChild(root2);
-
-            const instance = createEventManager();
-            expect((instance as any).roots).toStrictEqual([root, root2]);
-        });
     });
 
     describe("dispatch(state)", () => {
@@ -46,6 +33,12 @@ describe("DomManager", () => {
 
             expect(elementEventDispatchMock).toHaveBeenCalledTimes(2);
             expect(rootEventDispatchMock).toHaveBeenCalledTimes(1);
+        });
+
+        it("should get all roots", () => {
+            const instance = createEventManager();
+            instance.dispatch({ isLight: true, theme: "light" });
+            expect(mockRootsFn).toHaveBeenCalled();
         });
     });
 

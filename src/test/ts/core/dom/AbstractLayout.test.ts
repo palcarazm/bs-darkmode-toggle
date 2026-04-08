@@ -39,9 +39,11 @@ describe("AbstractLayout", () => {
     let root2: HTMLElement;
 
     beforeEach(() => {
+        jest.clearAllMocks();
+        document.body.innerHTML = "";
+        
         container = document.createElement("div");
         document.body.appendChild(container);
-        jest.clearAllMocks();
 
         root1 = document.createElement("div");
         root2 = document.createElement("div");
@@ -70,6 +72,28 @@ describe("AbstractLayout", () => {
 
             expect(container.innerHTML).not.toContain("old");
             expect(control).toBeInstanceOf(HTMLElement);
+        });
+    });
+
+    describe("roots", () => {
+        it("should return all root elements", () => {
+            const { builder } = createBuilder();
+
+            expect(builder.roots).toStrictEqual([root1, root2]);
+        });
+        
+        it("should re-query DOM each time (not cached)", () => {
+            const { builder } = createBuilder();
+            const firstCall = builder.roots;
+
+            const newRoot = document.createElement("div");
+            newRoot.className = "root";
+            document.body.appendChild(newRoot);
+
+            const secondCall = builder.roots;
+
+            expect(secondCall).not.toBe(firstCall);
+            expect(secondCall).toHaveLength(3);
         });
     });
 
