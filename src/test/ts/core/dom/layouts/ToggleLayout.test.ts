@@ -76,7 +76,7 @@ describe("ToggleLayout", () => {
         it("should set light mode", () => {
             const { builder } = createBuilder();
 
-            builder.setState(true);
+            builder.setState({isLight: true, theme: "light"});
 
             expect(bsToggleSpy).toHaveBeenCalledWith(BootstrapToggleMethods.ON, true);
 
@@ -87,7 +87,7 @@ describe("ToggleLayout", () => {
         it("should set dark mode", () => {
             const { builder } = createBuilder();
 
-            builder.setState(false);
+            builder.setState({isLight: false, theme: "dark"});
 
             expect(bsToggleSpy).toHaveBeenCalledWith(BootstrapToggleMethods.OFF, true);
 
@@ -98,7 +98,7 @@ describe("ToggleLayout", () => {
         it("should update all root elements", () => {
             const { builder } = createBuilder();
 
-            builder.setState(true);
+            builder.setState({isLight: true, theme: "light"});
 
             globalThis.document.querySelectorAll<HTMLElement>(".root").forEach((el) => {
                 expect(el.dataset.bsTheme).toBe("light");

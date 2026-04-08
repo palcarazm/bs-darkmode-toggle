@@ -1,3 +1,4 @@
+import { DarkModeState } from "../../StateReducer.types";
 import { AbstractLayout } from "../AbstractLayout";
 export class ButtonLayout extends AbstractLayout {
     private _button?: HTMLButtonElement;
@@ -25,11 +26,11 @@ export class ButtonLayout extends AbstractLayout {
     }
 
     /**
-     * Update the state of the control element based on the given boolean.
+     * Update the state of the control element based on the given current state.
      * @implements AbstractLayout
-     * @param {boolean} isLight - A boolean indicating whether to set light mode (`true`) or dark mode (`false`)
+     * @param {DarkModeState} state - The darkmode current state.
      */
-    updateControlState(isLight: boolean): void {
+    updateControlState({isLight}: DarkModeState): void {
         const label = isLight ? this.lightLabel : this.darkLabel;
         this.button.innerHTML = label;
         
