@@ -17,49 +17,52 @@ export class DarkModeToggle {
         this.element = element;
 
         this.options = OptionResolver.resolve(element, opts);
-        this.state = new StateReducer(this.options.state);
+        this.state = new StateReducer(this.options.state, this.options.lightColorMode, this.options.darkColorMode);
         this.storage = new StorageManager(this.options.storage);
 
         this.applyPreferredScheme();
 
         this.dom = new DomManager(this.element, this.options, (e) => {
             this.toggle(true);
-            this.persistState();
+            this.persistTheme();
             e.preventDefault();
         });
 
         this.element._bsDarkmodeToggle = this;
 
-        this.update();
+        this.syncState();
     }
 
-    private update() {
-        const isLight = this.state.get().isLight;
-        this.dom.setState(isLight);
-        this.persistState();
+    /**
+     * Syncs the state of the dark mode toggle by updating the DOM and persisting the current theme to storage.
+     * @private
+     */
+    private syncState() {
+        this.dom.setState(this.state.get());
+        this.persistTheme();
     }
 
     toggle(silent = false) {
         if(!this.state.do(ActionType.TOGGLE)) return;
-        this.update();
+        this.syncState();
         this.trigger(silent);
     }
 
     light(silent = false) {
         if(!this.state.do(ActionType.LIGHT)) return;
-        this.update();
+        this.syncState();
         this.trigger(silent);
     }
 
     dark(silent = false) {
         if(!this.state.do(ActionType.DARK)) return;
-        this.update();
+        this.syncState();
         this.trigger(silent);
     }
 
     setStorageType(type: StorageType) {
         this.storage.setStorageType(type);
-        this.persistState();
+        this.persistTheme();
     }
 
     private trigger(silent: boolean) {
@@ -68,12 +71,12 @@ export class DarkModeToggle {
         }
     }
 
-    private persistState() {
-        this.storage.set(
-            this.state.get().isLight
-                ? this.options.lightColorMode
-                : this.options.darkColorMode
-        );
+    /**
+     * Persist the current theme to the storage.
+     * @private
+     */
+    private persistTheme() {
+        this.storage.set(this.state.get().theme);
     }
 
     /**

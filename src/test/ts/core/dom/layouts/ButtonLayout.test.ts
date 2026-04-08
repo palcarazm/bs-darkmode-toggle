@@ -61,7 +61,7 @@ describe("ButtonLayout", () => {
         it("should set light mode", () => {
             const { builder, control } = createBuilder();
 
-            builder.setState(true);
+            builder.setState({isLight: true, theme: "light"});
 
             expect(control.className).toContain("active");
             expect(control.ariaPressed).toBe("true");
@@ -73,7 +73,7 @@ describe("ButtonLayout", () => {
         it("should set dark mode", () => {
             const { builder, control } = createBuilder();
 
-            builder.setState(false);
+            builder.setState({isLight: false, theme: "dark"});
 
             expect(control.className).not.toContain("active");
             expect(control.ariaPressed).toBe("false");
@@ -85,7 +85,7 @@ describe("ButtonLayout", () => {
         it("should update all root elements", () => {
             const { builder } = createBuilder();
 
-            builder.setState(true);
+            builder.setState({isLight: true, theme: "light"});
 
             globalThis.document.querySelectorAll<HTMLElement>(".root").forEach((el) => {
                 expect(el.dataset.bsTheme).toBe("light");

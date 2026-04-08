@@ -1,3 +1,4 @@
+import { DarkModeState } from "../../StateReducer.types";
 import { AbstractLayout } from "../AbstractLayout";
 
 export class ToggleLayout extends AbstractLayout {
@@ -31,11 +32,11 @@ export class ToggleLayout extends AbstractLayout {
     }
 
     /**
-     * Update the state of the control element based on the given boolean.
+     * Update the state of the control element based on the given current state.
      * @implements AbstractLayout
-     * @param {boolean} isLight - A boolean indicating whether to set light mode (`true`) or dark mode (`false`)
+     * @param {DarkModeState} state - The darkmode current state.
      */
-    updateControlState(isLight: boolean) {
+    updateControlState({isLight}: DarkModeState) {
         this.input.bootstrapToggle(
             isLight ? BootstrapToggleMethods.ON : BootstrapToggleMethods.OFF,
             true

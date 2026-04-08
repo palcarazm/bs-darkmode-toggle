@@ -1,7 +1,7 @@
 /// <reference types="jest" />
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AbstractLayout } from "../../../../main/ts/core/dom/AbstractLayout";
 import { ResolvedOptions, StorageType, Layout } from "../../../../main/ts/core/OptionResolver.types";
+import { DarkModeState } from "../../../../main/ts/core/StateReducer.types";
 
 class ConcreteLayout extends AbstractLayout {
     public updateControlStateSpy: jest.Mock = jest.fn();
@@ -12,8 +12,8 @@ class ConcreteLayout extends AbstractLayout {
         container.appendChild(div);
     }
     
-    protected updateControlState(isLight: boolean): void {
-        this.updateControlStateSpy(isLight);
+    protected updateControlState(state: DarkModeState): void {
+        this.updateControlStateSpy(state);
     }
     
     public onChange(_handler: (e: Event) => void): void {
@@ -77,25 +77,25 @@ describe("AbstractLayout", () => {
         it("should set light mode", () => {
             const { builder } = createBuilder();
 
-            builder.setState(true);
+            builder.setState({isLight: true, theme: "light"});
 
             expect(builder.updateControlStateSpy).toHaveBeenCalledTimes(1);
-            expect(builder.updateControlStateSpy).toHaveBeenCalledWith(true);
+            expect(builder.updateControlStateSpy).toHaveBeenCalledWith({isLight: true, theme: "light"});
         });
 
         it("should set dark mode", () => {
             const { builder } = createBuilder();
 
-            builder.setState(false);
+            builder.setState({isLight: false, theme: "dark"});
 
             expect(builder.updateControlStateSpy).toHaveBeenCalledTimes(1);
-            expect(builder.updateControlStateSpy).toHaveBeenCalledWith(false);
+            expect(builder.updateControlStateSpy).toHaveBeenCalledWith({isLight: false, theme: "dark"});
         });
 
         it("should update all root elements", () => {
             const { builder } = createBuilder();
 
-            builder.setState(true);
+            builder.setState({isLight: true, theme: "light"});
 
             globalThis.document.querySelectorAll<HTMLElement>(".root").forEach((el) => {
                 expect(el.dataset.bsTheme).toBe("light");

@@ -78,7 +78,7 @@ describe("DarkModeToggle", () => {
 
         resolveMock.mockReturnValue({ ...baseOptions });
 
-        getMock.mockReturnValue({ isLight: true });
+        getMock.mockReturnValue({ isLight: true, theme: "light" });
         doMock.mockReturnValue(true);
 
         globalThis.window.matchMedia = matchMediaMock;
@@ -89,7 +89,7 @@ describe("DarkModeToggle", () => {
         it("should initialize and call update", () => {
             const _instance = new DarkModeToggle(element);
 
-            expect(setStateMock).toHaveBeenCalledWith(true);
+            expect(setStateMock).toHaveBeenCalledWith({ isLight: true, theme: "light" });
             expect(setStorageMock).toHaveBeenCalled();
             expect((element as any)._bsDarkmodeToggle).toBeDefined();
         });

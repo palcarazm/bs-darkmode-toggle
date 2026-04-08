@@ -88,8 +88,8 @@ describe("DomManager", () => {
     describe("setState", () => {
         it.each(layouts)("should delegate setState on layout %s", (layout) => {
             const domManager = createDomManager(layout);
-            domManager.setState(true);
-            expect(mockSetState).toHaveBeenCalledWith(true);
+            domManager.setState({isLight:true, theme:"light"});
+            expect(mockSetState).toHaveBeenCalledWith({isLight:true, theme:"light"});
         });
     });
 
