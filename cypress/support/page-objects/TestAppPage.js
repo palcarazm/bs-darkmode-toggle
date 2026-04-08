@@ -12,7 +12,6 @@ class TestAppPage {
 
         cy.clearCookie("bs-darkmode-toggle-color-scheme");
         cy.get(`button#${testId}`).click();
-        cy.wait(500);
     }
 
     static getTestContainers() {
