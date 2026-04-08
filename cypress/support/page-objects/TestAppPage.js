@@ -29,15 +29,19 @@ class TestAppPage {
 
     static verifyConsoleMessage(expected) {
         if (expected) {
-            this.getConsoleOutput().should(
-                "have.text",
-                TEST_CONSTANTS.CONSOLE_FIRED_TEXT
-            );
+            this.getConsoleOutput().find("div")
+                .contains(TEST_CONSTANTS.EVENTS_CONSOLE_TEXT.container.darkmode_change)
+                .should("exist");
+
+            this.getConsoleOutput().find("div")
+                .contains(TEST_CONSTANTS.EVENTS_CONSOLE_TEXT.element.change)
+                .should("exist");
+
+            this.getConsoleOutput().find("div")
+                .contains(TEST_CONSTANTS.EVENTS_CONSOLE_TEXT.element.darkmode_change)
+                .should("exist");
         } else {
-            this.getConsoleOutput().should(
-                "not.have.text",
-                TEST_CONSTANTS.CONSOLE_FIRED_TEXT
-            );
+            this.getConsoleOutput().find("div").should("not.exist");
         }
     }
 
