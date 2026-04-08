@@ -1,5 +1,4 @@
 import { BaseLoader } from "./BaseLoader.js";
-import { TEST_CONSTANTS } from "../common/constants.js";
 import { PageModel } from "../app/PageModel.js";
 
 export class MultiControlLoader extends BaseLoader {
