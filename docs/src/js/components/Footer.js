@@ -5,7 +5,7 @@ class Footer {
 
     static build() {
         const footer = document.createElement("footer");
-        footer.className = "bg-light border-top p-4";
+        footer.className = "bg-body-secondary border-top p-4";
 
         const container = document.createElement("div");
         container.className = "container";
