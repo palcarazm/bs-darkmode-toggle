@@ -1,22 +1,14 @@
+/// <reference types="jest" />
 import { ToggleLayout, BootstrapToggleElement, BootstrapToggleMethods} from "../../../../../main/ts/core/dom/layouts/ToggleLayout";
-import { Layout, ResolvedOptions, StorageType } from "../../../../../main/ts/core/OptionResolver.types";
+import { Layout, ResolvedOptions } from "../../../../../main/ts/core/OptionResolver.types";
+import { TestUtils } from "../../../../utils/TestUtils";
 
 Object.defineProperty(HTMLInputElement.prototype, "bootstrapToggle", {
     value: jest.fn(),
     writable: true,
 });
 
-const options: ResolvedOptions = {
-    state: true,
-    root: ".root",
-    storage: StorageType.NONE,
-    lightLabel: "Light",
-    darkLabel: "Dark",
-    lightColorMode: "light",
-    darkColorMode: "dark",
-    style: "outline-secondary",
-    layout: Layout.TOGGLE,
-};
+const options: ResolvedOptions = {...TestUtils.baseOptions, root: ".root", layout: Layout.TOGGLE};
 
 describe("ToggleLayout", () => {
     const bsToggleSpy = jest.spyOn(HTMLInputElement.prototype as BootstrapToggleElement, "bootstrapToggle").mockImplementation(() => {});
@@ -84,6 +76,15 @@ describe("ToggleLayout", () => {
             expect(root2.dataset.bsTheme).toBe("light");
         });
 
+        it("should set ARIA attributes and rerender when light mode is sets", () => {
+            const { builder, control } = createBuilder();
+
+            builder.setState({isLight: true, theme: "light"});
+            
+            expect(control.ariaLabel).toBe(options.lightAriaLabel);
+            expect(bsToggleSpy).toHaveBeenCalledWith(BootstrapToggleMethods.RENDERER);
+        });
+
         it("should set dark mode", () => {
             const { builder } = createBuilder();
 
@@ -95,6 +96,15 @@ describe("ToggleLayout", () => {
             expect(root2.dataset.bsTheme).toBe("dark");
         });
 
+        it("should set ARIA attributes and rerender when dark mode is sets", () => {
+            const { builder, control } = createBuilder();
+
+            builder.setState({isLight: false, theme: "dark"});
+            
+            expect(control.ariaLabel).toBe(options.darkAriaLabel);
+            expect(bsToggleSpy).toHaveBeenCalledWith(BootstrapToggleMethods.RENDERER);
+        });
+
         it("should update all root elements", () => {
             const { builder } = createBuilder();
 
@@ -103,6 +113,16 @@ describe("ToggleLayout", () => {
             globalThis.document.querySelectorAll<HTMLElement>(".root").forEach((el) => {
                 expect(el.dataset.bsTheme).toBe("light");
             });
+        });
+
+        it("should not rerender Bootstrap Toggle if ariaLabel hasn't changed", () => {
+            const { builder } = createBuilder();
+
+            builder.setState({isLight: false, theme: "dark"});
+            bsToggleSpy.mockClear();
+            builder.setState({isLight: false, theme: "dark"});
+
+            expect(bsToggleSpy).not.toHaveBeenCalledWith(BootstrapToggleMethods.RENDERER);
         });
     });
 

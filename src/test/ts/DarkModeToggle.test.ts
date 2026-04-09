@@ -3,11 +3,12 @@
 import { DarkModeToggle } from "../../main/ts/DarkModeToggle";
 import { ActionType } from "../../main/ts/core/StateReducer.types";
 import { OptionResolver } from "../../main/ts/core/OptionResolver";
-import { Layout, ResolvedOptions, StorageType } from "../../main/ts/core/OptionResolver.types";
+import { StorageType } from "../../main/ts/core/OptionResolver.types";
 import { ColorModes } from "../../main/ts/types/ColorModes";
 import { CustomEventTypes } from "../../main/ts/core/events/Events.types";
 import { DarkModeToggleEvent } from "../../main/ts/core/events/DarkModeToggleEvent";
 import { DomManager } from "../../main/ts/core/dom/DomManager";
+import { TestUtils } from "../utils/TestUtils";
 
 const setStateMock = jest.fn();
 
@@ -23,19 +24,7 @@ jest.mock("../../main/ts/core/dom/DomManager", () => {
     };
 });
 
-const baseOptions: ResolvedOptions = {
-    state: true,
-    root: ":root",
-    storage: StorageType.NONE,
-    lightLabel: "Light",
-    darkLabel: "Dark",
-    lightColorMode: "light",
-    darkColorMode: "dark",
-    style: "outline-secondary",
-    layout: Layout.TOGGLE,
-};
-
-const resolveMock = jest.spyOn(OptionResolver, "resolve").mockReturnValue({ ...baseOptions });
+const resolveMock = jest.spyOn(OptionResolver, "resolve").mockReturnValue({ ...TestUtils.baseOptions });
 
 const doMock = jest.fn();
 const getMock = jest.fn();
@@ -96,7 +85,7 @@ describe("DarkModeToggle", () => {
 
         element = document.createElement("div");
 
-        resolveMock.mockReturnValue({ ...baseOptions });
+        resolveMock.mockReturnValue({ ...TestUtils.baseOptions });
 
         getMock.mockReturnValue({ isLight: true, theme: "light" });
         doMock.mockReturnValue(true);

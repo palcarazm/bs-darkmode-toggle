@@ -205,4 +205,36 @@ describe("OptionResolver", () => {
             expect(result.layout).toBe(Layout.TOGGLE);
         });
     });
+
+    describe("Aria Label resolution", () => {
+        it("should resolve Aria Label from attributes", () => {
+            element.dataset.lightAriaLabel = "custom-light";
+            element.dataset.darkAriaLabel = "custom-dark";
+
+            const result = OptionResolver.resolve(element);
+
+            expect(result.lightAriaLabel).toBe("custom-light");
+            expect(sanitizeSpy).toHaveBeenCalledWith("custom-light", { mode: "TEXT" });
+
+            expect(result.darkAriaLabel).toBe("custom-dark");
+            expect(sanitizeSpy).toHaveBeenCalledWith("custom-dark", { mode: "TEXT" });
+        });
+
+        it("should resolve Aria Label from options", () => {
+            const result = OptionResolver.resolve(element, {
+                lightAriaLabel: "custom-light",
+                darkAriaLabel: "custom-dark",
+            });
+
+            expect(result.lightAriaLabel).toBe("custom-light");
+            expect(result.darkAriaLabel).toBe("custom-dark");
+        });
+
+        it("should fallback Aria Label to defaults", () => {
+            const result = OptionResolver.resolve(element);
+
+            expect(result.lightAriaLabel).toBe("Switch to dark mode");
+            expect(result.darkAriaLabel).toBe("Switch to light mode");
+        });
+    });
 });

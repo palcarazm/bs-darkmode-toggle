@@ -6,6 +6,8 @@ export abstract class AbstractLayout {
     protected readonly lightLabel: string;
     protected readonly darkLabel: string;
     protected readonly style: string;
+    private readonly lightAriaLabel: string;
+    private readonly darkAriaLabel: string;
 
     protected static readonly BS_ATTRIBUTE = "bsTheme";
 
@@ -19,6 +21,8 @@ export abstract class AbstractLayout {
         this.lightLabel = options.lightLabel;
         this.darkLabel = options.darkLabel;
         this.style = options.style;
+        this.lightAriaLabel = options.lightAriaLabel;
+        this.darkAriaLabel = options.darkAriaLabel;
 
         container.innerHTML = "";
         this.createControl(container);
@@ -32,6 +36,15 @@ export abstract class AbstractLayout {
      */
     public get roots(): HTMLElement[] {
         return Array.from(globalThis.document.querySelectorAll<HTMLElement>(this.rootSelector));
+    }
+
+    /**
+     * Returns the aria label based on the given dark mode state.
+     * @param {boolean} isLight - The dark mode state.
+     * @returns {string} The aria label.
+     **/
+    protected getAriaLabel(isLight: boolean): string {
+        return isLight ? this.lightAriaLabel : this.darkAriaLabel;
     }
 
     /**
