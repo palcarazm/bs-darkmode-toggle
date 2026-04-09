@@ -1,3 +1,4 @@
+import { BootstrapToggleElement, Methods } from "bootstrap5-toggle";
 import { DarkModeState } from "../../StateReducer.types";
 import { AbstractLayout } from "../AbstractLayout";
 
@@ -43,10 +44,10 @@ export class ToggleLayout extends AbstractLayout {
         const newAriaLabel = this.getAriaLabel(isLight);
         if (newAriaLabel !== this.input.ariaLabel) {
             this.input.ariaLabel = newAriaLabel;
-            this.input.bootstrapToggle(BootstrapToggleMethods.RENDERER);
+            this.input.bootstrapToggle(Methods.RERENDER);
         }
         this.input.bootstrapToggle(
-            isLight ? BootstrapToggleMethods.ON : BootstrapToggleMethods.OFF,
+            isLight ? Methods.ON : Methods.OFF,
             true
         );
     }
@@ -67,27 +68,7 @@ export class ToggleLayout extends AbstractLayout {
     destroy(): void {
         if(this.handler) this.input.removeEventListener("change", this.handler);
         this.handler = undefined;
-        this.input.bootstrapToggle(BootstrapToggleMethods.DESTROY);
+        this.input.bootstrapToggle(Methods.DESTROY);
         this.input.remove();
     }
-}
-
-export interface BootstrapToggleElement extends HTMLInputElement {
-  bootstrapToggle(
-    options?: BootstrapToggleMethods | Record<string, unknown>,
-    silent?: boolean
-  ): void;
-}
-
-export enum BootstrapToggleMethods {
-  ON = "ON",
-  OFF = "OFF",
-  TOGGLE = "TOGGLE",
-  DETERMINATE = "DETERMINATE",
-  INDETERMINATE = "INDETERMINATE",
-  ENABLE = "ENABLE",
-  DISABLE = "DISABLE",
-  READONLY = "READONLY",
-  DESTROY = "DESTROY",
-  RENDERER = "RENDERER",
 }
