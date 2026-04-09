@@ -74,6 +74,12 @@ export class MethodsLoader extends BaseLoader {
                     $element[0].bsDarkmodeToggle("toggle", true),
             },
             {
+                id: "destroy",
+                text: "Destroy",
+                onClickJquery: () => $element.bsDarkmodeToggle("destroy"),
+                onClickEcmas: () => $element[0].bsDarkmodeToggle("destroy"),
+            },
+            {
                 id: "setProviderCookie",
                 text: "Set provider COOKIE",
                 onClickJquery: () => $element.bsDarkmodeToggle("set_storage", "cookie"),

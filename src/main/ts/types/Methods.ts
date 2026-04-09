@@ -3,4 +3,5 @@ export enum Methods {
   DARK = "DARK",
   TOGGLE = "TOGGLE",
   SET_STORAGE = "SET_STORAGE",
+  DESTROY = "DESTROY",
 }

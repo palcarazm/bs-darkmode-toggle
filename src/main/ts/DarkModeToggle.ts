@@ -17,6 +17,8 @@ export class DarkModeToggle {
     private readonly dom: DomManager;
     private readonly eventManager: EventManager;
 
+    private _destroyed:boolean = false;
+
     constructor(element: HTMLElement, opts = {}) {
         this.element = element;
 
@@ -47,7 +49,6 @@ export class DarkModeToggle {
      * @private
      */
     private setupCrossInstanceSync(){
-        // TODO: Remove this event listener in destroy() method - see issue #64
         globalThis.document.addEventListener(CustomEventTypes.CHANGE, this.handleExternalThemeChange);
     }
 
@@ -80,24 +81,28 @@ export class DarkModeToggle {
     }
 
     toggle(silent = false) {
+        this.ensureNotDestroyed();
         if(!this.state.do(ActionType.TOGGLE)) return;
         this.syncState();
         this.trigger(silent);
     }
 
     light(silent = false) {
+        this.ensureNotDestroyed();
         if(!this.state.do(ActionType.LIGHT)) return;
         this.syncState();
         this.trigger(silent);
     }
 
     dark(silent = false) {
+        this.ensureNotDestroyed();
         if(!this.state.do(ActionType.DARK)) return;
         this.syncState();
         this.trigger(silent);
     }
 
     setStorageType(type: StorageType) {
+        this.ensureNotDestroyed();
         this.storage.setStorageType(type);
         this.persistTheme();
     }
@@ -185,5 +190,28 @@ export class DarkModeToggle {
             console.warn("Unable to detect system color scheme preference:", error);
             return ColorModes.NONE;
         }
+    }
+
+    /**
+     * Checks if the bs-darkmode-toggle instance has been destroyed.
+     * If it has, throws an error indicating that the instance is no longer usable.
+     * This is a safety measure to prevent accessing methods of a destroyed instance.
+     * @throws {Error} If the instance has been destroyed.
+     */
+    private ensureNotDestroyed(): void{
+        if (this._destroyed) throw new Error("Accessing to a method of a destroyed bs-darkmode-toggle instance.");
+    }
+
+    /**
+     * Destroys the dark mode toggle by removing the event listener, destroying the dom implementation and removing the reference to the toggle from the element.
+     * This method should be called when the dark mode toggle is no longer needed.
+     * @returns {void}
+     */
+    destroy(){
+        if(this._destroyed) return;
+        globalThis.document.removeEventListener(CustomEventTypes.CHANGE, this.handleExternalThemeChange);
+        this.dom.destroy();
+        delete this.element._bsDarkmodeToggle;
+        this._destroyed = true;
     }
 }

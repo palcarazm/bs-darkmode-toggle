@@ -146,4 +146,21 @@ describe("ButtonLayout", () => {
             expect(handler2).toHaveBeenCalledTimes(1);
         });
     });
+
+    describe("destroy()", () => {
+        it("should remove control", () => {
+            const { builder, control } = createBuilder();
+            builder.destroy();
+            expect(container.contains(control)).toBeFalsy();
+        });
+
+        it("should remove event listeners", () => {
+            const { builder, control } = createBuilder();
+            const handler = jest.fn();
+            builder.onChange(handler);
+            builder.destroy();
+            control.dispatchEvent(new Event("click"));
+            expect(handler).not.toHaveBeenCalled();
+        });
+    });
 });

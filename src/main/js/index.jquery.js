@@ -24,6 +24,9 @@ import { Methods } from "./types/Methods";
           case Methods.SET_STORAGE:
             _bsDarkmodeToggle.setStorageType(args);
             break;
+          case Methods.DESTROY:
+            _bsDarkmodeToggle.destroy();
+            break;
         }
       }
       this._bsDarkmodeToggle = _bsDarkmodeToggle;

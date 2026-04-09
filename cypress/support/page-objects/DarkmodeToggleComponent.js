@@ -167,26 +167,26 @@ class DarkmodeToggleComponent {
     }
 
     static setLight($element, pluginInterface, silent = true) {
-        this.#invokeMethod($element, pluginInterface, "light", silent);
+        this.invokeMethod($element, pluginInterface, "light", silent);
     }
 
     static setDark($element, pluginInterface, silent = true) {
-        this.#invokeMethod($element, pluginInterface, "dark", silent);
+        this.invokeMethod($element, pluginInterface, "dark", silent);
     }
 
     static toggle($element, pluginInterface, silent = true) {
-        this.#invokeMethod($element, pluginInterface, "toggle", silent);
+        this.invokeMethod($element, pluginInterface, "toggle", silent);
     }
 
     static allowCookie($element, pluginInterface) {
-        this.#invokeMethod($element, pluginInterface, "allowCookie");
+        this.invokeMethod($element, pluginInterface, "allowCookie");
     }
 
     static denyCookie($element, pluginInterface) {
-        this.#invokeMethod($element, pluginInterface, "denyCookie");
+        this.invokeMethod($element, pluginInterface, "denyCookie");
     }
 
-    static #invokeMethod($element, pluginInterface, method, silent) {
+    static invokeMethod($element, pluginInterface, method, silent) {
         const args = silent !== undefined ? [method, silent] : [method];
 
         if (pluginInterface === "ecmas") {
