@@ -48,4 +48,12 @@ export class DomManager{
     public get roots(): HTMLElement[] {
         return this.layout.roots;
     }
+
+    /**
+     * Destroys the layout by delegating to the layout implementation.
+     * This method should be called when the DomManager is no longer needed.
+     */
+    public destroy(): void {
+        this.layout.destroy();
+    }
 }

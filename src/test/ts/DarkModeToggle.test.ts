@@ -13,6 +13,7 @@ const setStateMock = jest.fn();
 
 const domManagerMock: Partial<DomManager> = {
     setState: setStateMock,
+    destroy: jest.fn(),
     roots: [],
 };
 
@@ -84,8 +85,10 @@ function setMatchMedia(colorMode: ColorModes) {
 }
 
 describe("DarkModeToggle", () => {
+    let instance: DarkModeToggle;
     let element: HTMLElement;
     let documentAddEventListenerSpy: jest.SpyInstance;
+    let documentRemoveEventListenerSpy: jest.SpyInstance;
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -100,19 +103,22 @@ describe("DarkModeToggle", () => {
 
         globalThis.window.matchMedia = matchMediaMock;
         documentAddEventListenerSpy = jest.spyOn(globalThis.document, "addEventListener");
+        documentRemoveEventListenerSpy = jest.spyOn(globalThis.document, "removeEventListener");
     });
 
     afterEach(() => {
+        instance?.destroy();
         for (const [eventName, listener] of documentAddEventListenerSpy.mock.calls) {
             globalThis.document.removeEventListener(eventName, listener);
         }
         documentAddEventListenerSpy.mockRestore();
+        documentRemoveEventListenerSpy.mockRestore();
     });
 
 
     describe("constructor", () => {
         it("should initialize and call update", () => {
-            const _instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
 
             expect(setStateMock).toHaveBeenCalledWith({ isLight: true, theme: "light" });
             expect(setStorageMock).toHaveBeenCalled();
@@ -120,7 +126,7 @@ describe("DarkModeToggle", () => {
         });
 
         it("should set up cross-instance synchronization listener", () => {
-            const _instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
             
             expect(documentAddEventListenerSpy).toHaveBeenCalledWith(
                 CustomEventTypes.CHANGE,
@@ -131,7 +137,7 @@ describe("DarkModeToggle", () => {
 
     describe("toggle(silent = false)", () => {
         it("should toggle and trigger event", () => {
-            const instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
 
             instance.toggle();
 
@@ -142,7 +148,7 @@ describe("DarkModeToggle", () => {
 
         it("should NOT toggle if reducer returns false", () => {
             doMock.mockReturnValue(false);
-            const instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
 
             instance.toggle();
 
@@ -151,18 +157,24 @@ describe("DarkModeToggle", () => {
         });
 
         it("should not trigger event when silent", () => {
-            const instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
 
             instance.toggle(true);
 
             expect(setStateMock).toHaveBeenCalledTimes(2);
             expect(dispatchMock).not.toHaveBeenCalled();
         });
+
+        it("should throw error if destroyed", () => {
+            instance = new DarkModeToggle(element);
+            instance.destroy();
+            expect(() => instance.toggle()).toThrow("Accessing to a method of a destroyed bs-darkmode-toggle instance.");
+        });
     });
 
     describe("light(silent = false)", () => {
         it("should set light and trigger event", () => {
-            const instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
 
             instance.light();
 
@@ -174,7 +186,7 @@ describe("DarkModeToggle", () => {
         it("should NOT set light if reducer returns false", () => {
             doMock.mockReturnValue(false);
 
-            const instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
 
             instance.light();
 
@@ -183,18 +195,24 @@ describe("DarkModeToggle", () => {
         });
 
         it("should not trigger event when silent", () => {
-            const instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
 
             instance.light(true);
 
             expect(setStateMock).toHaveBeenCalledTimes(2);
             expect(dispatchMock).not.toHaveBeenCalled();
         });
+
+        it("should throw error if destroyed", () => {
+            instance = new DarkModeToggle(element);
+            instance.destroy();
+            expect(() => instance.light()).toThrow("Accessing to a method of a destroyed bs-darkmode-toggle instance.");
+        });
     });
 
     describe("dark(silent = false)", () => {
         it("should set dark and trigger event", () => {
-            const instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
 
             instance.dark();
 
@@ -206,7 +224,7 @@ describe("DarkModeToggle", () => {
         it("should NOT set dark if reducer returns false", () => {
             doMock.mockReturnValue(false);
 
-            const instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
 
             instance.dark();
 
@@ -215,23 +233,35 @@ describe("DarkModeToggle", () => {
         });
 
         it("should not trigger event when silent", () => {
-            const instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
 
             instance.dark(true);
 
             expect(setStateMock).toHaveBeenCalledTimes(2);
             expect(dispatchMock).not.toHaveBeenCalled();
         });
+
+        it("should throw error if destroyed", () => {
+            instance = new DarkModeToggle(element);
+            instance.destroy();
+            expect(() => instance.dark()).toThrow("Accessing to a method of a destroyed bs-darkmode-toggle instance.");
+        });
     });
   
     describe("setStorageType", () => {
         it("should change storage type and persist state", () => {
-            const instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
             
             instance.setStorageType(StorageType.LOCAL);
             
             expect(setStorageTypeMock).toHaveBeenCalledWith(StorageType.LOCAL);
             expect(setStorageTypeMock).toHaveBeenCalled();
+        });
+
+        it("should throw error if destroyed", () => {
+            instance = new DarkModeToggle(element);
+            instance.destroy();
+            expect(() => instance.setStorageType(StorageType.LOCAL)).toThrow("Accessing to a method of a destroyed bs-darkmode-toggle instance.");
         });
     });
 
@@ -241,7 +271,7 @@ describe("DarkModeToggle", () => {
             
             setMatchMedia(ColorModes.LIGHT);
             
-            const _instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
             
             expect(doMock).toHaveBeenCalledWith(colorMode);
             expect(doMock).toHaveBeenCalledTimes(1);
@@ -252,7 +282,7 @@ describe("DarkModeToggle", () => {
             
             setMatchMedia(colorMode);
             
-            const _instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
             
             expect(doMock).toHaveBeenCalledWith(colorMode);
             expect(doMock).toHaveBeenCalledTimes(1);
@@ -263,7 +293,7 @@ describe("DarkModeToggle", () => {
             
             setMatchMedia(ColorModes.NONE);
             
-            const _instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
             
             expect(doMock).not.toHaveBeenCalled();
         });
@@ -273,7 +303,7 @@ describe("DarkModeToggle", () => {
         it.each([ColorModes.DARK, ColorModes.LIGHT])("should return the correct preference when system prefers %s", (expectedPreference) => {
             setMatchMedia(expectedPreference);
             
-            const instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
             const result = (instance as any).getSystemPreference();
             
             expect(result).toBe(expectedPreference);
@@ -282,7 +312,7 @@ describe("DarkModeToggle", () => {
         it("should return null when matchMedia not available", () => {
             globalThis.window.matchMedia = undefined as any;
             
-            const instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
             const result = (instance as any).getSystemPreference();
             
             expect(result).toBe(ColorModes.NONE);
@@ -291,7 +321,7 @@ describe("DarkModeToggle", () => {
         it("should return null when no preference detected", () => {
             setMatchMedia(ColorModes.NONE);
             
-            const instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
             const result = (instance as any).getSystemPreference();
             
             expect(result).toBe(ColorModes.NONE);
@@ -329,7 +359,7 @@ describe("DarkModeToggle", () => {
 
         it("should update state and DOM when external event shares roots", () => {
             doMock.mockReturnValue(true);
-            const _instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
             setStateMock.mockClear();
             
             const event = new DarkModeToggleEvent(CustomEventTypes.CHANGE,
@@ -344,7 +374,7 @@ describe("DarkModeToggle", () => {
 
         it("should NOT update DOM when event state matches current state", () => {
             doMock.mockReturnValue(false);
-            const _instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
             setStateMock.mockClear();
             
             const event = new DarkModeToggleEvent(CustomEventTypes.CHANGE,
@@ -360,7 +390,7 @@ describe("DarkModeToggle", () => {
         it("should NOT update state and DOM when external event has no shared roots", () => {
             const differentRoot = document.createElement("div");
 
-            const _instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
             
             setStateMock.mockClear();
             
@@ -375,7 +405,7 @@ describe("DarkModeToggle", () => {
         });
 
         it("should NOT update when event affects only a subset of roots", () => {
-            const _instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
 
             setStateMock.mockClear();
 
@@ -390,7 +420,7 @@ describe("DarkModeToggle", () => {
         });
 
         it("should not update storage or trigger events when external event is received", () => {
-            const _instance = new DarkModeToggle(element);
+            instance = new DarkModeToggle(element);
 
             setStorageMock.mockClear();
             dispatchMock.mockClear();
@@ -403,6 +433,42 @@ describe("DarkModeToggle", () => {
 
             expect(setStorageMock).toHaveBeenCalledTimes(0);
             expect(dispatchMock).toHaveBeenCalledTimes(0);
+        });
+    });
+
+    describe("destroy", () => {
+        it("should remove event listeners", () => {
+            instance = new DarkModeToggle(element);
+            instance.destroy();
+            expect(documentAddEventListenerSpy).toHaveBeenCalledWith(
+                CustomEventTypes.CHANGE,
+                expect.any(Function)
+            );
+        });
+
+        it("should destroy DOM delegating to DomManager", () => {
+            instance = new DarkModeToggle(element);
+            instance.destroy();
+            expect(domManagerMock.destroy).toHaveBeenCalledTimes(1);
+        });
+
+        it("should remove reference to instance from element", () => {
+            instance = new DarkModeToggle(element);
+            instance.destroy();
+            expect((element as any)._bsDarkmodeToggle).toBeUndefined();
+        });
+
+        it("should set destroyed flag", () => {
+            instance = new DarkModeToggle(element);
+            instance.destroy();
+            expect((instance as any)._destroyed).toBe(true);
+        });
+
+        it("should not throw if already destroyed (idempotent)", () => {
+            instance = new DarkModeToggle(element);
+            instance.destroy();
+            expect(() => instance.destroy()).not.toThrow();
+            expect(domManagerMock.destroy).toHaveBeenCalledTimes(1);
         });
     });
 });

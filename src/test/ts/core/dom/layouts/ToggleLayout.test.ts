@@ -160,4 +160,22 @@ describe("ToggleLayout", () => {
             expect(handler2).toHaveBeenCalledTimes(1);
         });
     });
+
+    describe("destroy()", () => {
+        it("should destroy toggle and remove control", () => {
+            const { builder, control } = createBuilder();
+            builder.destroy();
+            expect (bsToggleSpy).toHaveBeenCalledWith(BootstrapToggleMethods.DESTROY);
+            expect(container.contains(control)).toBeFalsy();
+        });
+
+        it("should remove event listeners", () => {
+            const { builder, control } = createBuilder();
+            const handler = jest.fn();
+            builder.onChange(handler);
+            builder.destroy();
+            control.dispatchEvent(new Event("change"));
+            expect(handler).not.toHaveBeenCalled();
+        });
+    });
 });

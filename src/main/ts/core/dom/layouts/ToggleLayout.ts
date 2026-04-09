@@ -3,6 +3,7 @@ import { AbstractLayout } from "../AbstractLayout";
 
 export class ToggleLayout extends AbstractLayout {
     private _input?: BootstrapToggleElement;
+    private handler?: (e: Event) => void;
 
     /**
      * Create a Bootstrap Toggle control in the given container.
@@ -49,7 +50,18 @@ export class ToggleLayout extends AbstractLayout {
      * @param {(e: Event) => void} handler - The callback handler to blink
      */
     onChange(handler: (e: Event) => void) {
+        this.handler = handler;
         this.input.addEventListener("change", handler);
+    }
+
+    /**
+     * Destroys the layout and removes any event listeners attached to the control element.
+     */
+    destroy(): void {
+        if(this.handler) this.input.removeEventListener("change", this.handler);
+        this.handler = undefined;
+        this.input.bootstrapToggle(BootstrapToggleMethods.DESTROY);
+        this.input.remove();
     }
 }
 

@@ -11,10 +11,12 @@ const mockSetState: jest.Mock = jest.fn();
 const mockOnChange: jest.Mock = jest.fn()
     .mockImplementation((handler) => {capturedHandler = handler;});
 const mockOnChangeHandler = jest.fn();
+const mockDestroy = jest.fn();
 
 const mockLayout: Partial<AbstractLayout> = {
     setState: mockSetState,
     onChange: mockOnChange,
+    destroy: mockDestroy,
     roots: [document.createElement("div"), document.createElement("span")],
 };
 
@@ -111,6 +113,14 @@ describe("DomManager", () => {
             
             expect(mockOnChangeHandler).toHaveBeenCalledTimes(1);
             expect(mockOnChangeHandler).toHaveBeenCalledWith(mockEvent);
+        });
+    });
+
+    describe("destroy", () => {
+        it.each(layouts)("should delegate destroy on layout %s", (layout) => {
+            const domManager = createDomManager(layout);
+            domManager.destroy();
+            expect(mockDestroy).toHaveBeenCalledTimes(1);
         });
     });
 });

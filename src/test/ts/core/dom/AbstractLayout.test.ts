@@ -5,11 +5,13 @@ import { DarkModeState } from "../../../../main/ts/core/StateReducer.types";
 
 class ConcreteLayout extends AbstractLayout {
     public updateControlStateSpy: jest.Mock = jest.fn();
+    private control?: HTMLElement;
     
     protected createControl(container: HTMLElement): void {
         const div = document.createElement("div");
         div.id = "control";
         container.appendChild(div);
+        this.control = div;
     }
     
     protected updateControlState(state: DarkModeState): void {
@@ -18,6 +20,9 @@ class ConcreteLayout extends AbstractLayout {
     
     public onChange(_handler: (e: Event) => void): void {
         // Mock implementation
+    }
+    public destroy(): void {
+        if (this.control) this.control.remove();
     }
 }
 

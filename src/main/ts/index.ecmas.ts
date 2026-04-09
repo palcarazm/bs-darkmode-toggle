@@ -26,6 +26,9 @@ import { Methods } from "./types/Methods";
             case Methods.SET_STORAGE:
                 instance.setStorageType(args as StorageType);
                 break;
+            case Methods.DESTROY:
+                instance.destroy();
+                break;
             }
         }
     };

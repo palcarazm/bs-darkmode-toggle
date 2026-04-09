@@ -68,4 +68,10 @@ export abstract class AbstractLayout {
      * @param {(e: Event) => void} handler - The callback handler to blink.
      */
     public abstract onChange(handler: (e: Event) => void): void;
+
+    /**
+     * Destroys the layout.
+     * @abstract This method must be overridden in subclasses.
+     */
+    public abstract destroy(): void;
 }
