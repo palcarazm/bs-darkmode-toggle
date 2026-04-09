@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /// <reference types="jest" />
 import { DomManager } from "../../../../main/ts/core/dom/DomManager";
-import { Layout, ResolvedOptions, StorageType } from "../../../../main/ts/core/OptionResolver.types";
+import { Layout } from "../../../../main/ts/core/OptionResolver.types";
 import { AbstractLayout } from "../../../../main/ts/core/dom/AbstractLayout";
 import { ButtonLayout } from "../../../../main/ts/core/dom/layouts/ButtonLayout";
 import { ToggleLayout } from "../../../../main/ts/core/dom/layouts/ToggleLayout";
+import { TestUtils } from "../../../utils/TestUtils";
 
 let capturedHandler: (e: Event) => void;
 const mockSetState: jest.Mock = jest.fn();
@@ -45,20 +46,9 @@ function layoutResolver(layout: Layout):typeof AbstractLayout{
 }
 
 let element: HTMLElement;
-const baseOptions: ResolvedOptions = {
-    state: true,
-    root: ".root",
-    storage: StorageType.NONE,
-    lightLabel: "Light",
-    darkLabel: "Dark",
-    lightColorMode: "light",
-    darkColorMode: "dark",
-    style: "outline-secondary",
-    layout: Layout.TOGGLE,
-};
 
 function createDomManager(layout:Layout):DomManager{
-    return new DomManager(element,{...baseOptions, layout: layout}, mockOnChangeHandler);
+    return new DomManager(element,{...TestUtils.baseOptions, layout: layout}, mockOnChangeHandler);
 }
 
 describe("DomManager", () => {

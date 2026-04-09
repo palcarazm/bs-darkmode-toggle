@@ -30,7 +30,9 @@ class Options extends DocArticle {
           lightColorMode: "blue",
           darkColorMode: "red",
           style: "primary",
-          layout : "toggle"
+          layout : "toggle",
+          lightAriaLabel: "Custom aria label for light mode",
+          darkAriaLabel: "Custom aria label for dark mode",
         });
     });
 </script>`;
@@ -52,7 +54,9 @@ class Options extends DocArticle {
           lightColorMode: "blue",
           darkColorMode: "red",
           style: "primary",
-          layout : "toggle"
+          layout : "toggle",
+          lightAriaLabel: "Custom aria label for light mode",
+          darkAriaLabel: "Custom aria label for dark mode",
         });
     });
 </script>`;
@@ -90,7 +94,9 @@ class Options extends DocArticle {
                 lightColorMode: "blue",
                 darkColorMode: "red",
                 style: "primary",
-                layout : "toggle"
+                layout : "toggle",
+                lightAriaLabel: "Custom aria label for light mode",
+                darkAriaLabel: "Custom aria label for dark mode",
             });
         };
 
@@ -189,6 +195,20 @@ class Options extends DocArticle {
                 <td>string</td>
                 <td><code class="text-nowrap">"toggle"</code></td>
                 <td>Set the layout.<br>Possible values are: <code>toggle</code> and <code>button</code></td>
+            </tr>
+            <tr>
+                <td><code class="text-nowrap">lightAriaLabel</code></td>
+                <td><code class="text-nowrap">data-light-aria-label</code></td>
+                <td>string</td>
+                <td><code class="text-nowrap">"Switch to dark mode"</code></td>
+                <td>Set the ARIA label to display for the light mode.</td>>
+            </tr>
+            <tr>
+                <td><code class="text-nowrap">darkAriaLabel</code></td>
+                <td><code class="text-nowrap">data-dark-aria-label</code></td>
+                <td>string</td>
+                <td><code class="text-nowrap">"Switch to light mode"</code></td>
+                <td>Set the ARIA label to display for the dark mode.</td>>
             </tr>
         </tbody>
     </table>

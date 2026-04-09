@@ -34,10 +34,17 @@ export class ToggleLayout extends AbstractLayout {
 
     /**
      * Update the state of the control element based on the given current state.
+     * 
+     * Implementation note: for performance reasons, rerender is only called if the ariaLabel has changed.
      * @implements AbstractLayout
      * @param {DarkModeState} state - The darkmode current state.
      */
     updateControlState({isLight}: DarkModeState) {
+        const newAriaLabel = this.getAriaLabel(isLight);
+        if (newAriaLabel !== this.input.ariaLabel) {
+            this.input.ariaLabel = newAriaLabel;
+            this.input.bootstrapToggle(BootstrapToggleMethods.RENDERER);
+        }
         this.input.bootstrapToggle(
             isLight ? BootstrapToggleMethods.ON : BootstrapToggleMethods.OFF,
             true

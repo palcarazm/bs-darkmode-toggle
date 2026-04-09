@@ -1,17 +1,8 @@
 import { ButtonLayout} from "../../../../../main/ts/core/dom/layouts/ButtonLayout";
-import { Layout, ResolvedOptions, StorageType } from "../../../../../main/ts/core/OptionResolver.types";
+import { Layout, ResolvedOptions } from "../../../../../main/ts/core/OptionResolver.types";
+import { TestUtils } from "../../../../utils/TestUtils";
 
-const options: ResolvedOptions = {
-    state: true,
-    root: ".root",
-    storage: StorageType.NONE,
-    lightLabel: "Light",
-    darkLabel: "Dark",
-    lightColorMode: "light",
-    darkColorMode: "dark",
-    style: "outline-secondary",
-    layout: Layout.BUTTON,
-};
+const options: ResolvedOptions = {...TestUtils.baseOptions, root: ".root", layout: Layout.BUTTON};
 
 describe("ButtonLayout", () => {
     let container: HTMLElement;
@@ -64,10 +55,18 @@ describe("ButtonLayout", () => {
             builder.setState({isLight: true, theme: "light"});
 
             expect(control.className).toContain("active");
-            expect(control.ariaPressed).toBe("true");
 
             expect(root1.dataset.bsTheme).toBe("light");
             expect(root2.dataset.bsTheme).toBe("light");
+        });
+
+        it("should set ARIA attributes when light mode is set", () => {
+            const { builder, control } = createBuilder();
+
+            builder.setState({isLight: true, theme: "light"});
+
+            expect(control.ariaPressed).toBe("true");
+            expect(control.ariaLabel).toBe(options.lightAriaLabel);
         });
 
         it("should set dark mode", () => {
@@ -76,10 +75,18 @@ describe("ButtonLayout", () => {
             builder.setState({isLight: false, theme: "dark"});
 
             expect(control.className).not.toContain("active");
-            expect(control.ariaPressed).toBe("false");
 
             expect(root1.dataset.bsTheme).toBe("dark");
             expect(root2.dataset.bsTheme).toBe("dark");
+        });
+
+        it("should set ARIA attributes when dark mode is set", () => {
+            const { builder, control } = createBuilder();
+
+            builder.setState({isLight: false, theme: "dark"});
+
+            expect(control.ariaPressed).toBe("false");
+            expect(control.ariaLabel).toBe(options.darkAriaLabel);
         });
 
         it("should update all root elements", () => {

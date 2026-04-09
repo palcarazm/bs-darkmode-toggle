@@ -1,7 +1,7 @@
 /// <reference types="jest" />
 import { AbstractLayout } from "../../../../main/ts/core/dom/AbstractLayout";
-import { ResolvedOptions, StorageType, Layout } from "../../../../main/ts/core/OptionResolver.types";
 import { DarkModeState } from "../../../../main/ts/core/StateReducer.types";
+import { TestUtils } from "../../../utils/TestUtils";
 
 class ConcreteLayout extends AbstractLayout {
     public updateControlStateSpy: jest.Mock = jest.fn();
@@ -25,18 +25,6 @@ class ConcreteLayout extends AbstractLayout {
         if (this.control) this.control.remove();
     }
 }
-
-const options: ResolvedOptions = {
-    state: true,
-    root: ".root",
-    storage: StorageType.NONE,
-    lightLabel: "Light",
-    darkLabel: "Dark",
-    lightColorMode: "light",
-    darkColorMode: "dark",
-    style: "outline-secondary",
-    layout: Layout.TOGGLE,
-};
 
 describe("AbstractLayout", () => {
     let container: HTMLElement;
@@ -62,7 +50,7 @@ describe("AbstractLayout", () => {
     });
 
     function createBuilder() {
-        const builder = new ConcreteLayout(container, options);
+        const builder = new ConcreteLayout(container, {...TestUtils.baseOptions, root: ".root"});
 
         const control = container.querySelector("#control") as HTMLElement;
 

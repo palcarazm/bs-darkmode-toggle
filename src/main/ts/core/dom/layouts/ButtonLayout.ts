@@ -35,6 +35,7 @@ export class ButtonLayout extends AbstractLayout {
     updateControlState({isLight}: DarkModeState): void {
         const label = isLight ? this.lightLabel : this.darkLabel;
         this.button.innerHTML = label;
+        this.button.ariaLabel = this.getAriaLabel(isLight);
         
         if (isLight) {
             this.button.classList.add("active");
