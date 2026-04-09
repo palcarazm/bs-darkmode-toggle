@@ -1,5 +1,6 @@
 /// <reference types="jest" />
-import { ToggleLayout, BootstrapToggleElement, BootstrapToggleMethods} from "../../../../../main/ts/core/dom/layouts/ToggleLayout";
+import { BootstrapToggleElement, Methods } from "bootstrap5-toggle";
+import { ToggleLayout } from "../../../../../main/ts/core/dom/layouts/ToggleLayout";
 import { Layout, ResolvedOptions } from "../../../../../main/ts/core/OptionResolver.types";
 import { TestUtils } from "../../../../utils/TestUtils";
 
@@ -70,7 +71,7 @@ describe("ToggleLayout", () => {
 
             builder.setState({isLight: true, theme: "light"});
 
-            expect(bsToggleSpy).toHaveBeenCalledWith(BootstrapToggleMethods.ON, true);
+            expect(bsToggleSpy).toHaveBeenCalledWith(Methods.ON, true);
 
             expect(root1.dataset.bsTheme).toBe("light");
             expect(root2.dataset.bsTheme).toBe("light");
@@ -82,7 +83,7 @@ describe("ToggleLayout", () => {
             builder.setState({isLight: true, theme: "light"});
             
             expect(control.ariaLabel).toBe(options.lightAriaLabel);
-            expect(bsToggleSpy).toHaveBeenCalledWith(BootstrapToggleMethods.RENDERER);
+            expect(bsToggleSpy).toHaveBeenCalledWith(Methods.RERENDER);
         });
 
         it("should set dark mode", () => {
@@ -90,7 +91,7 @@ describe("ToggleLayout", () => {
 
             builder.setState({isLight: false, theme: "dark"});
 
-            expect(bsToggleSpy).toHaveBeenCalledWith(BootstrapToggleMethods.OFF, true);
+            expect(bsToggleSpy).toHaveBeenCalledWith(Methods.OFF, true);
 
             expect(root1.dataset.bsTheme).toBe("dark");
             expect(root2.dataset.bsTheme).toBe("dark");
@@ -102,7 +103,7 @@ describe("ToggleLayout", () => {
             builder.setState({isLight: false, theme: "dark"});
             
             expect(control.ariaLabel).toBe(options.darkAriaLabel);
-            expect(bsToggleSpy).toHaveBeenCalledWith(BootstrapToggleMethods.RENDERER);
+            expect(bsToggleSpy).toHaveBeenCalledWith(Methods.RERENDER);
         });
 
         it("should update all root elements", () => {
@@ -122,7 +123,7 @@ describe("ToggleLayout", () => {
             bsToggleSpy.mockClear();
             builder.setState({isLight: false, theme: "dark"});
 
-            expect(bsToggleSpy).not.toHaveBeenCalledWith(BootstrapToggleMethods.RENDERER);
+            expect(bsToggleSpy).not.toHaveBeenCalledWith(Methods.RERENDER);
         });
     });
 
@@ -185,7 +186,7 @@ describe("ToggleLayout", () => {
         it("should destroy toggle and remove control", () => {
             const { builder, control } = createBuilder();
             builder.destroy();
-            expect (bsToggleSpy).toHaveBeenCalledWith(BootstrapToggleMethods.DESTROY);
+            expect (bsToggleSpy).toHaveBeenCalledWith(Methods.DESTROY);
             expect(container.contains(control)).toBeFalsy();
         });
 
