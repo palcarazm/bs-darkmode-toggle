@@ -201,14 +201,14 @@ class Options extends DocArticle {
                 <td><code class="text-nowrap">data-light-aria-label</code></td>
                 <td>string</td>
                 <td><code class="text-nowrap">"Switch to dark mode"</code></td>
-                <td>Set the ARIA label to display for the light mode.</td>>
+                <td>Set the ARIA label to display for the light mode.</td>
             </tr>
             <tr>
                 <td><code class="text-nowrap">darkAriaLabel</code></td>
                 <td><code class="text-nowrap">data-dark-aria-label</code></td>
                 <td>string</td>
                 <td><code class="text-nowrap">"Switch to light mode"</code></td>
-                <td>Set the ARIA label to display for the dark mode.</td>>
+                <td>Set the ARIA label to display for the dark mode.</td>
             </tr>
         </tbody>
     </table>
