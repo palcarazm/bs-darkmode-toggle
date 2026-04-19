@@ -8,27 +8,44 @@ import { ColorModes } from "./types/ColorModes";
 import { EventManager } from "./core/events/EventManager";
 import { DarkModeToggleEvent } from "./core/events/DarkModeToggleEvent";
 import { CustomEventTypes } from "./core/events/Events.types";
+import { Component } from "component-lifecycle";
 
-export class DarkModeToggle {
-    private readonly element: HTMLElement;
-    private readonly options: ResolvedOptions;
-    private readonly state: StateReducer;
-    private readonly storage: StorageManager;
-    private readonly dom: DomManager;
-    private readonly eventManager: EventManager;
-
-    private _destroyed:boolean = false;
+export class DarkModeToggle extends Component<"darkmode"> {
+    protected readonly PREFIX = "darkmode";
+    private readonly toggleOptions: ResolvedOptions;
+    private readonly toggleState: StateReducer;
+    private storage?: StorageManager;
+    private dom?: DomManager;
+    private eventManager?: EventManager;
 
     constructor(element: HTMLElement, opts = {}) {
-        this.element = element;
+        super(element);
 
-        this.options = OptionResolver.resolve(element, opts);
-        this.state = new StateReducer(this.options.state, this.options.lightColorMode, this.options.darkColorMode);
-        this.storage = new StorageManager(this.options.storage);
+        this.toggleOptions = OptionResolver.resolve(element, opts);
+        this.toggleState = new StateReducer(this.toggleOptions.state, this.toggleOptions.lightColorMode, this.toggleOptions.darkColorMode);
+    }
 
+    /**
+     * Factory method to create an instance of DarkModeToggle.
+     * @param element the root element for the dark mode toggle component. The component will look for configuration options in this element's attributes.
+     * @param opts the user provided options to configure the dark mode toggle instance. These options will override any configuration found in the element's attributes.
+     * @returns A promise that resolves to the created and initialized DarkModeToggle instance
+     */
+    static async create(element: HTMLElement, opts = {}): Promise<DarkModeToggle> {
+        const instance = new DarkModeToggle(element, opts);
+        await instance.init();
+        await instance.attach();
+        return instance;
+    }
+
+    protected async doInit(): Promise<{ cancelled: boolean; reason?: string }> {
+        this.storage = new StorageManager(this.toggleOptions.storage);
         this.applyPreferredScheme();
+        return { cancelled: false };
+    }
 
-        const dom = new DomManager(this.element, this.options, (e) => {
+    protected async doAttach(): Promise<{ cancelled: boolean; reason?: string }> {
+        const dom = new DomManager(this.element, this.toggleOptions, (e) => {
             this.toggle();
             e.preventDefault();
         });
@@ -41,6 +58,19 @@ export class DarkModeToggle {
 
         this.setupCrossInstanceSync();
         this.syncState();
+        return { cancelled: false };
+    }
+
+    protected async doDispose(): Promise<{ cancelled: boolean; reason?: string }> {
+        globalThis.document.removeEventListener(CustomEventTypes.CHANGE, this.handleExternalThemeChange);
+        return { cancelled: false };
+    }
+
+    protected async doDestroy(): Promise<{ cancelled: boolean; reason?: string }> {
+        if(this.isAttached()) await this.dispose();
+        this.dom?.destroy();
+        delete this.element._bsDarkmodeToggle;
+        return { cancelled: false };
     }
 
     /**
@@ -63,11 +93,11 @@ export class DarkModeToggle {
     private readonly handleExternalThemeChange = (e: Event) =>{
         const { isLight, roots: eventRoots } = (e as DarkModeToggleEvent).detail;
         
-        const thisRoots = this.dom.roots;
-        const allRootsAffected = thisRoots.every(root => eventRoots.includes(root));
+        const thisRoots = this.dom?.roots;
+        const allRootsAffected = thisRoots?.every(root => eventRoots.includes(root));
         
-        if (allRootsAffected && this.state.do(ActionType.OVERRIDE, { isLight })) {
-            this.dom.setState(this.state.get());
+        if (allRootsAffected && this.toggleState.do(ActionType.OVERRIDE, { isLight })) {
+            this.dom?.setState(this.toggleState.get());
         }
     };
 
@@ -76,34 +106,34 @@ export class DarkModeToggle {
      * @private
      */
     private syncState() {
-        this.dom.setState(this.state.get());
+        this.dom?.setState(this.toggleState.get());
         this.persistTheme();
     }
 
     toggle(silent = false) {
         this.ensureNotDestroyed();
-        if(!this.state.do(ActionType.TOGGLE)) return;
+        if(!this.toggleState.do(ActionType.TOGGLE)) return;
         this.syncState();
         this.trigger(silent);
     }
 
     light(silent = false) {
         this.ensureNotDestroyed();
-        if(!this.state.do(ActionType.LIGHT)) return;
+        if(!this.toggleState.do(ActionType.LIGHT)) return;
         this.syncState();
         this.trigger(silent);
     }
 
     dark(silent = false) {
         this.ensureNotDestroyed();
-        if(!this.state.do(ActionType.DARK)) return;
+        if(!this.toggleState.do(ActionType.DARK)) return;
         this.syncState();
         this.trigger(silent);
     }
 
     setStorageType(type: StorageType) {
         this.ensureNotDestroyed();
-        this.storage.setStorageType(type);
+        this.storage?.setStorageType(type);
         this.persistTheme();
     }
 
@@ -116,7 +146,7 @@ export class DarkModeToggle {
      */
     private trigger(silent: boolean) {
         if (silent) return;
-        this.eventManager.dispatch(this.state.get());
+        this.eventManager?.dispatch(this.toggleState.get());
     }
 
     /**
@@ -124,7 +154,7 @@ export class DarkModeToggle {
      * @private
      */
     private persistTheme() {
-        this.storage.set(this.state.get().theme);
+        this.storage?.set(this.toggleState.get().theme);
     }
 
     /**
@@ -140,14 +170,14 @@ export class DarkModeToggle {
      * @returns a boolean indicating whether a preference was applied (true) or not (false)
      */
     private applyStoredPreference(): boolean {
-        const value = this.storage.get();
+        const value = this.storage?.get();
 
-        if (value === this.options.darkColorMode) {
-            this.state.do(ActionType.DARK);
+        if (value === this.toggleOptions.darkColorMode) {
+            this.toggleState.do(ActionType.DARK);
             return true;
         }
-        if (value === this.options.lightColorMode) {
-            this.state.do(ActionType.LIGHT);
+        if (value === this.toggleOptions.lightColorMode) {
+            this.toggleState.do(ActionType.LIGHT);
             return true;
         }
         return false;
@@ -160,11 +190,11 @@ export class DarkModeToggle {
     private applySystemPreference(): boolean {
         const systemPreference = this.getSystemPreference();
         if (systemPreference === ColorModes.DARK) {
-            this.state.do(ActionType.DARK);
+            this.toggleState.do(ActionType.DARK);
             return true;
         }
         if (systemPreference === ColorModes.LIGHT) {
-            this.state.do(ActionType.LIGHT);
+            this.toggleState.do(ActionType.LIGHT);
             return true;
         }
         return false;
@@ -199,19 +229,6 @@ export class DarkModeToggle {
      * @throws {Error} If the instance has been destroyed.
      */
     private ensureNotDestroyed(): void{
-        if (this._destroyed) throw new Error("Accessing to a method of a destroyed bs-darkmode-toggle instance.");
-    }
-
-    /**
-     * Destroys the dark mode toggle by removing the event listener, destroying the dom implementation and removing the reference to the toggle from the element.
-     * This method should be called when the dark mode toggle is no longer needed.
-     * @returns {void}
-     */
-    destroy(){
-        if(this._destroyed) return;
-        globalThis.document.removeEventListener(CustomEventTypes.CHANGE, this.handleExternalThemeChange);
-        this.dom.destroy();
-        delete this.element._bsDarkmodeToggle;
-        this._destroyed = true;
+        if (this.isDestroyed()) throw new Error("Accessing to a method of a destroyed bs-darkmode-toggle instance.");
     }
 }
