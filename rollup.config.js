@@ -1,3 +1,4 @@
+import resolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
 
 export default [
@@ -22,6 +23,12 @@ export default [
                     "bootstrap5-toggle": "BootstrapToggle"
                 }
             }
+        ],
+        plugins: [
+            resolve({
+                browser: true,
+                moduleDirectories: ["node_modules"]
+            })
         ]
     },
     {
@@ -47,6 +54,12 @@ export default [
                 },
                 plugins: [terser()],
             }
+        ],
+        plugins: [
+            resolve({
+                browser: true,
+                moduleDirectories: ["node_modules"]
+            })
         ]
     }
 ];
