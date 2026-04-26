@@ -5,18 +5,17 @@ import { DomManager } from "./core/dom/DomManager";
 import { ResolvedOptions, StorageType } from "./core/OptionResolver.types";
 import { ActionType } from "./core/StateReducer.types";
 import { ColorModes } from "./types/ColorModes";
-import { EventManager } from "./core/events/EventManager";
-import { DarkModeToggleEvent } from "./core/events/DarkModeToggleEvent";
-import { CustomEventTypes } from "./core/events/Events.types";
+import { EventFactory } from "./core/events/EventFactory";
+import { CustomEventTypes, PrefixedCustomEventTypes } from "./core/events/Events.types";
+import type { DarkModeToggleEventMap } from "./core/events/Events.types";
 import { Component } from "component-lifecycle";
 
-export class DarkModeToggle extends Component<"darkmode"> {
+export class DarkModeToggle extends Component<"darkmode", DarkModeToggleEventMap> {
     protected readonly PREFIX = "darkmode";
     private readonly toggleOptions: ResolvedOptions;
     private readonly toggleState: StateReducer;
     private storage?: StorageManager;
     private dom?: DomManager;
-    private eventManager?: EventManager;
 
     constructor(element: HTMLElement, opts = {}) {
         super(element);
@@ -52,8 +51,6 @@ export class DarkModeToggle extends Component<"darkmode"> {
 
         this.dom = dom;
 
-        this.eventManager = new EventManager(this.element, () => dom.roots);
-
         this.element._bsDarkmodeToggle = this;
 
         this.setupCrossInstanceSync();
@@ -62,7 +59,7 @@ export class DarkModeToggle extends Component<"darkmode"> {
     }
 
     protected async doDispose(): Promise<{ cancelled: boolean; reason?: string }> {
-        globalThis.document.removeEventListener(CustomEventTypes.CHANGE, this.handleExternalThemeChange);
+        globalThis.document.removeEventListener(PrefixedCustomEventTypes.CHANGE, this.handleExternalThemeChange);
         return { cancelled: false };
     }
 
@@ -79,7 +76,7 @@ export class DarkModeToggle extends Component<"darkmode"> {
      * @private
      */
     private setupCrossInstanceSync(){
-        globalThis.document.addEventListener(CustomEventTypes.CHANGE, this.handleExternalThemeChange);
+        globalThis.document.addEventListener(PrefixedCustomEventTypes.CHANGE, this.handleExternalThemeChange);
     }
 
     /**
@@ -91,7 +88,11 @@ export class DarkModeToggle extends Component<"darkmode"> {
      * @param e - The external theme change event
      */
     private readonly handleExternalThemeChange = (e: Event) =>{
-        const { isLight, roots: eventRoots } = (e as DarkModeToggleEvent).detail;
+        const detail = (e as CustomEvent)?.detail;
+        if (!detail || typeof detail.isLight !== "boolean" || !Array.isArray(detail.roots)) {
+            return;
+        }
+        const { isLight, roots: eventRoots } = detail;
         
         const thisRoots = this.dom?.roots;
         const allRootsAffected = thisRoots?.every(root => eventRoots.includes(root));
@@ -140,13 +141,23 @@ export class DarkModeToggle extends Component<"darkmode"> {
     /**
      * Triggers the events if silent is false.
      * The events are triggered with the current state of the dark mode toggle.
-     * Delegates dispatch events to the event manager.
+     * Emits the typed event via Component.emit and dispatches the legacy event manually.
      * @private
      * @param {boolean} silent - Whether to trigger the event.
      */
     private trigger(silent: boolean) {
         if (silent) return;
-        this.eventManager?.dispatch(this.toggleState.get());
+
+        const legacyEvent = EventFactory.createLegacyEvent();
+        this.element.dispatchEvent(legacyEvent);
+
+        const roots = this.dom?.roots || [];
+        const currentState = this.toggleState.get();
+        const eventDetail = EventFactory.createEventDetail(currentState, this.element, roots);
+        this.emit(CustomEventTypes.CHANGE, eventDetail);
+        roots.forEach((root) => {
+            root.dispatchEvent(EventFactory.createPrefixedEvent(currentState, this.element, roots));
+        });
     }
 
     /**
