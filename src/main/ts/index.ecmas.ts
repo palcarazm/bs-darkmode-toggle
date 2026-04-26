@@ -1,8 +1,17 @@
 import { DarkModeToggle } from "./DarkModeToggle";
 import { DarkModeOptions, StorageType } from "./core/OptionResolver.types";
 import { Methods } from "./types/Methods";
+import { DarkModeMonitor } from "./monitoring/DarkModeMonitor";
 
 (function () {
+    
+    /**
+     * Add `Darkmode` prototype function to Window
+     * Enables execution when used with ECMAScript
+     */
+    globalThis.window.Darkmode = globalThis.window.Darkmode || {};
+    Object.assign(globalThis.window.Darkmode, {MONITOR : DarkModeMonitor.getInstance()});
+
 
     /**
      * Add `bsDarkmodeToggle` method to HTMLElement prototype
@@ -48,7 +57,7 @@ import { Methods } from "./types/Methods";
 
     // Export library if possible
     if (typeof module !== "undefined" && module.exports) {
-        module.exports = DarkModeToggle;
+        module.exports = { DarkModeToggle, DarkModeMonitor };
     }
 
 })();
