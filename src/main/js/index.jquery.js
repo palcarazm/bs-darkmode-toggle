@@ -1,7 +1,16 @@
 import { DarkModeToggle } from "./DarkModeToggle";
 import { Methods } from "./types/Methods";
+import { DarkModeMonitor } from "./monitoring/DarkModeMonitor";
 
 (function ($) {
+  
+  /**
+   * Add `Darkmode` prototype function to Window
+   * Enables execution when used with ECMAScript
+   */
+  globalThis.window.Darkmode = globalThis.window.Darkmode || {};
+  Object.assign(globalThis.window.Darkmode, {MONITOR : DarkModeMonitor.getInstance()});
+
   /**
    * Add `bsDarkmodeToggle` prototype function to HTML Elements
    * Enables execution when used with HTML - ex: `document.getElementById('toggle').bsDarkmodeToggle('light')`
