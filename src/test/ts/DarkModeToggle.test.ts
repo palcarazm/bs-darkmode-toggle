@@ -5,8 +5,7 @@ import { ActionType } from "../../main/ts/core/StateReducer.types";
 import { OptionResolver } from "../../main/ts/core/OptionResolver";
 import { StorageType } from "../../main/ts/core/OptionResolver.types";
 import { ColorModes } from "../../main/ts/types/ColorModes";
-import { CustomEventTypes } from "../../main/ts/core/events/Events.types";
-import { DarkModeToggleEvent } from "../../main/ts/core/events/DarkModeToggleEvent";
+import { LegacyEventTypes, PrefixedCustomEventTypes } from "../../main/ts/core/events/Events.types";
 import { DomManager } from "../../main/ts/core/dom/DomManager";
 import { TestUtils } from "../utils/TestUtils";
 
@@ -54,15 +53,6 @@ jest.mock("../../main/ts/core/storage/StorageManager", () => {
     };
 });
 
-const dispatchMock = jest.fn();
-jest.mock("../../main/ts/core/events/EventManager", () => {
-    return {
-        EventManager: jest.fn().mockImplementation(() => ({
-            dispatch: dispatchMock,
-        })),
-    };
-});
-
 const matchMediaMock = jest.fn();
 
 function setMatchMedia(colorMode: ColorModes) {
@@ -76,14 +66,35 @@ function setMatchMedia(colorMode: ColorModes) {
 describe("DarkModeToggle", () => {
     let instance: DarkModeToggle;
     let element: HTMLElement;
+    let root: HTMLElement;
     let documentAddEventListenerSpy: jest.SpyInstance;
     let documentRemoveEventListenerSpy: jest.SpyInstance;
+    const sourceEventMap: Map<string, Event[]> = new Map();
+    const rootEventMap: Map<string, Event[]> = new Map();
 
     beforeEach(() => {
         jest.clearAllMocks();
-        (domManagerMock as any).roots = [];
 
         element = document.createElement("div");
+        root = document.createElement("div");
+        (domManagerMock as any).roots = [root];
+        sourceEventMap.clear();
+        rootEventMap.clear();
+
+        element.addEventListener(PrefixedCustomEventTypes.CHANGE, (event: Event) => {
+            if (!sourceEventMap.has(event.type)) sourceEventMap.set(event.type, []);
+            sourceEventMap.get(event.type)?.push(event);
+        });
+        element.addEventListener(LegacyEventTypes.CHANGE, (event: Event) => {
+            if (!sourceEventMap.has(event.type)) sourceEventMap.set(event.type, []);
+            sourceEventMap.get(event.type)?.push(event);
+        });
+        root.addEventListener(PrefixedCustomEventTypes.CHANGE, (event: Event) => {
+            if (!rootEventMap.has(event.type)) rootEventMap.set(event.type, []);
+            rootEventMap.get(event.type)?.push(event);
+        });
+
+
 
         resolveMock.mockReturnValue({ ...TestUtils.baseOptions });
 
@@ -124,7 +135,7 @@ describe("DarkModeToggle", () => {
             
             instance.once("darkmode:attached", () => {
                 expect(documentAddEventListenerSpy).toHaveBeenCalledWith(
-                    CustomEventTypes.CHANGE,
+                    PrefixedCustomEventTypes.CHANGE,
                     expect.any(Function)
                 );
                 done();
@@ -148,7 +159,9 @@ describe("DarkModeToggle", () => {
 
             expect(doMock).toHaveBeenCalledWith(ActionType.TOGGLE);
             expect(setStateMock).toHaveBeenCalledTimes(2);
-            expect(dispatchMock).toHaveBeenCalledTimes(1);
+            expect(sourceEventMap.get(PrefixedCustomEventTypes.CHANGE)).toHaveLength(1);
+            expect(rootEventMap.get(PrefixedCustomEventTypes.CHANGE)).toHaveLength(1);
+            expect(sourceEventMap.get(LegacyEventTypes.CHANGE)).toHaveLength(1);
         });
 
         it("should NOT toggle if reducer returns false", async () => {
@@ -158,7 +171,9 @@ describe("DarkModeToggle", () => {
             instance.toggle();
 
             expect(setStateMock).toHaveBeenCalledTimes(1);
-            expect(dispatchMock).not.toHaveBeenCalled();
+            expect(sourceEventMap.get(PrefixedCustomEventTypes.CHANGE)).toBeUndefined();
+            expect(rootEventMap.get(PrefixedCustomEventTypes.CHANGE)).toBeUndefined();
+            expect(sourceEventMap.get(LegacyEventTypes.CHANGE)).toBeUndefined();
         });
 
         it("should not trigger event when silent", async () => {
@@ -167,7 +182,9 @@ describe("DarkModeToggle", () => {
             instance.toggle(true);
 
             expect(setStateMock).toHaveBeenCalledTimes(2);
-            expect(dispatchMock).not.toHaveBeenCalled();
+            expect(sourceEventMap.get(PrefixedCustomEventTypes.CHANGE)).toBeUndefined();
+            expect(rootEventMap.get(PrefixedCustomEventTypes.CHANGE)).toBeUndefined();
+            expect(sourceEventMap.get(LegacyEventTypes.CHANGE)).toBeUndefined();
         });
 
         it("should throw error if destroyed", async () => {
@@ -186,7 +203,9 @@ describe("DarkModeToggle", () => {
 
             expect(doMock).toHaveBeenCalledWith(ActionType.LIGHT);
             expect(setStateMock).toHaveBeenCalledTimes(2);
-            expect(dispatchMock).toHaveBeenCalledTimes(1);
+            expect(sourceEventMap.get(PrefixedCustomEventTypes.CHANGE)).toHaveLength(1);
+            expect(rootEventMap.get(PrefixedCustomEventTypes.CHANGE)).toHaveLength(1);
+            expect(sourceEventMap.get(LegacyEventTypes.CHANGE)).toHaveLength(1);
         });
 
         it("should NOT set light if reducer returns false", async () => {
@@ -197,7 +216,9 @@ describe("DarkModeToggle", () => {
             instance.light();
 
             expect(setStateMock).toHaveBeenCalledTimes(1);
-            expect(dispatchMock).not.toHaveBeenCalled();
+            expect(sourceEventMap.get(PrefixedCustomEventTypes.CHANGE)).toBeUndefined();
+            expect(rootEventMap.get(PrefixedCustomEventTypes.CHANGE)).toBeUndefined();
+            expect(sourceEventMap.get(LegacyEventTypes.CHANGE)).toBeUndefined();
         });
 
         it("should not trigger event when silent", async () => {
@@ -206,7 +227,9 @@ describe("DarkModeToggle", () => {
             instance.light(true);
 
             expect(setStateMock).toHaveBeenCalledTimes(2);
-            expect(dispatchMock).not.toHaveBeenCalled();
+            expect(sourceEventMap.get(PrefixedCustomEventTypes.CHANGE)).toBeUndefined();
+            expect(rootEventMap.get(PrefixedCustomEventTypes.CHANGE)).toBeUndefined();
+            expect(sourceEventMap.get(LegacyEventTypes.CHANGE)).toBeUndefined();
         });
 
         it("should throw error if destroyed", async () => {
@@ -225,7 +248,9 @@ describe("DarkModeToggle", () => {
 
             expect(doMock).toHaveBeenCalledWith(ActionType.DARK);
             expect(setStateMock).toHaveBeenCalledTimes(2);
-            expect(dispatchMock).toHaveBeenCalledTimes(1);
+            expect(sourceEventMap.get(PrefixedCustomEventTypes.CHANGE)).toHaveLength(1);
+            expect(rootEventMap.get(PrefixedCustomEventTypes.CHANGE)).toHaveLength(1);
+            expect(sourceEventMap.get(LegacyEventTypes.CHANGE)).toHaveLength(1);
         });
 
         it("should NOT set dark if reducer returns false", async () => {
@@ -236,7 +261,9 @@ describe("DarkModeToggle", () => {
             instance.dark();
 
             expect(setStateMock).toHaveBeenCalledTimes(1);
-            expect(dispatchMock).not.toHaveBeenCalled();
+            expect(sourceEventMap.get(PrefixedCustomEventTypes.CHANGE)).toBeUndefined();
+            expect(rootEventMap.get(PrefixedCustomEventTypes.CHANGE)).toBeUndefined();
+            expect(sourceEventMap.get(LegacyEventTypes.CHANGE)).toBeUndefined();
         });
 
         it("should not trigger event when silent", async () => {
@@ -245,7 +272,9 @@ describe("DarkModeToggle", () => {
             instance.dark(true);
 
             expect(setStateMock).toHaveBeenCalledTimes(2);
-            expect(dispatchMock).not.toHaveBeenCalled();
+            expect(sourceEventMap.get(PrefixedCustomEventTypes.CHANGE)).toBeUndefined();
+            expect(rootEventMap.get(PrefixedCustomEventTypes.CHANGE)).toBeUndefined();
+            expect(sourceEventMap.get(LegacyEventTypes.CHANGE)).toBeUndefined();
         });
 
         it("should throw error if destroyed", async () => {
@@ -375,9 +404,9 @@ describe("DarkModeToggle", () => {
             instance = await DarkModeToggle.create(element);
             setStateMock.mockClear();
             
-            const event = new DarkModeToggleEvent(CustomEventTypes.CHANGE,
-                { isLight: false, theme: "dark", source: element, roots: [root1, root2] }
-            );
+            const event = new CustomEvent(PrefixedCustomEventTypes.CHANGE, {
+                detail: { isLight: false, theme: "dark", source: element, roots: [root1, root2] }
+            });
             
             globalThis.document.dispatchEvent(event);
             
@@ -390,9 +419,9 @@ describe("DarkModeToggle", () => {
             instance = await DarkModeToggle.create(element);
             setStateMock.mockClear();
             
-            const event = new DarkModeToggleEvent(CustomEventTypes.CHANGE,
-                { isLight: true, theme: "light", source: element, roots: [root1, root2] }
-            );
+            const event = new CustomEvent(PrefixedCustomEventTypes.CHANGE, {
+                detail: { isLight: true, theme: "light", source: element, roots: [root1, root2] }
+            });
             
             globalThis.document.dispatchEvent(event);
             
@@ -406,9 +435,9 @@ describe("DarkModeToggle", () => {
             instance = await DarkModeToggle.create(element);
             setStateMock.mockClear();
             
-            const event = new DarkModeToggleEvent(CustomEventTypes.CHANGE,
-                { isLight: true, theme: "light", source: element, roots: [differentRoot] }
-            );
+            const event = new CustomEvent(PrefixedCustomEventTypes.CHANGE, {
+                detail: { isLight: true, theme: "light", source: element, roots: [differentRoot] }
+            });
             
             globalThis.document.dispatchEvent(event);
             
@@ -420,9 +449,9 @@ describe("DarkModeToggle", () => {
             instance = await DarkModeToggle.create(element);
             setStateMock.mockClear();
 
-            const event = new DarkModeToggleEvent(CustomEventTypes.CHANGE,
-                { isLight: false, theme: "dark", source: element, roots: [root1] }
-            );
+            const event = new CustomEvent(PrefixedCustomEventTypes.CHANGE, {
+                detail: { isLight: false, theme: "dark", source: element, roots: [root1] }
+            });
 
             globalThis.document.dispatchEvent(event);
 
@@ -433,16 +462,28 @@ describe("DarkModeToggle", () => {
         it("should not update storage or trigger events when external event is received", async () => {
             instance = await DarkModeToggle.create(element);
             setStorageMock.mockClear();
-            dispatchMock.mockClear();
+            sourceEventMap.clear();
                     
-            const event = new DarkModeToggleEvent(CustomEventTypes.CHANGE,
-                { isLight: true, theme: "light", source: element, roots: [root1, root2] }
-            );
+            const event = new CustomEvent(PrefixedCustomEventTypes.CHANGE, {
+                detail: { isLight: true, theme: "light", source: element, roots: [root1, root2] }
+            });
 
             globalThis.document.dispatchEvent(event);
 
             expect(setStorageMock).toHaveBeenCalledTimes(0);
-            expect(dispatchMock).toHaveBeenCalledTimes(0);
+            expect(sourceEventMap.get(PrefixedCustomEventTypes.CHANGE)).toBeUndefined();
+            expect(rootEventMap.get(PrefixedCustomEventTypes.CHANGE)).toBeUndefined();
+            expect(sourceEventMap.get(LegacyEventTypes.CHANGE)).toBeUndefined();
+        });
+
+        it("should ignore malformed external events", async () => {
+            instance = await DarkModeToggle.create(element);
+            setStateMock.mockClear();
+            
+            const malformedEvent = new CustomEvent(PrefixedCustomEventTypes.CHANGE, { detail: null });
+            globalThis.document.dispatchEvent(malformedEvent);
+            
+            expect(setStateMock).not.toHaveBeenCalled();
         });
     });
 
@@ -451,7 +492,7 @@ describe("DarkModeToggle", () => {
             instance = await DarkModeToggle.create(element);
             await instance.destroy();
             expect(documentAddEventListenerSpy).toHaveBeenCalledWith(
-                CustomEventTypes.CHANGE,
+                PrefixedCustomEventTypes.CHANGE,
                 expect.any(Function)
             );
         });

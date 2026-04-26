@@ -1,3 +1,5 @@
+import type { ExtendableEventMap } from "component-lifecycle";
+
 export interface DarkModeToggleEventDetail {
   isLight: boolean;
   theme: string;
@@ -6,11 +8,22 @@ export interface DarkModeToggleEventDetail {
 }
 
 export enum CustomEventTypes{
-    CHANGE = "darkmode:change",
+    CHANGE = "change",
 }
+
+export enum PrefixedCustomEventTypes{
+    CHANGE = "darkmode:change",
+};
 
 export enum LegacyEventTypes{
     CHANGE = "change",
 }
 
-export type EventTypes = CustomEventTypes | LegacyEventTypes;
+export type EventTypes = PrefixedCustomEventTypes | LegacyEventTypes;
+
+export type DarkModeToggleEventMap = ExtendableEventMap<
+  "darkmode",
+  {
+    [CustomEventTypes.CHANGE]: DarkModeToggleEventDetail;
+  }
+>;
