@@ -28,12 +28,13 @@
     "@highlightjs/cdn-assets": "11.11.1",
     "bootstrap": "5.3.8",
     "bootstrap5-toggle": "5.3.3",
-    "bs-darkmode-toggle": "1.0.0",
+    "bs-darkmode-toggle": "1.1.0",
     "highlightjs-badge": "0.1.9",
     "jquery": "4.0.0"
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^1.0.0",
+    "cssnano": "^8.0.2",
     "grunt": "^1.6.1",
     "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-copy": "^1.0.0",
