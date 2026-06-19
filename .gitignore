@@ -15,6 +15,7 @@ js
 css
 !src/main/css
 !docs/src/css
+dist
 
 # Logs
 *.log
