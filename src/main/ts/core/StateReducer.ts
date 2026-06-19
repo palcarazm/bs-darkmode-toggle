@@ -32,7 +32,8 @@ export class StateReducer {
             return true;
         }
         case ActionType.OVERRIDE: {
-            const { isLight } = payload as ActionPayloadMap[ActionType.OVERRIDE];
+            if (!payload || typeof payload.isLight !== "boolean") return false;
+            const { isLight } = payload;
             if (this.state.isLight === isLight) return false;
             this.state = { isLight: isLight, theme: this.getTheme(isLight) };
             return true;
