@@ -74,6 +74,16 @@ describe("CookieStorage", () => {
             const result = cookieStorage.get("");
             expect(result).toBeNull();
         });
+
+        it("should throw an error when document.cookie access is denied", () => {
+            Object.defineProperty(globalThis.document, "cookie", {
+                get: jest.fn(() => { throw new Error("Access denied"); }),
+                set: jest.fn(),
+                configurable: true,
+            });
+
+            expect(() => cookieStorage.get("test")).toThrow("CookieStorage error: Access denied");
+        });
     });
 
     describe("set", () => {
@@ -101,6 +111,16 @@ describe("CookieStorage", () => {
         it("should handle special characters in value", () => {
             cookieStorage.set("special", "!@#$%^&*()", 3600000);
             expect(cookieStorage.get("special")).toBe("!@#$%^&*()");
+        });
+
+        it("should throw an error when document.cookie access is denied", () => {
+            Object.defineProperty(globalThis.document, "cookie", {
+                get: jest.fn(),
+                set: jest.fn(() => { throw new Error("Access denied"); }),
+                configurable: true,
+            });
+
+            expect(() => cookieStorage.set("test", "value", 3600000)).toThrow("CookieStorage error: Access denied");
         });
     });
 
@@ -132,6 +152,17 @@ describe("CookieStorage", () => {
             expect(cookieStorage.get("keep2")).toBe("value2");
             expect(cookieStorage.get("delete")).toBeNull();
         });
+
+        it("should throw an error when document.cookie access is denied", () => {
+            Object.defineProperty(globalThis.document, "cookie", {
+                get: jest.fn(),
+                set: jest.fn(() => { throw new Error("Access denied"); }),
+                configurable: true,
+            });
+
+            expect(() => cookieStorage.delete("test")).toThrow("CookieStorage error: Access denied");
+        });
+
     });
 
     describe("Integration - multiple operations", () => {

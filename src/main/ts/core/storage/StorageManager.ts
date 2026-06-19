@@ -17,6 +17,7 @@ export class StorageManager {
      * Get the storage provider base on requested storage type
      * @param storageType request type of storage
      * @returns A storage provider according to requested storage type
+     * @throws Error on storage provider initialization failure
      */
     private getProvider(storageType: StorageType): StorageProvider {
         switch (storageType) {
@@ -33,6 +34,7 @@ export class StorageManager {
     /**
      * Allows to set up a different storage type
      * @param storageType 
+     * @throws Error on storage provider initialization failure
      */
     setStorageType(storageType: StorageType): void {
         this.provider = this.getProvider(storageType);
@@ -41,6 +43,7 @@ export class StorageManager {
     /**
      * Retrieve the current key stored
      * @returns A string if key is found, `null` otherwise
+     * @throws Error on storage provider failure
      */
     get(): string | null {
         return this.provider.get(StorageManager.STORAGE_KEY);
@@ -49,6 +52,7 @@ export class StorageManager {
     /**
      * Store the provided value in current storage
      * @param value - The value to store
+     * @throws Error on storage provider failure
      */
     set(value: string): void {
         this.provider.set(StorageManager.STORAGE_KEY, value, StorageManager.TTL);
@@ -56,6 +60,7 @@ export class StorageManager {
 
     /**
      * Remove stored value
+     * @throws Error on storage provider failure
      */
     delete(): void {
         this.provider.delete(StorageManager.STORAGE_KEY);
