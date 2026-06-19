@@ -38,8 +38,13 @@ export class DarkModeToggle extends Component<"darkmode", DarkModeToggleEventMap
     }
 
     protected async doInit(): Promise<{ cancelled: boolean; reason?: string }> {
-        this.storage = new StorageManager(this.toggleOptions.storage);
-        this.applyPreferredScheme();
+        try {
+            this.storage = new StorageManager(this.toggleOptions.storage);
+            this.applyPreferredScheme();
+        } catch (error) {
+            this.storage = undefined;
+            return { cancelled: true, reason: `Storage error: ${error instanceof Error ? error.message : String(error)}` };
+        }
         return { cancelled: false };
     }
 
@@ -171,6 +176,7 @@ export class DarkModeToggle extends Component<"darkmode", DarkModeToggleEventMap
     /**
      * Applies the preferred color scheme based on cookies or system preference
      * @returns a boolean indicating whether a preference was applied (true) or not (false)
+     * @throws Error on storage provider failure
      */
     private applyPreferredScheme(): boolean {
         return this.applyStoredPreference() || this.applySystemPreference();
@@ -179,6 +185,7 @@ export class DarkModeToggle extends Component<"darkmode", DarkModeToggleEventMap
     /**
      * Applies the color scheme based on stored preference if available
      * @returns a boolean indicating whether a preference was applied (true) or not (false)
+     * @throws Error on storage provider failure
      */
     private applyStoredPreference(): boolean {
         const value = this.storage?.get();

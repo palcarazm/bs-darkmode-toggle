@@ -1,3 +1,4 @@
+/// <reference types="jest" />
 import { StateReducer } from "../../../main/ts/core/StateReducer";
 import { ActionType } from "../../../main/ts/core/StateReducer.types";
 
@@ -92,6 +93,67 @@ describe("StateReducer", () => {
             const result = reducer.do(ActionType.OVERRIDE, { isLight: true });
 
             expect(result).toBe(true);
+            expect(reducer.get().isLight).toBe(true);
+            expect(reducer.get().theme).toBe(LIGHT);
+        });
+
+        it("should return false and not change state when payload is undefined", () => {
+            const reducer = createStateReducer(true);
+
+            const result = reducer.do(ActionType.OVERRIDE);
+
+            expect(result).toBe(false);
+            expect(reducer.get().isLight).toBe(true);
+            expect(reducer.get().theme).toBe(LIGHT);
+        });
+
+        it("should return false and not change state when payload is null", () => {
+            const reducer = createStateReducer(true);
+
+            // @ts-expect-error - Testing edge case with null payload
+            const result = reducer.do(ActionType.OVERRIDE, null);
+
+            expect(result).toBe(false);
+            expect(reducer.get().isLight).toBe(true);
+            expect(reducer.get().theme).toBe(LIGHT);
+        });
+
+        it("should return false and not change state when isLight is a string", () => {
+            const reducer = createStateReducer(true);
+
+            const result = reducer.do(ActionType.OVERRIDE, { isLight: "true" as unknown as boolean });
+
+            expect(result).toBe(false);
+            expect(reducer.get().isLight).toBe(true);
+            expect(reducer.get().theme).toBe(LIGHT);
+        });
+
+        it("should return false and not change state when isLight is a number", () => {
+            const reducer = createStateReducer(true);
+
+            const result = reducer.do(ActionType.OVERRIDE, { isLight: 1 as unknown as boolean });
+
+            expect(result).toBe(false);
+            expect(reducer.get().isLight).toBe(true);
+            expect(reducer.get().theme).toBe(LIGHT);
+        });
+
+        it("should return false and not change state when payload is missing isLight property", () => {
+            const reducer = createStateReducer(true);
+
+            const result = reducer.do(ActionType.OVERRIDE, {} as { isLight: boolean });
+
+            expect(result).toBe(false);
+            expect(reducer.get().isLight).toBe(true);
+            expect(reducer.get().theme).toBe(LIGHT);
+        });
+
+        it("should return false and not change state when isLight is not a boolean (object)", () => {
+            const reducer = createStateReducer(true);
+
+            const result = reducer.do(ActionType.OVERRIDE, { isLight: {} as unknown as boolean });
+
+            expect(result).toBe(false);
             expect(reducer.get().isLight).toBe(true);
             expect(reducer.get().theme).toBe(LIGHT);
         });
