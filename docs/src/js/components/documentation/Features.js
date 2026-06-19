@@ -1,4 +1,5 @@
 import DocSection from "./DocSection";
+import AriaLabel from "./features/AriaLabel";
 import State from "./features/State";
 import Root from "./features/Root";
 import Label from "./features/Label";
@@ -13,6 +14,7 @@ class Features extends DocSection {
             State.build(),
             Root.build(),
             Label.build(),
+            AriaLabel.build(),
             Style.build(),
             ColorScheme.build(),
             Layout.build(),

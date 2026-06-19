@@ -1,17 +1,8 @@
 import { ButtonLayout} from "../../../../../main/ts/core/dom/layouts/ButtonLayout";
-import { Layout, ResolvedOptions, StorageType } from "../../../../../main/ts/core/OptionResolver.types";
+import { Layout, ResolvedOptions } from "../../../../../main/ts/core/OptionResolver.types";
+import { TestUtils } from "../../../../utils/TestUtils";
 
-const options: ResolvedOptions = {
-    state: true,
-    root: ".root",
-    storage: StorageType.NONE,
-    lightLabel: "Light",
-    darkLabel: "Dark",
-    lightColorMode: "light",
-    darkColorMode: "dark",
-    style: "outline-secondary",
-    layout: Layout.BUTTON,
-};
+const options: ResolvedOptions = {...TestUtils.baseOptions, root: ".root", layout: Layout.BUTTON};
 
 describe("ButtonLayout", () => {
     let container: HTMLElement;
@@ -61,31 +52,47 @@ describe("ButtonLayout", () => {
         it("should set light mode", () => {
             const { builder, control } = createBuilder();
 
-            builder.setState(true);
+            builder.setState({isLight: true, theme: "light"});
 
             expect(control.className).toContain("active");
-            expect(control.ariaPressed).toBe("true");
 
             expect(root1.dataset.bsTheme).toBe("light");
             expect(root2.dataset.bsTheme).toBe("light");
         });
 
+        it("should set ARIA attributes when light mode is set", () => {
+            const { builder, control } = createBuilder();
+
+            builder.setState({isLight: true, theme: "light"});
+
+            expect(control.ariaPressed).toBe("true");
+            expect(control.ariaLabel).toBe(options.lightAriaLabel);
+        });
+
         it("should set dark mode", () => {
             const { builder, control } = createBuilder();
 
-            builder.setState(false);
+            builder.setState({isLight: false, theme: "dark"});
 
             expect(control.className).not.toContain("active");
-            expect(control.ariaPressed).toBe("false");
 
             expect(root1.dataset.bsTheme).toBe("dark");
             expect(root2.dataset.bsTheme).toBe("dark");
         });
 
+        it("should set ARIA attributes when dark mode is set", () => {
+            const { builder, control } = createBuilder();
+
+            builder.setState({isLight: false, theme: "dark"});
+
+            expect(control.ariaPressed).toBe("false");
+            expect(control.ariaLabel).toBe(options.darkAriaLabel);
+        });
+
         it("should update all root elements", () => {
             const { builder } = createBuilder();
 
-            builder.setState(true);
+            builder.setState({isLight: true, theme: "light"});
 
             globalThis.document.querySelectorAll<HTMLElement>(".root").forEach((el) => {
                 expect(el.dataset.bsTheme).toBe("light");
@@ -144,6 +151,23 @@ describe("ButtonLayout", () => {
             
             expect(handler1).toHaveBeenCalledTimes(1);
             expect(handler2).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe("destroy()", () => {
+        it("should remove control", () => {
+            const { builder, control } = createBuilder();
+            builder.destroy();
+            expect(container.contains(control)).toBeFalsy();
+        });
+
+        it("should remove event listeners", () => {
+            const { builder, control } = createBuilder();
+            const handler = jest.fn();
+            builder.onChange(handler);
+            builder.destroy();
+            control.dispatchEvent(new Event("click"));
+            expect(handler).not.toHaveBeenCalled();
         });
     });
 });

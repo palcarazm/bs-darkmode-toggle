@@ -1,6 +1,6 @@
 {
   "name": "bs-darkmode-toggle",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "description": "Bootstrap Darkmode Toggle is a plugin for bootstrap to add a ligthmode/darkmode switch in to your app.",
   "author": {
@@ -29,17 +29,41 @@
   "bugs": {
     "url": "https://github.com/palcarazm/bs-darkmode-toggle/issues"
   },
-  "browser": "js/bs-darkmode-toggle.ecmas.js",
+  "browser": "js/bs-darkmode-toggle.ecmas.min.js",
+  "style": "css/bs-darkmode-toggle.min.css",
+  "main": "dist/bs-darkmode-toggle.cjs",
+  "module": "dist/bs-darkmode-toggle.mjs",
+  "types": "dist/bs-darkmode-toggle.d.ts",
+  "typings": "dist/bs-darkmode-toggle.d.ts",
+  "sideEffects": false,
   "files": [
     "css/*",
-    "js/*"
+    "js/*",
+    "dist/*"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/bs-darkmode-toggle.d.ts",
+      "import": "./dist/bs-darkmode-toggle.mjs",
+      "require": "./dist/bs-darkmode-toggle.cjs"
+    },
+    "./css/*": "./css/*",
+    "./js/*": "./js/*"
+  },
   "scripts": {
-    "build": "grunt build",
-    "dev": "grunt dev",
-    "postversion": "grunt build && grunt readme && doctoc README.md --github",
-    "prepack": "grunt build && grunt readme && doctoc README.md --github",
-    "prepublishOnly": "git add -A && git commit",
+    "clean": "rimraf js css dist",
+    "clean:tmp": "rimraf dist/tmp",
+    "prebuild": "npm run clean",
+    "build": "tsc && npm run build:js && npm run build:css",
+    "build:js": "rollup -c",
+    "build:css": "postcss src/main/css/bs-darkmode-toggle.css -o css/bs-darkmode-toggle.css --map && postcss src/main/css/bs-darkmode-toggle.css -o css/bs-darkmode-toggle.min.css --map --use cssnano && postcss src/main/css/bs-darkmode-toggle.css -o dist/bs-darkmode-toggle.css --map --use cssnano",
+    "postbuild": "npm run clean:tmp",
+    "readme": "node scripts/update-readme.js",
+    "watch": "concurrently \"tsc --watch\" \"rollup --watch\" \"postcss src/main/css/bs-darkmode-toggle.css -o css/bs-darkmode-toggle.css --map --watch\" \"postcss src/main/css/bs-darkmode-toggle.css -o dist/bs-darkmode-toggle.css --map --watch\"",
+    "preversion": "npm run lint && npm run test",
+    "version": "npm run build && npm run readme && doctoc README.md --github && git add -A",
+    "postversion": "git push --follow-tags",
+    "prepack": "npm run build && npm run readme && doctoc README.md --github",
     "test": "npm run test:unit && npm run test:e2e",
     "test:e2e": "cypress run --headless",
     "test:unit": "jest --coverage",
@@ -67,35 +91,39 @@
     }
   },
   "devDependencies": {
-    "@commitlint/cli": "^20.3.1",
-    "@commitlint/config-conventional": "^20.3.1",
+    "@commitlint/cli": "^21.0.2",
+    "@commitlint/config-conventional": "^21.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^1.0.0",
     "@types/bootstrap": "^5.2.10",
     "@types/jest": "^30.0.0",
     "@types/jquery": "^4.0.0",
+    "@types/node": "^26.0.0",
     "@typescript-eslint/eslint-plugin": "^8.58.0",
     "@typescript-eslint/parser": "^8.58.0",
-    "bootstrap5-toggle": "^5.0.0",
-    "commitlint": "^20.3.1",
+    "bootstrap5-toggle": "^5.3.3",
+    "commitlint": "^21.0.2",
+    "concurrently": "^10.0.3",
+    "cssnano": "^8.0.2",
     "cypress": "^15.8.1",
     "cypress-plugin-tab": "^2.0.0",
     "doctoc": "^2.2.0",
     "eslint": "^10.0.0",
     "globals": "^17.0.0",
-    "grunt": "^1.5.3",
-    "grunt-banner": "^0.6.0",
-    "grunt-contrib-clean": "^2.0.1",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-watch": "^1.1.0",
-    "grunt-exec": "^3.0.0",
     "husky": "^9.0.11",
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.2.0",
     "jquery": "^4.0.0",
     "postcss": "^8.5.6",
+    "postcss-banner": "^4.0.1",
     "postcss-cli": "^11.0.1",
+    "rimraf": "^6.1.3",
     "rollup": "^4.54.0",
+    "rollup-plugin-dts": "^6.4.1",
     "ts-jest": "^29.4.9",
     "typescript": "^6.0.2"
+  },
+  "dependencies": {
+    "component-lifecycle": "^2.0.0"
   }
 }

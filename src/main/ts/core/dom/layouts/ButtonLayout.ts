@@ -1,6 +1,9 @@
+import { DarkModeState } from "../../StateReducer.types";
 import { AbstractLayout } from "../AbstractLayout";
 export class ButtonLayout extends AbstractLayout {
     private _button?: HTMLButtonElement;
+
+    private handler?: (e: Event) => void;
 
     /**
      * Creates the control element for the layout and appends it to the container.
@@ -25,13 +28,14 @@ export class ButtonLayout extends AbstractLayout {
     }
 
     /**
-     * Update the state of the control element based on the given boolean.
+     * Update the state of the control element based on the given current state.
      * @implements AbstractLayout
-     * @param {boolean} isLight - A boolean indicating whether to set light mode (`true`) or dark mode (`false`)
+     * @param {DarkModeState} state - The darkmode current state.
      */
-    updateControlState(isLight: boolean): void {
+    updateControlState({isLight}: DarkModeState): void {
         const label = isLight ? this.lightLabel : this.darkLabel;
         this.button.innerHTML = label;
+        this.button.ariaLabel = this.getAriaLabel(isLight);
         
         if (isLight) {
             this.button.classList.add("active");
@@ -48,8 +52,18 @@ export class ButtonLayout extends AbstractLayout {
      * @param {(e: Event) => void} handler - The callback handler to blink
      */
     onChange(handler: (e: Event) => void): void {
-        this.button.addEventListener("click", (e) => {
-            handler(e);
-        });
+        this.handler = handler;
+        this.button.addEventListener("click", handler);
+    }
+
+    /**
+     * Destroys the layout.
+     * If a handler is attached, it will be detached first.
+     * Then, the button control element will be removed from the DOM.
+     */
+    destroy(): void {
+        if(this.handler) this.button.removeEventListener("click", this.handler);
+        this.handler = undefined;
+        this.button.remove();
     }
 }

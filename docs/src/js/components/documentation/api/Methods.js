@@ -4,7 +4,7 @@ class Methods extends DocArticle {
     static #methods = [
         {
             method: "initialize",
-            params: null,
+            params: [],
             description: "Initializes the plugin with options.",
         },
         {
@@ -27,6 +27,11 @@ class Methods extends DocArticle {
             params: ["set_storage", "none"],
             description: `Set the storage to use for user preferences.<br>
             <small class="text-muted">Provide <code>cache</code>, <code>local</code> or <code>none</code> as second argument.</small>`,
+        },
+        {
+            method: "destroy",
+            params: ["destroy"],
+            description: "Destroys the control, removes it from the DOM and clean the element reference.",
         },
     ];
 

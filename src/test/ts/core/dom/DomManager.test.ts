@@ -1,31 +1,35 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /// <reference types="jest" />
 import { DomManager } from "../../../../main/ts/core/dom/DomManager";
-import { Layout, ResolvedOptions, StorageType } from "../../../../main/ts/core/OptionResolver.types";
+import { Layout } from "../../../../main/ts/core/OptionResolver.types";
 import { AbstractLayout } from "../../../../main/ts/core/dom/AbstractLayout";
 import { ButtonLayout } from "../../../../main/ts/core/dom/layouts/ButtonLayout";
 import { ToggleLayout } from "../../../../main/ts/core/dom/layouts/ToggleLayout";
+import { TestUtils } from "../../../utils/TestUtils";
 
 let capturedHandler: (e: Event) => void;
 const mockSetState: jest.Mock = jest.fn();
 const mockOnChange: jest.Mock = jest.fn()
     .mockImplementation((handler) => {capturedHandler = handler;});
 const mockOnChangeHandler = jest.fn();
+const mockDestroy = jest.fn();
+
+const mockLayout: Partial<AbstractLayout> = {
+    setState: mockSetState,
+    onChange: mockOnChange,
+    destroy: mockDestroy,
+    roots: [document.createElement("div"), document.createElement("span")],
+};
 
 jest.mock("../../../../main/ts/core/dom/layouts/ButtonLayout", () => {
     return {
-        ButtonLayout: jest.fn().mockImplementation(() => ({
-            setState: mockSetState,
-            onChange: mockOnChange,
-        })),
+        ButtonLayout: jest.fn().mockImplementation(() => mockLayout),
     };
 });
 
 jest.mock("../../../../main/ts/core/dom/layouts/ToggleLayout", () => {
     return {
-        ToggleLayout: jest.fn().mockImplementation(() => ({
-            setState: mockSetState,
-            onChange: mockOnChange,
-        })),
+        ToggleLayout: jest.fn().mockImplementation(() => mockLayout),
     };
 });
 
@@ -42,26 +46,16 @@ function layoutResolver(layout: Layout):typeof AbstractLayout{
 }
 
 let element: HTMLElement;
-const baseOptions: ResolvedOptions = {
-    state: true,
-    root: ".root",
-    storage: StorageType.NONE,
-    lightLabel: "Light",
-    darkLabel: "Dark",
-    lightColorMode: "light",
-    darkColorMode: "dark",
-    style: "outline-secondary",
-    layout: Layout.TOGGLE,
-};
 
 function createDomManager(layout:Layout):DomManager{
-    return new DomManager(element,{...baseOptions, layout: layout}, mockOnChangeHandler);
+    return new DomManager(element,{...TestUtils.baseOptions, layout: layout}, mockOnChangeHandler);
 }
 
 describe("DomManager", () => {
     beforeEach(() => {
         jest.clearAllMocks();
         capturedHandler = () => {};
+        (mockLayout as any).roots = [document.createElement("div"), document.createElement("span")];
 
         element = document.createElement("div");
     });
@@ -88,8 +82,15 @@ describe("DomManager", () => {
     describe("setState", () => {
         it.each(layouts)("should delegate setState on layout %s", (layout) => {
             const domManager = createDomManager(layout);
-            domManager.setState(true);
-            expect(mockSetState).toHaveBeenCalledWith(true);
+            domManager.setState({isLight:true, theme:"light"});
+            expect(mockSetState).toHaveBeenCalledWith({isLight:true, theme:"light"});
+        });
+    });
+
+    describe("roots", () => {
+        it.each(layouts)("should delegate roots on layout %s", (layout) => {
+            const domManager = createDomManager(layout);
+            expect(domManager.roots).toEqual(mockLayout.roots);
         });
     });
 
@@ -102,6 +103,14 @@ describe("DomManager", () => {
             
             expect(mockOnChangeHandler).toHaveBeenCalledTimes(1);
             expect(mockOnChangeHandler).toHaveBeenCalledWith(mockEvent);
+        });
+    });
+
+    describe("destroy", () => {
+        it.each(layouts)("should delegate destroy on layout %s", (layout) => {
+            const domManager = createDomManager(layout);
+            domManager.destroy();
+            expect(mockDestroy).toHaveBeenCalledTimes(1);
         });
     });
 });

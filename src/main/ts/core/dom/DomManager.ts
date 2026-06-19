@@ -1,4 +1,5 @@
 import { Layout, ResolvedOptions } from "../OptionResolver.types";
+import { DarkModeState } from "../StateReducer.types";
 import { AbstractLayout } from "./AbstractLayout";
 import { ButtonLayout } from "./layouts/ButtonLayout";
 import { ToggleLayout } from "./layouts/ToggleLayout";
@@ -34,9 +35,25 @@ export class DomManager{
 
     /**
      * Updated DOM to current state by delegating to the layout.
-     * @param {boolean} isLight - A boolean indicating whether to set light mode (`true`) or dark mode (`false`).
+     * @param {DarkModeState} state - The darkmode current state.
      */
-    public setState(isLight: boolean): void{
-        this.layout.setState(isLight);
+    public setState(state: DarkModeState): void{
+        this.layout.setState(state);
+    }
+
+    /**
+     * Returns the root elements by delegating to the layout.
+     * @returns {HTMLElement[]} The root elements.
+     */
+    public get roots(): HTMLElement[] {
+        return this.layout.roots;
+    }
+
+    /**
+     * Destroys the layout by delegating to the layout implementation.
+     * This method should be called when the DomManager is no longer needed.
+     */
+    public destroy(): void {
+        this.layout.destroy();
     }
 }

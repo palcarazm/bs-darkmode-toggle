@@ -1,12 +1,13 @@
 import { ResolvedOptions } from "../OptionResolver.types";
+import { DarkModeState } from "../StateReducer.types";
 
 export abstract class AbstractLayout {
-    protected readonly root: NodeListOf<HTMLElement>;
-    protected readonly lightColorMode: string;
-    protected readonly darkColorMode: string;
+    protected readonly rootSelector: string;
     protected readonly lightLabel: string;
     protected readonly darkLabel: string;
     protected readonly style: string;
+    private readonly lightAriaLabel: string;
+    private readonly darkAriaLabel: string;
 
     protected static readonly BS_ATTRIBUTE = "bsTheme";
 
@@ -16,15 +17,34 @@ export abstract class AbstractLayout {
      * @param {ResolvedOptions} options - The resolved options to apply to the layout.
      */
     constructor(container: HTMLElement, options: ResolvedOptions) {
-        this.root = globalThis.document.querySelectorAll<HTMLElement>(options.root);
-        this.lightColorMode = options.lightColorMode;
-        this.darkColorMode = options.darkColorMode;
+        this.rootSelector = options.root;
         this.lightLabel = options.lightLabel;
         this.darkLabel = options.darkLabel;
         this.style = options.style;
+        this.lightAriaLabel = options.lightAriaLabel;
+        this.darkAriaLabel = options.darkAriaLabel;
 
         container.innerHTML = "";
         this.createControl(container);
+    }
+
+    /**
+     * Gets the root elements in the layout.
+     * 
+     * Implementation note: roots are not cached to avoid re-querying the DOM because roots can change (added or removed) during runtime.
+     * @returns {HTMLElement[]} The root elements in the layout.
+     */
+    public get roots(): HTMLElement[] {
+        return Array.from(globalThis.document.querySelectorAll<HTMLElement>(this.rootSelector));
+    }
+
+    /**
+     * Returns the aria label based on the given dark mode state.
+     * @param {boolean} isLight - The dark mode state.
+     * @returns {string} The aria label.
+     **/
+    protected getAriaLabel(isLight: boolean): string {
+        return isLight ? this.lightAriaLabel : this.darkAriaLabel;
     }
 
     /**
@@ -38,22 +58,22 @@ export abstract class AbstractLayout {
     /**
      * Updated DOM to current state.
      * - Launch the control state update
-     * - Sets the color scheme of all root elements in the layout based on the given boolean.
-     * @param {boolean} isLight - A boolean indicating whether to set light mode (`true`) or dark mode (`false`).
+     * - Sets the color scheme of all root elements in the layout based on the given current state.
+     * @param {DarkModeState} state - The darkmode current state.
      */
-    public setState(isLight: boolean): void{
-        this.updateControlState(isLight);
-        this.root.forEach((el) => {
-            el.dataset[AbstractLayout.BS_ATTRIBUTE] = isLight ? this.lightColorMode : this.darkColorMode;
+    public setState(state: DarkModeState): void{
+        this.updateControlState(state);
+        this.roots.forEach((el) => {
+            el.dataset[AbstractLayout.BS_ATTRIBUTE] = state.theme;
         });
     }
 
     /**
      * Updates the state of the control element.
      * @abstract This method must be overridden in subclasses.
-     * @param  {boolean} isLight - A boolean indicating whether to set light mode (`true`) or dark mode (`false`). 
+     * @param {DarkModeState} state - The darkmode current state.
      */
-    protected abstract updateControlState(isLight: boolean): void;
+    protected abstract updateControlState(state: DarkModeState): void;
 
     /**
      * Blinks the callback handler for the control element `change event`.
@@ -61,4 +81,10 @@ export abstract class AbstractLayout {
      * @param {(e: Event) => void} handler - The callback handler to blink.
      */
     public abstract onChange(handler: (e: Event) => void): void;
+
+    /**
+     * Destroys the layout.
+     * @abstract This method must be overridden in subclasses.
+     */
+    public abstract destroy(): void;
 }

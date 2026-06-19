@@ -5,6 +5,7 @@ import Features from "./documentation/Features";
 import Api from "./documentation/Api";
 import Events from "./documentation/Events";
 import Icons from "./documentation/Icons";
+import Monitoring from "./documentation/monitoring/Monitoring";
 
 class Documentation {
     static #sections = [
@@ -15,6 +16,7 @@ class Documentation {
         Api.build(),
         Events.build(),
         Icons.build(),
+        Monitoring.build(),
     ];
 
     static build() {

@@ -1,37 +1,30 @@
 /// <reference types="jest" />
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AbstractLayout } from "../../../../main/ts/core/dom/AbstractLayout";
-import { ResolvedOptions, StorageType, Layout } from "../../../../main/ts/core/OptionResolver.types";
+import { DarkModeState } from "../../../../main/ts/core/StateReducer.types";
+import { TestUtils } from "../../../utils/TestUtils";
 
 class ConcreteLayout extends AbstractLayout {
     public updateControlStateSpy: jest.Mock = jest.fn();
+    private control?: HTMLElement;
     
     protected createControl(container: HTMLElement): void {
         const div = document.createElement("div");
         div.id = "control";
         container.appendChild(div);
+        this.control = div;
     }
     
-    protected updateControlState(isLight: boolean): void {
-        this.updateControlStateSpy(isLight);
+    protected updateControlState(state: DarkModeState): void {
+        this.updateControlStateSpy(state);
     }
     
     public onChange(_handler: (e: Event) => void): void {
         // Mock implementation
     }
+    public destroy(): void {
+        if (this.control) this.control.remove();
+    }
 }
-
-const options: ResolvedOptions = {
-    state: true,
-    root: ".root",
-    storage: StorageType.NONE,
-    lightLabel: "Light",
-    darkLabel: "Dark",
-    lightColorMode: "light",
-    darkColorMode: "dark",
-    style: "outline-secondary",
-    layout: Layout.TOGGLE,
-};
 
 describe("AbstractLayout", () => {
     let container: HTMLElement;
@@ -39,9 +32,11 @@ describe("AbstractLayout", () => {
     let root2: HTMLElement;
 
     beforeEach(() => {
+        jest.clearAllMocks();
+        document.body.innerHTML = "";
+        
         container = document.createElement("div");
         document.body.appendChild(container);
-        jest.clearAllMocks();
 
         root1 = document.createElement("div");
         root2 = document.createElement("div");
@@ -55,7 +50,7 @@ describe("AbstractLayout", () => {
     });
 
     function createBuilder() {
-        const builder = new ConcreteLayout(container, options);
+        const builder = new ConcreteLayout(container, {...TestUtils.baseOptions, root: ".root"});
 
         const control = container.querySelector("#control") as HTMLElement;
 
@@ -73,29 +68,51 @@ describe("AbstractLayout", () => {
         });
     });
 
+    describe("roots", () => {
+        it("should return all root elements", () => {
+            const { builder } = createBuilder();
+
+            expect(builder.roots).toStrictEqual([root1, root2]);
+        });
+        
+        it("should re-query DOM each time (not cached)", () => {
+            const { builder } = createBuilder();
+            const firstCall = builder.roots;
+
+            const newRoot = document.createElement("div");
+            newRoot.className = "root";
+            document.body.appendChild(newRoot);
+
+            const secondCall = builder.roots;
+
+            expect(secondCall).not.toBe(firstCall);
+            expect(secondCall).toHaveLength(3);
+        });
+    });
+
     describe("setState(isLight: boolean)", () => {
         it("should set light mode", () => {
             const { builder } = createBuilder();
 
-            builder.setState(true);
+            builder.setState({isLight: true, theme: "light"});
 
             expect(builder.updateControlStateSpy).toHaveBeenCalledTimes(1);
-            expect(builder.updateControlStateSpy).toHaveBeenCalledWith(true);
+            expect(builder.updateControlStateSpy).toHaveBeenCalledWith({isLight: true, theme: "light"});
         });
 
         it("should set dark mode", () => {
             const { builder } = createBuilder();
 
-            builder.setState(false);
+            builder.setState({isLight: false, theme: "dark"});
 
             expect(builder.updateControlStateSpy).toHaveBeenCalledTimes(1);
-            expect(builder.updateControlStateSpy).toHaveBeenCalledWith(false);
+            expect(builder.updateControlStateSpy).toHaveBeenCalledWith({isLight: false, theme: "dark"});
         });
 
         it("should update all root elements", () => {
             const { builder } = createBuilder();
 
-            builder.setState(true);
+            builder.setState({isLight: true, theme: "light"});
 
             globalThis.document.querySelectorAll<HTMLElement>(".root").forEach((el) => {
                 expect(el.dataset.bsTheme).toBe("light");

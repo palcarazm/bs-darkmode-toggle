@@ -8,6 +8,8 @@ export interface DarkModeOptions {
     darkColorMode?: string;
     style?: ToggleStyle;
     layout?: Layout;
+    lightAriaLabel?: string;
+    darkAriaLabel?: string;
 }
 
 export interface ResolvedOptions {
@@ -20,6 +22,8 @@ export interface ResolvedOptions {
     darkColorMode: string;
     style: ToggleStyle;
     layout: Layout;
+    lightAriaLabel: string;
+    darkAriaLabel: string;
 }
 
 export type ToggleStyle =

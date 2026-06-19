@@ -9,8 +9,16 @@ export const TEST_CONSTANTS = Object.freeze({
     TEST_CONSOLE_CLASS: "console",
     TEST_CONSOLE_SELECTOR: ".console",
 
-    // Messages
-    CONSOLE_FIRED_TEXT: "Change event fired!",
+    // Events
+    EVENTS_CONSOLE_TEXT:{
+        element:{
+            change: "change event fired on element!",
+            darkmode_change: "darkmode:change event fired on element!"
+        },
+        container:{
+            darkmode_change: "darkmode:change event fired on container!"
+        }
+    },
 
     // Plugin defaults
     DEFAULTS: {

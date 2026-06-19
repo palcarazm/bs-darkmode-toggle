@@ -11,7 +11,9 @@ export class OptionResolver {
         lightColorMode: "light",
         darkColorMode: "dark",
         style: "outline-secondary",
-        layout : Layout.TOGGLE
+        layout : Layout.TOGGLE,
+        lightAriaLabel: "Switch to dark mode",
+        darkAriaLabel: "Switch to light mode",
     };
 
     /**
@@ -37,6 +39,8 @@ export class OptionResolver {
             darkColorMode: sanitize(element.dataset.darkColorMode || options.darkColorMode || this.DEFAULTS.darkColorMode, { mode: SanitizeMode.TEXT })!,
             style: sanitize(element.dataset.style || options.style || this.DEFAULTS.style, { mode: SanitizeMode.TEXT }) as ToggleStyle,
             layout: sanitize(element.dataset.layout || options.layout || this.DEFAULTS.layout, { mode: SanitizeMode.TEXT }) as Layout,
+            lightAriaLabel: sanitize(element.dataset.lightAriaLabel || options.lightAriaLabel || this.DEFAULTS.lightAriaLabel, { mode: SanitizeMode.TEXT })!,
+            darkAriaLabel: sanitize(element.dataset.darkAriaLabel || options.darkAriaLabel || this.DEFAULTS.darkAriaLabel, { mode: SanitizeMode.TEXT })!,
         };
     }
 }

@@ -13,6 +13,12 @@ declare global {
   interface HTMLElement{
     change: Event;
   }
+
+  interface Window {
+    Darkmode: {
+      MONITOR: DarkModeMonitor;
+    };
+  }
 }
 
 export {};

@@ -1,7 +1,10 @@
+import { BootstrapToggleElement, Methods } from "bootstrap5-toggle";
+import { DarkModeState } from "../../StateReducer.types";
 import { AbstractLayout } from "../AbstractLayout";
 
 export class ToggleLayout extends AbstractLayout {
     private _input?: BootstrapToggleElement;
+    private handler?: (e: Event) => void;
 
     /**
      * Create a Bootstrap Toggle control in the given container.
@@ -31,13 +34,20 @@ export class ToggleLayout extends AbstractLayout {
     }
 
     /**
-     * Update the state of the control element based on the given boolean.
+     * Update the state of the control element based on the given current state.
+     * 
+     * Implementation note: for performance reasons, rerender is only called if the ariaLabel has changed.
      * @implements AbstractLayout
-     * @param {boolean} isLight - A boolean indicating whether to set light mode (`true`) or dark mode (`false`)
+     * @param {DarkModeState} state - The darkmode current state.
      */
-    updateControlState(isLight: boolean) {
+    updateControlState({isLight}: DarkModeState) {
+        const newAriaLabel = this.getAriaLabel(isLight);
+        if (newAriaLabel !== this.input.ariaLabel) {
+            this.input.ariaLabel = newAriaLabel;
+            this.input.bootstrapToggle(Methods.RERENDER);
+        }
         this.input.bootstrapToggle(
-            isLight ? BootstrapToggleMethods.ON : BootstrapToggleMethods.OFF,
+            isLight ? Methods.ON : Methods.OFF,
             true
         );
     }
@@ -48,26 +58,17 @@ export class ToggleLayout extends AbstractLayout {
      * @param {(e: Event) => void} handler - The callback handler to blink
      */
     onChange(handler: (e: Event) => void) {
+        this.handler = handler;
         this.input.addEventListener("change", handler);
     }
-}
 
-export interface BootstrapToggleElement extends HTMLInputElement {
-  bootstrapToggle(
-    options?: BootstrapToggleMethods | Record<string, unknown>,
-    silent?: boolean
-  ): void;
-}
-
-export enum BootstrapToggleMethods {
-  ON = "ON",
-  OFF = "OFF",
-  TOGGLE = "TOGGLE",
-  DETERMINATE = "DETERMINATE",
-  INDETERMINATE = "INDETERMINATE",
-  ENABLE = "ENABLE",
-  DISABLE = "DISABLE",
-  READONLY = "READONLY",
-  DESTROY = "DESTROY",
-  RENDERER = "RENDERER",
+    /**
+     * Destroys the layout and removes any event listeners attached to the control element.
+     */
+    destroy(): void {
+        if(this.handler) this.input.removeEventListener("change", this.handler);
+        this.handler = undefined;
+        this.input.bootstrapToggle(Methods.DESTROY);
+        this.input.remove();
+    }
 }
