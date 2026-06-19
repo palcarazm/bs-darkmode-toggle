@@ -1,9 +1,9 @@
+/// <reference types="jest" />
 import { LocalStorage } from "../../../../../main/ts/core/storage/providers/LocalStorage";
 
 describe("LocalStorage", () => {
     let localStorage: LocalStorage;
     let localStorageMock: { [key: string]: string };
-    let consoleWarnSpy: jest.SpyInstance;
 
     beforeEach(() => {
         localStorage = new LocalStorage();
@@ -27,8 +27,6 @@ describe("LocalStorage", () => {
             writable: true,
             configurable: true,
         });
-
-        consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     });
 
     afterEach(() => {
@@ -50,26 +48,13 @@ describe("LocalStorage", () => {
             expect(globalThis.localStorage?.getItem).toHaveBeenCalledWith("test");
         });
 
-        it("should return null when localStorage is not available", () => {
-            Object.defineProperty(globalThis, "localStorage", {
-                value: undefined,
-                writable: true,
-                configurable: true,
-            });
-
-            const result = localStorage.get("any-key");
-            expect(result).toBeNull();
-        });
-
-        it("should handle localStorage.getItem throwing an error", () => {
+        it("should throw when localStorage.getItem throwing an error", () => {
             const error = new Error("Storage quota exceeded");
             (globalThis.localStorage?.getItem as jest.Mock).mockImplementationOnce(() => {
                 throw error;
             });
 
-            const result = localStorage.get("test");
-            expect(result).toBeNull();
-            expect(consoleWarnSpy).toHaveBeenCalledWith("Unable to access localStorage:", error);
+            expect(() => localStorage.get("test")).toThrow();
         });
 
         it("should handle getItem with null value", () => {
@@ -133,35 +118,22 @@ describe("LocalStorage", () => {
             expect(localStorageMock["no-expiry"]).toBe("new-value");
         });
 
-        it("should handle localStorage.setItem throwing an error (quota exceeded)", () => {
+        it("should throw when localStorage.setItem throwing an error (quota exceeded)", () => {
             const error = new Error("QuotaExceededError");
             (globalThis.localStorage?.setItem as jest.Mock).mockImplementationOnce(() => {
                 throw error;
             });
 
-            localStorage.set("test", "value", 3600000);
-            expect(consoleWarnSpy).toHaveBeenCalledWith("Unable to write to localStorage:", error);
-            expect(localStorageMock["test"]).toBeUndefined();
+            expect(() => localStorage.set("test", "value", 3600000)).toThrow();
         });
 
-        it("should handle localStorage.setItem throwing SecurityError", () => {
+        it("should throw when localStorage.setItem throwing SecurityError", () => {
             const error = new Error("SecurityError");
             (globalThis.localStorage?.setItem as jest.Mock).mockImplementationOnce(() => {
                 throw error;
             });
 
-            localStorage.set("test", "value", 3600000);
-            expect(consoleWarnSpy).toHaveBeenCalledWith("Unable to write to localStorage:", error);
-        });
-
-        it("should handle when localStorage is not available", () => {
-            Object.defineProperty(globalThis, "localStorage", {
-                value: undefined,
-                writable: true,
-                configurable: true,
-            });
-
-            expect(() => localStorage.set("test", "value", 3600000)).not.toThrow();
+            expect(() => localStorage.set("test", "value", 3600000)).toThrow();
         });
 
         it("should handle special characters in key and value", () => {
@@ -208,24 +180,13 @@ describe("LocalStorage", () => {
             expect(localStorageMock["delete"]).toBeUndefined();
         });
 
-        it("should handle localStorage.removeItem throwing an error", () => {
+        it("should throw when localStorage.removeItem throwing an error", () => {
             const error = new Error("Some storage error");
             (globalThis.localStorage?.removeItem as jest.Mock).mockImplementationOnce(() => {
                 throw error;
             });
 
-            localStorage.delete("test");
-            expect(consoleWarnSpy).toHaveBeenCalledWith("Unable to remove from localStorage:", error);
-        });
-
-        it("should handle when localStorage is not available", () => {
-            Object.defineProperty(globalThis, "localStorage", {
-                value: undefined,
-                writable: true,
-                configurable: true,
-            });
-
-            expect(() => localStorage.delete("test")).not.toThrow();
+            expect(() => localStorage.delete("test")).toThrow();
         });
 
         it("should handle delete on key with special characters", () => {

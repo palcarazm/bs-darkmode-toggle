@@ -151,6 +151,121 @@ describe("DarkModeToggle", () => {
         });
     });
 
+    describe("doInit - storage error handling", () => {
+        it("should cancel initialization when storage.get() throws an Error", (done) => {
+            getStorageMock.mockImplementationOnce(() => {
+                throw new Error("Quota exceeded");
+            });
+
+            instance = new DarkModeToggle(element);
+            instance.once("darkmode:transition-cancelled", (ev) => {
+                expect(ev.detail.reason).toBe("Storage error: Quota exceeded");
+                expect(instance.isInitialized()).toBe(false);
+                expect((instance as any).storage).toBeUndefined();
+                done();
+            });
+
+            instance.init();
+        });
+
+        it("should cancel initialization when storage.get() throws a non-Error", (done) => {
+            getStorageMock.mockImplementation(() => {
+                throw "Storage unavailable";
+            });
+
+            instance = new DarkModeToggle(element);
+            instance.once("darkmode:transition-cancelled", (ev) => {
+                expect(ev.detail.reason).toBe("Storage error: Storage unavailable");
+                expect(instance.isInitialized()).toBe(false);
+                expect((instance as any).storage).toBeUndefined();
+                done();
+            });
+
+            instance.init();
+        });
+
+        it("should cancel initialization when new StorageManager() throws", (done) => {
+            const mockStorageManager = jest.requireMock("../../main/ts/core/storage/StorageManager");
+            mockStorageManager.StorageManager.mockImplementationOnce(() => {
+                throw new Error("Storage unavailable");
+            });
+
+            instance = new DarkModeToggle(element);
+            instance.once("darkmode:transition-cancelled", (ev) => {
+                expect(ev.detail.reason).toBe("Storage error: Storage unavailable");
+                expect(instance.isInitialized()).toBe(false);
+                expect((instance as any).storage).toBeUndefined();
+                done();
+            });
+
+            instance.init();
+        });
+
+        it("should NOT call applySystemPreference() when storage error occurs", (done) => {
+            getStorageMock.mockImplementation(() => {
+                throw new Error("Storage error");
+            });
+
+            instance = new DarkModeToggle(element);
+            instance.once("darkmode:transition-cancelled", (ev) => {
+                expect(ev.detail.reason).toBe("Storage error: Storage error");
+                expect(doMock).not.toHaveBeenCalledWith("dark");
+                expect(doMock).not.toHaveBeenCalledWith("light");
+                expect(instance.isInitialized()).toBe(false);
+                done();
+            });
+
+            instance.init();
+        });
+
+        it("should call applySystemPreference() when storage returns null (no stored preference)", async () => {
+            getStorageMock.mockReturnValue(null);
+            setMatchMedia(ColorModes.DARK);
+
+            instance = new DarkModeToggle(element);
+            await instance.init();
+
+            expect(doMock).toHaveBeenCalledWith(ActionType.DARK);
+            expect(instance.isInitialized()).toBe(true);
+            expect((instance as any).storage).toBeDefined();
+        });
+
+        it("should NOT call applySystemPreference() when storage returns a valid preference", async () => {
+            getStorageMock.mockReturnValue("dark");
+
+            instance = new DarkModeToggle(element);
+            await instance.init();
+
+            expect(doMock).toHaveBeenCalledWith(ActionType.DARK);
+            expect(doMock).toHaveBeenCalledTimes(1);
+            expect(instance.isInitialized()).toBe(true);
+            expect((instance as any).storage).toBeDefined();
+        });
+
+        it("should preserve existing behavior: storage returns light preference", async () => {
+            getStorageMock.mockReturnValue("light");
+
+            instance = new DarkModeToggle(element);
+            await instance.init();
+
+            expect(doMock).toHaveBeenCalledWith(ActionType.LIGHT);
+            expect(doMock).toHaveBeenCalledTimes(1);
+            expect(instance.isInitialized()).toBe(true);
+            expect((instance as any).storage).toBeDefined();
+        });
+
+        it("should keep default state when storage returns null and system has no preference", async () => {
+            getStorageMock.mockReturnValue(null);
+            setMatchMedia(ColorModes.NONE);
+            
+            instance = new DarkModeToggle(element);
+            await instance.init();
+            
+            expect(doMock).not.toHaveBeenCalled();
+            expect(instance.isInitialized()).toBe(true);
+        });
+    });
+
     describe("toggle(silent = false)", () => {
         it("should toggle and trigger event", async () => {
             instance = await DarkModeToggle.create(element);
