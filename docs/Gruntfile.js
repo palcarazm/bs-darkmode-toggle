@@ -73,7 +73,7 @@ module.exports = function (grunt) {
         },
         exec: {
             rollup: {cmd:"npx rollup -c", cwd: path.resolve(__dirname)},
-            postcss:{cmd:"npx postcss src/css/styles.css -o dist/css/styles.min.css --map --env production", cwd: path.resolve(__dirname)},
+            postcss:{cmd:"npx postcss src/css/styles.css -o dist/css/styles.min.css --map", cwd: path.resolve(__dirname)},
         },
         watch: {
             assets: {
