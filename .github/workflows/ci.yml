@@ -19,12 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [22.x, 24.x]
+        node-version: [22.x, 24.x, 26.x]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Set up Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
             node-version: ${{ matrix.node-version }}
       - name: Install dependencies
@@ -42,8 +42,7 @@ jobs:
           name: coverage-report-${{ matrix.node-version }}
           path: coverage
       - name: Upload coverage report to Coveralls
-        #v2.3.7
-        uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e
+        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329
         with:
           flag-name: coverage-report-${{ matrix.node-version }}
           parallel: true
@@ -55,11 +54,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Coveralls Finished
-        #v2.3.7
-        uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e
+        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329
         with:
           parallel-finished: true
-          carryforward: "coverage-report-22.x,coverage-report-24.x"
+          carryforward: "coverage-report-22.x,coverage-report-24.x,coverage-report-26.x"
 
   cypress:
     name: Run e2e tests with Cypress
@@ -70,14 +68,13 @@ jobs:
       options: --user 1001
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Install dependencies
         run: npm install
       - name: Build project
         run: npm run build
       - name: Cypress run
-        #v6.10.8
-        uses: cypress-io/github-action@dace029018fcdf86e0df89a31bc3cfa5b32570d8
+        uses: cypress-io/github-action@c541a95ea92d9239347a2355f2e895cd4b3f8060
         with:
           browser: chrome
 
@@ -91,7 +88,7 @@ jobs:
       security-events: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
         with:
@@ -107,18 +104,44 @@ jobs:
     needs: build-and-test
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96
+        with:
+          files: |
+            **
+          files_ignore: |
+            package.json
+            .npmrc
+            **/*.md
+            .github/**
+            .gitignore
+          
+      - name: Check if code changes exist
+        id: check-changes
+        run: |
+          if [ "${{ steps.changed-files.outputs.any_changed }}" == "true" ]; then
+            echo "has_code_changes=true" >> $GITHUB_OUTPUT
+            echo "📝 Code changes detected in:"
+            echo "${{ steps.changed-files.outputs.all_changed_files }}"
+          else
+            echo "has_code_changes=false" >> $GITHUB_OUTPUT
+            echo "📦 Only dependency, documentation or CI/CD files changed"
+          fi
+
       - name: Download coverage artifact
+        if: steps.check-changes.outputs.has_code_changes == 'true'
         uses: actions/download-artifact@v8
         with:
-          name: coverage-report-22.x
+          name: coverage-report-26.x
           path: coverage
 
       - name: SonarQube Scan
-        # v7.0.0
-        uses: SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995
+        if: steps.check-changes.outputs.has_code_changes == 'true'
+        uses: SonarSource/sonarqube-scan-action@d209202bc7d53ff1cc128f7f907dac145c9d6ae9
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

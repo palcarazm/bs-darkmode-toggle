@@ -22,20 +22,20 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy-docs:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: docs
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.event.inputs.branch || github.ref_name }}
       - name: Use Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
-          node-version: 24.x
+          node-version: 26.x
       - name: Install dependencies
         run: npm install
       - name: Build
