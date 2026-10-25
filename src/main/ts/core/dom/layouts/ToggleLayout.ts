@@ -34,22 +34,35 @@ export class ToggleLayout extends AbstractLayout {
     }
 
     /**
-     * Update the state of the control element based on the given current state.
+     * Update the state of the control element based on the given current state once the control is attached to the DOM.
      * 
-     * Implementation note: for performance reasons, rerender is only called if the ariaLabel has changed.
      * @implements AbstractLayout
      * @param {DarkModeState} state - The darkmode current state.
      */
     updateControlState({isLight}: DarkModeState) {
-        const newAriaLabel = this.getAriaLabel(isLight);
-        if (newAriaLabel !== this.input.ariaLabel) {
-            this.input.ariaLabel = newAriaLabel;
-            this.input.bootstrapToggle(Methods.RERENDER);
+        if(this.input.bsToggle?.isAttached()){
+            this.doUpdateControlState(isLight);
+        }else{
+            this.input.bsToggle?.once("toggle:attached", () => this.doUpdateControlState(isLight));
         }
+    }
+
+    /**
+     * Update the state of the control element based on the given current state.
+     * 
+     * Implementation note: for performance reasons, rerender is only called if the ariaLabel has changed.
+     * @param {DarkModeState} state - The darkmode current state.
+     */
+    private doUpdateControlState(isLight: boolean) {
+        const newAriaLabel = this.getAriaLabel(isLight);
         this.input.bootstrapToggle(
             isLight ? Methods.ON : Methods.OFF,
             true
         );
+        if (newAriaLabel !== this.input.ariaLabel) {
+            this.input.ariaLabel = newAriaLabel;
+            this.input.bootstrapToggle(Methods.RERENDER);
+        }
     }
 
     /**
