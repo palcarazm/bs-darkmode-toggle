@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [22.x, 24.x]
+        node-version: [22.x, 24.x, 26.x]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -42,7 +42,6 @@ jobs:
           name: coverage-report-${{ matrix.node-version }}
           path: coverage
       - name: Upload coverage report to Coveralls
-        #v2.3.7
         uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329
         with:
           flag-name: coverage-report-${{ matrix.node-version }}
@@ -55,11 +54,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Coveralls Finished
-        #v2.3.7
         uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329
         with:
           parallel-finished: true
-          carryforward: "coverage-report-22.x,coverage-report-24.x"
+          carryforward: "coverage-report-22.x,coverage-report-24.x,coverage-report-26.x"
 
   cypress:
     name: Run e2e tests with Cypress
@@ -76,7 +74,6 @@ jobs:
       - name: Build project
         run: npm run build
       - name: Cypress run
-        #v6.10.8
         uses: cypress-io/github-action@09090944bd8aaa2a517cefb6e38bf1aae336b42b
         with:
           browser: chrome
@@ -114,11 +111,10 @@ jobs:
       - name: Download coverage artifact
         uses: actions/download-artifact@v8
         with:
-          name: coverage-report-22.x
+          name: coverage-report-26.x
           path: coverage
 
       - name: SonarQube Scan
-        # v7.0.0
         uses: SonarSource/sonarqube-scan-action@22918119ff8e1ca75a623e15c8296b6ea4fbe28f
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
