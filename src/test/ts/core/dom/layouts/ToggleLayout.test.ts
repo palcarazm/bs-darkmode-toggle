@@ -4,8 +4,18 @@ import { ToggleLayout } from "../../../../../main/ts/core/dom/layouts/ToggleLayo
 import { Layout, ResolvedOptions } from "../../../../../main/ts/core/OptionResolver.types";
 import { TestUtils } from "../../../../utils/TestUtils";
 
+const isAttachedMock = jest.fn();
+const onceMock = jest.fn();
+
 Object.defineProperty(HTMLInputElement.prototype, "bootstrapToggle", {
     value: jest.fn(),
+    writable: true,
+});
+Object.defineProperty(HTMLInputElement.prototype, "bsToggle", {
+    value: {
+        isAttached: isAttachedMock,
+        once: onceMock,
+    },
     writable: true,
 });
 
@@ -66,7 +76,8 @@ describe("ToggleLayout", () => {
     });
 
     describe("setState(isLight: boolean)", () => {
-        it("should set light mode", () => {
+        it("should set light mode when toggle is attached", () => {
+            isAttachedMock.mockReturnValueOnce(true);
             const { builder } = createBuilder();
 
             builder.setState({isLight: true, theme: "light"});
@@ -77,7 +88,8 @@ describe("ToggleLayout", () => {
             expect(root2.dataset.bsTheme).toBe("light");
         });
 
-        it("should set ARIA attributes and rerender when light mode is sets", () => {
+        it("should set ARIA attributes and rerender when light mode is sets when toggle is attached", () => {
+            isAttachedMock.mockReturnValueOnce(true);
             const { builder, control } = createBuilder();
 
             builder.setState({isLight: true, theme: "light"});
@@ -86,7 +98,8 @@ describe("ToggleLayout", () => {
             expect(bsToggleSpy).toHaveBeenCalledWith(Methods.RERENDER);
         });
 
-        it("should set dark mode", () => {
+        it("should set dark mode when toggle is attached", () => {
+            isAttachedMock.mockReturnValueOnce(true);
             const { builder } = createBuilder();
 
             builder.setState({isLight: false, theme: "dark"});
@@ -97,7 +110,8 @@ describe("ToggleLayout", () => {
             expect(root2.dataset.bsTheme).toBe("dark");
         });
 
-        it("should set ARIA attributes and rerender when dark mode is sets", () => {
+        it("should set ARIA attributes and rerender when dark mode is sets when toggle is attached", () => {
+            isAttachedMock.mockReturnValueOnce(true);
             const { builder, control } = createBuilder();
 
             builder.setState({isLight: false, theme: "dark"});
@@ -116,7 +130,8 @@ describe("ToggleLayout", () => {
             });
         });
 
-        it("should not rerender Bootstrap Toggle if ariaLabel hasn't changed", () => {
+        it("should not rerender Bootstrap Toggle if ariaLabel hasn't changed when toggle is attached", () => {
+            isAttachedMock.mockReturnValueOnce(true);
             const { builder } = createBuilder();
 
             builder.setState({isLight: false, theme: "dark"});
@@ -124,6 +139,15 @@ describe("ToggleLayout", () => {
             builder.setState({isLight: false, theme: "dark"});
 
             expect(bsToggleSpy).not.toHaveBeenCalledWith(Methods.RERENDER);
+        });
+
+        it("should wait since toggle is attached", () => {
+            isAttachedMock.mockReturnValueOnce(false);
+            const { builder } = createBuilder();
+
+            builder.setState({isLight: true, theme: "light"});
+
+            expect(onceMock).toHaveBeenCalledWith("toggle:attached", expect.any(Function));
         });
     });
 
