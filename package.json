@@ -124,6 +124,6 @@
     "typescript": "^6.0.2"
   },
   "dependencies": {
-    "component-lifecycle": "^2.0.0"
+    "component-lifecycle": "^2.1.0"
   }
 }
