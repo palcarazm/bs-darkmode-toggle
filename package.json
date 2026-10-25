@@ -125,5 +125,9 @@
   },
   "dependencies": {
     "component-lifecycle": "^2.1.0"
+  },
+  "allowScripts": {
+    "cypress@16.2.0": true,
+    "unrs-resolver@1.11.1": true
   }
 }
