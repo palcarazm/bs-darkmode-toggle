@@ -187,7 +187,7 @@ class DarkmodeToggleComponent {
     }
 
     static invokeMethod($element, pluginInterface, method, silent) {
-        const args = !!silent ? [method, silent] : [method];
+        const args = silent ? [method, silent] : [method];
 
         if (pluginInterface === "ecmas") {
             cy.wrap($element).then(($el) => $el[0].bsDarkmodeToggle(...args));
