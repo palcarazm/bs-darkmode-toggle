@@ -21,7 +21,7 @@ import { DarkModeMonitor } from "./monitoring/DarkModeMonitor";
     HTMLElement.prototype.bsDarkmodeToggle = function (options?: DarkModeOptions | Methods, args?: unknown) {
         let instancePromise = this._bsDarkmodeToggle ? Promise.resolve(this._bsDarkmodeToggle) : DarkModeToggle.create(this, options);
 
-        instancePromise.then((instance) => {
+        void instancePromise.then((instance) => {
             if (typeof options === "string") {
                 switch (options.toUpperCase()) {
                 case Methods.TOGGLE:
