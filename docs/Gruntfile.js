@@ -1,7 +1,7 @@
 const path = require("node:path");
 const { cwd } = require("node:process");
 
-module.exports = function (grunt) {
+function config(grunt) {
     const pkg = grunt.file.readJSON("package.json");
     const isDev = grunt.option("dev");
 
@@ -113,3 +113,5 @@ module.exports = function (grunt) {
 
     grunt.registerTask("dev", ["build", "watch"]);
 };
+
+module.exports = config;

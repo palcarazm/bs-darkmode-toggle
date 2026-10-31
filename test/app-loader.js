@@ -32,7 +32,7 @@ globalThis.window.INTERFACE = INTERFACE;
 
 loadScripts(scripts[INTERFACE])
     .then(() => {
-        import("./scripts.js");
+        void import("./scripts.js");
     })
     .catch((error) => {
         console.error("Failed to load scripts:", error);

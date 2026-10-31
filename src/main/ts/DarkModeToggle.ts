@@ -37,18 +37,18 @@ export class DarkModeToggle extends Component<"darkmode", DarkModeToggleEventMap
         return instance;
     }
 
-    protected async doInit(): Promise<{ cancelled: boolean; reason?: string }> {
+    protected doInit(): Promise<{ cancelled: boolean; reason?: string }> {
         try {
             this.storage = new StorageManager(this.toggleOptions.storage);
             this.applyPreferredScheme();
         } catch (error) {
             this.storage = undefined;
-            return { cancelled: true, reason: `Storage error: ${error instanceof Error ? error.message : String(error)}` };
+            return Promise.resolve({ cancelled: true, reason: `Storage error: ${error instanceof Error ? error.message : String(error)}` });
         }
-        return { cancelled: false };
+        return Promise.resolve({ cancelled: false });
     }
 
-    protected async doAttach(): Promise<{ cancelled: boolean; reason?: string }> {
+    protected doAttach(): Promise<{ cancelled: boolean; reason?: string }> {
         const dom = new DomManager(this.element, this.toggleOptions, (e) => {
             this.toggle();
             e.preventDefault();
@@ -60,12 +60,12 @@ export class DarkModeToggle extends Component<"darkmode", DarkModeToggleEventMap
 
         this.setupCrossInstanceSync();
         this.syncState();
-        return { cancelled: false };
+        return Promise.resolve({ cancelled: false });
     }
 
-    protected async doDispose(): Promise<{ cancelled: boolean; reason?: string }> {
+    protected doDispose(): Promise<{ cancelled: boolean; reason?: string }> {
         globalThis.document.removeEventListener(PrefixedCustomEventTypes.CHANGE, this.handleExternalThemeChange);
-        return { cancelled: false };
+        return Promise.resolve({ cancelled: false });
     }
 
     protected async doDestroy(): Promise<{ cancelled: boolean; reason?: string }> {

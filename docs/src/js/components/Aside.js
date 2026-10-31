@@ -71,8 +71,8 @@ class Aside {
         const button = document.createElement("button");
         button.className = "navbar-toggler";
         button.type = "button";
-        button.setAttribute("data-bs-toggle", "collapse");
-        button.setAttribute("data-bs-target", "#navbarSupportedContent");
+        button.dataset.bsToggle = "collapse";
+        button.dataset.bsTarget = "#navbarSupportedContent";
         button.setAttribute("aria-controls", "navbarSupportedContent");
         button.setAttribute("aria-expanded", "false");
         button.setAttribute("aria-label", "Toggle navigation");
@@ -95,7 +95,7 @@ class Aside {
 
         const navMenu = document.createElement("nav");
         navMenu.id = "toc";
-        navMenu.setAttribute("data-toggle", "toc");
+        navMenu.dataset.toggle = "toc";
         navMenu.setAttribute("aria-label", "Table of contents");
 
         collapseDiv.appendChild(navMenu);
