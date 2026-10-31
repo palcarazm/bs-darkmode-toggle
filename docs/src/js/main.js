@@ -8,7 +8,7 @@ import TOCBuilder from "./tasks/TOCBuilder";
 DOMBuilder.run();
 LogoSwitcher.run({ toggleDelay: 3000 });
 
-window.onload = () => {
+globalThis.window.onload = () => {
     BootstrapToggler.run();
     BootsrapDarkmodeToggler.run();
     CodeHighlighter.run();

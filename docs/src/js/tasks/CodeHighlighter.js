@@ -1,7 +1,7 @@
 class CodeHighlighter {
     static run() {
         hljs.highlightAll();
-        window.highlightJsBadge();
+        globalThis.window.highlightJsBadge();
     }
 }
 
